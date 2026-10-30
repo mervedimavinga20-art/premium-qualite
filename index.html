@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>PREMIUM QUALITÉ — Gestion</title>
+<meta name="theme-color" content="#090a09">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Premium Qualité">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#090a09;--p:#121411;--p2:#1a1d19;--ln:#272c26;--g:#14b865;--gd:#0c5b34;--up:#2dff8a;--dn:#ff4d52;--tx:#f1f1ec;--mu:#8f968d;--f:'Anton','Impact','Haettenschweiler','Arial Black',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{font-size:16px}
+body{background:var(--bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.07'/%3E%3C/svg%3E");color:var(--tx);font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;min-height:100vh;padding-bottom:84px;overflow-x:hidden}
+.wm,h1,h2,.kv,.big{font-family:var(--f);font-weight:900;font-synthesis:none;letter-spacing:.02em;text-transform:uppercase}
+.tape{height:7px;background:repeating-linear-gradient(-45deg,var(--g) 0 10px,#000 10px 20px)}
+header{position:sticky;top:0;z-index:30;background:rgba(9,10,9,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--ln)}
+.hrow{display:flex;align-items:center;gap:6px;padding:8px 14px;max-width:1180px;margin:auto}
+#brandRow{flex:1;overflow:hidden;display:flex;align-items:center;gap:10px;min-width:0}
+.logo{width:34px;height:34px;object-fit:cover;border:1px solid var(--ln)}
+.wm{font-size:1.2rem;line-height:1;white-space:nowrap}
+.wm b{background:var(--g);padding:0 6px;display:inline-block;transform:rotate(-3deg);margin-left:4px;font-weight:900}
+.sub{font-size:.62rem;color:var(--mu);letter-spacing:.14em;text-transform:uppercase;margin-top:2px}
+.ib{background:var(--p);border:1px solid var(--ln);color:var(--tx);width:34px;height:34px;flex:none;display:grid;place-items:center;cursor:pointer;font-size:.8rem;font-weight:700}
+.ib:disabled{opacity:.3}.ib svg{width:18px;height:18px}
+main{max-width:1180px;margin:auto;padding:14px}
+.view{display:none}.view.on{display:block}
+h1{font-size:2rem;line-height:1.05}h2{font-size:1.1rem;margin-bottom:10px}
+.card{background:var(--p);border:1px solid var(--ln);padding:14px;margin-bottom:14px;position:relative}
+.card.hero{overflow:hidden;background:linear-gradient(135deg,#0e1a12,var(--p) 60%);border-color:var(--gd)}
+.ghost{position:absolute;right:-8px;bottom:-26px;font-family:var(--f);font-weight:900;font-size:7.5rem;color:rgba(255,255,255,.045);line-height:1;pointer-events:none;letter-spacing:.04em}
+.slogan{color:var(--mu);margin-top:8px;font-size:.9rem;max-width:30ch}
+.sig{display:inline-block;margin-top:10px;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;border:1px solid var(--g);color:var(--up);padding:3px 8px}
+.kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
+@media(min-width:760px){.kpis{grid-template-columns:repeat(3,1fr)}}
+.kpi{background:var(--p);border:1px solid var(--ln);border-left:3px solid var(--g);padding:10px 12px;min-width:0}
+.kpi .kl{font-size:.68rem;color:var(--mu);text-transform:uppercase;letter-spacing:.08em}
+.kv{font-size:clamp(1.05rem,4.6vw,1.4rem);margin-top:4px;overflow-wrap:anywhere}
+.kpi.up{border-left-color:var(--up)}.kpi.dn{border-left-color:var(--dn)}
+.up{color:var(--up)}.dn{color:var(--dn)}.mu{color:var(--mu)}
+.chip{display:inline-block;font-size:.72rem;font-weight:800;padding:2px 7px;border-radius:3px;background:rgba(46,224,119,.14);color:var(--up);font-family:system-ui}
+.chip.dn{background:rgba(255,77,82,.15);color:var(--dn)}
+.btn{background:var(--g);color:#fff;border:2px solid #000;box-shadow:3px 3px 0 #000;padding:9px 14px;font-weight:800;text-transform:uppercase;font-size:.78rem;letter-spacing:.06em;cursor:pointer;font-family:inherit}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #000}
+.btn.g2{background:var(--p2);border-color:var(--ln);box-shadow:none;color:var(--tx)}
+.btn.r{background:var(--dn);color:#000}
+.btn.sm{padding:5px 9px;font-size:.7rem}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+input,select,textarea{background:#0b0d0b;color:var(--tx);border:1px solid var(--ln);padding:8px;font:inherit;font-size:.9rem;width:100%;border-radius:0;min-width:0}
+input:focus,select:focus{outline:2px solid var(--g);outline-offset:-1px}
+label{font-size:.7rem;color:var(--mu);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:3px}
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:10px}
+.tw{overflow-x:auto;border:1px solid var(--ln);background:var(--p)}
+table{border-collapse:collapse;width:100%;font-size:.85rem}
+th{background:#0d100d;color:var(--mu);font-size:.66rem;text-transform:uppercase;letter-spacing:.07em;padding:8px 6px;text-align:left;white-space:nowrap;position:sticky;top:0}
+td{border-top:1px solid var(--ln);padding:3px 4px;white-space:nowrap}
+td input,td select{padding:6px;border-color:transparent;background:transparent;min-width:64px}
+td input:focus{background:#0b0d0b}
+td.n{text-align:right;font-variant-numeric:tabular-nums;padding:3px 8px}
+tr.low td.stk{color:var(--dn);font-weight:800}
+tfoot td{font-weight:800;background:#0d100d}
+.sticky{position:sticky;left:0;background:var(--p);z-index:1}
+.bd{display:inline-block;font-size:.65rem;font-weight:800;padding:2px 7px;text-transform:uppercase;letter-spacing:.06em}
+.bd.ok{background:rgba(46,224,119,.15);color:var(--up)}.bd.cours{background:rgba(255,255,255,.1)}.bd.retard{background:rgba(255,77,82,.18);color:var(--dn)}.bd.bloque{background:#000;border:1px solid var(--mu);color:var(--mu)}
+.seg{display:inline-flex;border:1px solid var(--ln)}.seg button{background:transparent;color:var(--mu);border:0;padding:6px 11px;font-weight:700;font-size:.72rem;cursor:pointer;text-transform:uppercase}
+.seg button.on{background:var(--g);color:#fff}
+.mk{position:relative;max-width:820px}.mk svg{width:100%;height:auto;display:block;touch-action:pan-y}
+.tip{position:absolute;pointer-events:none;background:#000;border:1px solid var(--ln);padding:5px 8px;font-size:.72rem;display:none;white-space:nowrap;z-index:5}
+.pulse{animation:pl 1.6s ease-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes pl{0%{transform:scale(1);opacity:.8}100%{transform:scale(3.2);opacity:0}}
+.wl{display:flex;align-items:center;gap:10px;padding:9px 6px;border-top:1px solid var(--ln);cursor:pointer}
+.wl:first-of-type{border-top:0}.wl.sel{background:rgba(31,122,67,.14)}
+.wl .nm{flex:1;min-width:0;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wl svg{width:84px;height:28px;flex:none}.wl .vv{text-align:right;min-width:78px;font-variant-numeric:tabular-nums;font-size:.85rem}
+.tick{overflow:hidden;border:1px solid var(--ln);background:#000;margin-bottom:14px;white-space:nowrap}
+.tick div{display:inline-block;padding:7px 0;animation:tk 38s linear infinite}
+.tick span{margin:0 18px;font-size:.78rem;font-weight:700}
+@keyframes tk{to{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){.tick div,.pulse{animation:none}.tick{overflow-x:auto}}
+.split{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.split svg{width:110px;height:110px}
+.al{padding:9px 12px;border-left:3px solid var(--dn);background:var(--p);margin-bottom:8px;font-size:.85rem}
+.al.w{border-color:#e8b400}
+.empty{color:var(--mu);padding:22px;text-align:center;font-size:.85rem}
+.rc{background:var(--p);border:1px solid var(--ln);padding:12px;margin-bottom:10px}
+.rn{font-family:var(--f);font-size:1.15rem;text-transform:uppercase;font-weight:900;font-synthesis:none}
+.rg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0;font-size:.78rem}
+.rg b{display:block;font-size:.95rem}
+.tabs{position:fixed;bottom:0;left:0;right:0;background:#050605;border-top:2px solid var(--g);display:flex;z-index:40;padding-bottom:env(safe-area-inset-bottom)}
+.tabs button{flex:1;background:none;border:0;color:var(--mu);padding:8px 2px 7px;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px}
+body.role-manager [data-own],body.role-manager [data-act=delRow],body.role-manager [data-act=delMove],body.role-manager [data-act=delPay],body.role-manager [data-act=resDel],body.role-manager [data-act=delBook]{display:none!important}
+#bCloud.ok{color:var(--up)}#bCloud.err{color:var(--dn)}#bCloud.off{color:var(--mu)}
+.tabs svg{width:20px;height:20px}.tabs button.on{color:var(--up)}
+#upd{position:fixed;left:12px;right:12px;bottom:calc(76px + env(safe-area-inset-bottom));background:#000;border:2px solid var(--up);padding:10px 12px;z-index:95;display:none;align-items:center;justify-content:space-between;gap:10px;font-size:.85rem}#upd.on{display:flex}
+#upd{position:fixed;left:12px;right:12px;bottom:calc(70px + env(safe-area-inset-bottom,0px));z-index:95;background:#000;border:2px solid var(--up);padding:10px 12px;display:flex;gap:10px;align-items:center;justify-content:space-between;font-size:.85rem}
+#toast{position:fixed;bottom:96px;left:50%;transform:translateX(-50%);background:#000;border:1px solid var(--g);padding:9px 14px;font-size:.82rem;z-index:90;display:none;max-width:90vw}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:80;display:none;align-items:center;justify-content:center;padding:16px}
+.ov.on{display:flex}
+.box{background:var(--p);border:2px solid var(--g);padding:18px;width:100%;max-width:380px}
+.box p{margin:6px 0 14px;line-height:1.4}
+.box .btns{justify-content:flex-end;margin-bottom:0}
+#lock{z-index:100;background:var(--bg);flex-direction:column}
+#pad{display:grid;grid-template-columns:repeat(3,70px);gap:10px;margin-top:16px}
+#pad button{height:58px;background:var(--p2);border:1px solid var(--ln);color:var(--tx);font-size:1.3rem;font-weight:800;cursor:pointer}
+#dots{display:flex;gap:12px;justify-content:center;margin:14px}#dots i{width:14px;height:14px;border:2px solid var(--g);border-radius:50%}#dots i.f{background:var(--up)}
+.lg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
+.lg button{padding:14px 8px;background:var(--p2);border:1px solid var(--ln);color:var(--tx);font-weight:800;cursor:pointer;font-size:.95rem}
+.lg button.on{border-color:var(--up);background:rgba(31,122,67,.3)}
+.cal{max-width:340px}#cEx{color:var(--mu);font-size:.85rem;min-height:1.2em;text-align:right}#cRs{font-size:2.2rem;text-align:right;font-family:var(--f);overflow-wrap:anywhere}
+#keys{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}#keys button{padding:14px 0;background:var(--p2);border:1px solid var(--ln);color:var(--tx);font-size:1.1rem;font-weight:800;cursor:pointer}#keys .op{background:var(--gd)}
+#docWrap{display:none;background:#fff;color:#000;min-height:100vh;padding:14px}
+.doc-page{max-width:800px;margin:auto;font-size:.85rem}.doc-page h1{font-size:1.6rem}.doc-page table{font-size:.78rem}.doc-page th{background:#eee;color:#000;position:static}.doc-page td{padding:5px;white-space:normal;border-color:#ccc}
+.dtw{overflow-x:auto}table.dt{min-width:480px}
+.dbar{max-width:800px;margin:0 auto 12px;display:flex;gap:8px}
+.dhd{border-bottom:4px solid #000;padding-bottom:8px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:flex-end;gap:8px}
+.dk{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}.dk div{border:1px solid #000;padding:6px}.dk b{display:block;font-size:1rem}
+body.print-doc #app,body.print-doc header,body.print-doc .tabs{display:none!important}
+body.print-doc #docWrap{display:block}
+@media print{#toast,.dbar{display:none!important}body{background:#fff;padding:0}#docWrap{padding:0}table.dt{min-width:0}@page{margin:12mm}}
+@media(min-width:900px){body{padding-bottom:0}.tabs{position:sticky;top:57px;bottom:auto;border:0;border-bottom:1px solid var(--ln);max-width:1180px;margin:auto;background:transparent}.tabs button{flex-direction:row;justify-content:center;font-size:.72rem;padding:12px}#toast{bottom:24px}}
+</style>
+</head>
+<body>
+<div class="tape"></div>
+<header>
+ <div class="hrow">
+  <div id="brandRow"></div>
+  <button class="ib" id="bUndo" data-act="undo" data-ti="undo" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 14 4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/></svg></button>
+  <button class="ib" id="bRedo" data-act="redo" data-ti="redo" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m15 14 5-5-5-5"/><path d="M20 9H10a6 6 0 0 0 0 12h3"/></svg></button>
+  <button class="ib" id="bCloud" data-act="go" data-arg="settings" data-ti="account">☁</button>
+  <button class="ib" data-act="langPick" data-ti="lang" id="bLang">FR</button>
+ </div>
+</header>
+<nav class="tabs" id="tabs"></nav>
+<div id="app"><main>
+<section class="view" id="v-home">
+ <div class="card hero"><div class="ghost">PQ</div><h1 id="hName"></h1><p class="slogan" id="hSlogan"></p><span class="sig" id="hSig"></span><p class="sub" id="hCity" style="margin-top:10px"></p></div>
+ <div class="tick"><div id="tickIn"></div></div>
+ <div class="kpis" id="kpis"></div>
+ <div class="card"><h2 data-i="market"></h2><div id="mkHome" class="mk"></div></div>
+ <div class="card"><h2 data-i="acct"></h2><div id="acct"></div></div>
+ <div id="alerts"></div>
+ <div class="al w" id="cloudBanner" style="display:none"><span data-i="cloudHint"></span> <button class="btn sm" data-act="go" data-arg="settings" data-i="account"></button></div>
+ <div class="btns"><button class="btn" data-act="reportDoc" data-i="report"></button><button class="btn g2" id="homeJ" data-act="go" data-arg="journal" data-i="journal" style="display:none"></button><button class="btn g2" data-act="go" data-arg="calc" data-i="calc"></button></div>
+</section>
+<section class="view" id="v-sheet">
+ <h1 data-i="tSheet"></h1>
+ <div class="btns"><select id="bookSel" style="width:auto;min-width:140px"></select><button class="btn sm g2" data-act="newBook" data-i="newBook"></button><button class="btn sm g2" data-act="renBook" data-i="ren"></button><button class="btn sm g2" data-act="delBook" data-i="del"></button></div>
+ <div class="fg"><div><input id="stockSearch" data-ph="search"></div></div>
+ <div class="tw"><table><thead><tr id="sheetHead"></tr></thead><tbody id="rows"></tbody><tfoot id="foot"></tfoot></table></div>
+ <div class="btns"><button class="btn" data-act="addRow" data-i="addRow"></button></div>
+ <div class="card" style="margin-top:14px"><h2 data-i="acct"></h2><div id="acct2"></div></div>
+</section>
+<section class="view" id="v-resellers">
+ <h1 data-i="tRes"></h1>
+ <div class="card"><div class="fg"><div><label data-i="name"></label><input id="rName"></div><div><label data-i="phone"></label><input id="rPhone" inputmode="tel"></div><div><label data-i="zone"></label><input id="rZone"></div></div><button class="btn" data-act="addReseller" data-i="addRes"></button></div>
+ <div id="resList"></div>
+</section>
+<section class="view" id="v-suivi">
+ <h1 data-i="tSuivi"></h1>
+ <div class="tw"><table><thead><tr id="sHead"></tr></thead><tbody id="sBody"></tbody></table></div>
+ <h2 style="margin-top:18px" data-i="direct"></h2>
+ <div class="card"><div class="fg"><div><label data-i="cItem"></label><input id="dItem" list="dlItems"></div><div><label data-i="cQty"></label><input id="dQty" type="number" inputmode="decimal" min="0"></div><div><label data-i="cPrice"></label><input id="dPrice" type="number" inputmode="decimal" min="0"></div><div><label data-i="date"></label><input id="dDate" type="date"></div></div><button class="btn" data-act="addDirect" data-i="addDirect"></button></div>
+ <h2 style="margin-top:18px" data-i="moves"></h2>
+ <div class="fg"><div><input id="fText" data-ph="search"></div><div><select id="fRes"></select></div></div>
+ <div class="tw"><table><thead><tr id="mHead"></tr></thead><tbody id="mBody"></tbody></table></div>
+ <datalist id="dlItems"></datalist>
+ <div class="btns"><button class="btn" data-act="addMove" data-i="addMove"></button><button class="btn g2" data-act="resetFilters" data-i="reset"></button></div>
+ <h2 style="margin-top:18px" data-i="pays"></h2>
+ <div class="card"><div class="fg"><div><label data-i="reseller"></label><select id="pRes"></select></div><div><label data-i="amount"></label><input id="pAmt" type="number" inputmode="decimal" min="0"></div><div><label data-i="date"></label><input id="pDate" type="date"></div><div><label data-i="note"></label><input id="pNote"></div></div><button class="btn" data-act="addPay" data-i="addPay"></button></div>
+ <div class="tw"><table><thead><tr id="pHead"></tr></thead><tbody id="pBody"></tbody></table></div>
+</section>
+<section class="view" id="v-stats">
+ <h1 data-i="tStats"></h1>
+ <div class="card">
+  <div class="btns" style="margin-top:0"><div class="seg" id="granSeg"></div><select id="stRes" style="width:auto;min-width:150px"></select></div>
+  <div id="mkBig" class="mk"></div>
+ </div>
+ <div class="card"><h2 data-i="watch"></h2><div id="watch"></div></div>
+</section>
+<section class="view" id="v-settings">
+ <h1 data-i="tSet"></h1>
+ <div class="card" id="accCard"><h2 data-i="account"></h2><p class="mu" id="accSt" style="font-size:.82rem;margin-bottom:10px"></p>
+  <div id="accOut"><div class="fg"><div><label data-i="email"></label><input id="aMail" type="email" autocomplete="username" inputmode="email"></div><div><label data-i="pass"></label><input id="aPass" type="password" autocomplete="current-password"></div></div><div class="btns" style="margin-top:0"><button class="btn sm" data-act="cLogin" data-i="login"></button><button class="btn sm g2" data-act="cSignup" data-i="signup"></button></div></div>
+  <div id="accIn" style="display:none"><div class="btns" style="margin-top:0"><button class="btn sm" id="bCreate" data-act="cCreate" data-i="createShop"></button><button class="btn sm g2" data-act="cSync" data-i="syncNow"></button><button class="btn sm g2" data-act="go" data-arg="journal" data-i="journal"></button><button class="btn sm r" data-act="cOut" data-i="logout"></button></div>
+  <div id="ownTeam"><div class="fg"><div><label data-i="mgrMail"></label><input id="aMgr" type="email" inputmode="email"></div></div><button class="btn sm" data-act="cAddMgr" data-i="addMgr"></button></div><div id="team" class="mu" style="font-size:.8rem;margin-top:8px"></div></div></div>
+ <div class="card" data-own><h2 data-i="shop"></h2><div class="fg">
+  <div><label data-i="shopName"></label><input id="sBname"></div><div><label data-i="owner"></label><input id="sOwner"></div><div><label data-i="manager"></label><input id="sManager"></div><div><label data-i="city"></label><input id="sCity"></div><div><label data-i="email"></label><input id="sEmail" type="email" inputmode="email"></div><div><label data-i="phone"></label><input id="sBPhone" inputmode="tel"></div><div><label data-i="addr"></label><input id="sAddr"></div><div><label data-i="units"></label><input id="sUnits"></div><div><label data-i="cats"></label><input id="sCats"></div><div><label>Slogan</label><input id="sSlogan"></div>
+  <div><label>Logo</label><input id="logoFile" type="file" accept="image/*"></div></div></div>
+ <div class="card" data-own><h2 data-i="money"></h2><div class="fg">
+  <div><label data-i="currency"></label><select id="sMonnaie"><option>$</option><option>FC</option></select></div>
+  <div><label data-i="rate"></label><input id="sTaux" type="number" inputmode="decimal"></div>
+  <div><label data-i="low"></label><input id="sLow" type="number" min="0"></div>
+  <div><label data-i="lateD"></label><input id="sLate" type="number" min="1"></div>
+  <div><label data-i="salPct"></label><input id="sSal" type="number" min="0" max="100"></div>
+  <div><label data-i="basis"></label><select id="sBasis"><option value="prevu" data-i="bPrevu"></option><option value="realise" data-i="bReal"></option></select></div></div></div>
+ <div class="card"><h2 data-i="lang"></h2><select id="sLang"></select></div>
+ <div class="card"><h2 data-i="security"></h2><div class="fg"><div><label data-i="pin4"></label><input id="sPin" type="password" inputmode="numeric" maxlength="6"></div></div><div class="btns"><button class="btn sm" data-act="pinSave" data-i="pinSave"></button><button class="btn sm g2" data-act="pinOff" data-i="pinOff"></button></div></div>
+ <div class="card" data-own><h2 data-i="backup"></h2><div class="btns"><button class="btn sm" data-act="exportData" data-i="export"></button><button class="btn sm g2" data-act="shareData" data-i="share"></button><label class="btn sm g2" style="margin:0;display:inline-block;cursor:pointer"><span data-i="import"></span><input id="impFile" type="file" accept="application/json,.json" style="display:none"></label></div></div>
+ <div class="card" data-own><h2 data-i="app"></h2><div class="btns"><button class="btn sm" id="installBtn" data-act="install" data-i="install" style="display:none"></button><button class="btn sm g2" data-act="demo" data-i="demo"></button><button class="btn sm r" data-act="wipe" data-i="wipe"></button></div><p class="mu" style="font-size:.78rem" data-i="localNote"></p></div>
+</section>
+<section class="view" id="v-journal">
+ <h1 data-i="journal"></h1>
+ <div class="btns"><select id="jFilter" style="width:auto;min-width:160px"></select><button class="btn sm g2" data-act="jReload" data-i="reload"></button></div>
+ <div class="tw"><table><thead><tr id="jHead"></tr></thead><tbody id="jBody"></tbody></table></div>
+</section>
+<section class="view" id="v-calc">
+ <h1 data-i="calc"></h1>
+ <div class="card cal"><div id="cEx"></div><div id="cRs">0</div><div id="keys"></div></div>
+ <div class="card cal"><h2 data-i="conv"></h2><div class="fg"><div><label>FC</label><input id="cvFc" type="number" inputmode="decimal"></div><div><label>USD</label><input id="cvUsd" type="number" inputmode="decimal"></div></div></div>
+</section>
+</main></div>
+<div id="docWrap"><div class="dbar"><button class="btn sm" data-act="docPrint" data-i="print"></button><button class="btn sm g2" data-act="docClose" data-i="close"></button></div><div id="doc"></div></div>
+<div id="toast"></div>
+<div id="upd" style="display:none"><span data-i="updNew"></span> <span style="display:flex;gap:6px"><button class="btn sm" data-act="reload" data-i="updBtn"></button><button class="btn sm g2" data-act="updClose" aria-label="x">×</button></span></div>
+<div id="upd"><span data-i="updNew"></span> <button class="btn sm" id="updGo" data-i="updGo"></button></div>
+<div class="ov" id="dlg"><div class="box"><p id="dlgMsg"></p><input id="dlgIn" style="display:none;margin-bottom:12px"><div class="btns"><button class="btn g2" id="dlgNo"></button><button class="btn" id="dlgYes"></button></div></div></div>
+<div class="ov" id="langOv"><div class="box"><h2 data-i="chooseLang"></h2><div class="lg" id="langBtns"></div></div></div>
+<div class="ov" id="lock"><h1 id="lkName" style="text-align:center"></h1><p class="mu" id="lkMsg" style="margin-top:8px;min-height:1.3em"></p><div id="dots"><i></i><i></i><i></i><i></i></div><div id="pad"></div><button class="btn g2 sm" style="margin-top:16px" data-act="forgot" data-i="forgot"></button></div>
+<script>
+(function(){'use strict';
+const D={};
+`undo|Annuler (Ctrl+Z)|Undo (Ctrl+Z)|Deshacer (Ctrl+Z)|Desfazer (Ctrl+Z)
+redo|Rétablir (Ctrl+Y)|Redo (Ctrl+Y)|Rehacer (Ctrl+Y)|Refazer (Ctrl+Y)
+lang|Langue|Language|Idioma|Idioma
+chooseLang|Choisir la langue|Choose your language|Elige tu idioma|Escolha o idioma
+market|Marché des ventes|Sales market|Mercado de ventas|Mercado de vendas
+acct|Comptabilité|Accounting|Contabilidad|Contabilidade
+report|Rapport|Report|Informe|Relatório
+calc|Calculatrice|Calculator|Calculadora|Calculadora
+conv|Convertisseur FC / USD|FC / USD converter|Conversor FC / USD|Conversor FC / USD
+tHome|Accueil|Home|Inicio|Início
+tSheet|Stock|Stock|Stock|Stock
+tRes|Revendeurs|Resellers|Revendedores|Revendedores
+tSuivi|Suivi|Tracking|Seguimiento|Acompanhamento
+tStats|Bourse|Market|Bolsa|Bolsa
+tSet|Réglages|Settings|Ajustes|Ajustes
+newBook|Nouvelle fiche|New sheet|Nueva hoja|Nova ficha
+ren|Renommer|Rename|Renombrar|Renomear
+del|Supprimer|Delete|Eliminar|Eliminar
+search|Rechercher…|Search…|Buscar…|Pesquisar…
+addRow|+ Ajouter un article|+ Add item|+ Añadir artículo|+ Adicionar artigo
+name|Nom|Name|Nombre|Nome
+phone|Téléphone|Phone|Teléfono|Telefone
+zone|Zone|Area|Zona|Zona
+addRes|Ajouter le revendeur|Add reseller|Añadir revendedor|Adicionar revendedor
+moves|Sorties / remises|Outflows / handovers|Salidas / entregas|Saídas / entregas
+reset|Réinitialiser|Reset filters|Restablecer|Repor
+reseller|Revendeur|Reseller|Revendedor|Revendedor
+allRes|Tous les revendeurs|All resellers|Todos los revendedores|Todos os revendedores
+amount|Montant|Amount|Importe|Valor
+date|Date|Date|Fecha|Data
+note|Note|Note|Nota|Nota
+addPay|Enregistrer le paiement|Save payment|Guardar pago|Guardar pagamento
+addMove|+ Nouvelle sortie|+ New outflow|+ Nueva salida|+ Nova saída
+pays|Paiements|Payments|Pagos|Pagamentos
+watch|Évolution par revendeur|Evolution per reseller|Evolución por revendedor|Evolução por revendedor
+shop|Boutique|Shop|Tienda|Loja
+shopName|Nom de la boutique|Shop name|Nombre de la tienda|Nome da loja
+owner|Propriétaire|Owner|Propietario|Proprietário
+manager|Gérant|Manager|Gerente|Gerente
+city|Ville|City|Ciudad|Cidade
+money|Argent et règles|Money and rules|Dinero y reglas|Dinheiro e regras
+currency|Monnaie|Currency|Moneda|Moeda
+rate|Taux (FC pour 1 $)|Rate (FC per $1)|Tasa (FC por 1 $)|Taxa (FC por 1 $)
+low|Seuil stock bas|Low-stock threshold|Umbral stock bajo|Limite stock baixo
+lateD|Retard après (jours)|Late after (days)|Retraso tras (días)|Atraso após (dias)
+salPct|Part salaire (%)|Salary share (%)|Parte salario (%)|Parte salário (%)
+basis|Base du bénéfice|Profit basis|Base del beneficio|Base do lucro
+bPrevu|Prévu (tout le stock vendu)|Expected (all stock sold)|Previsto (todo vendido)|Previsto (tudo vendido)
+bReal|Réalisé (ventes réelles)|Realised (actual sales)|Realizado (ventas reales)|Realizado (vendas reais)
+security|Sécurité|Security|Seguridad|Segurança
+pin4|Code à 6 chiffres|6-digit code|Código de 6 dígitos|Código de 6 dígitos
+pinSave|Enregistrer le code|Save code|Guardar código|Guardar código
+pinOff|Retirer le code|Remove code|Quitar código|Remover código
+backup|Sauvegarde|Backup|Copia de seguridad|Cópia de segurança
+export|Exporter|Export|Exportar|Exportar
+share|Partager / Drive|Share / Drive|Compartir / Drive|Partilhar / Drive
+import|Importer|Import|Importar|Importar
+app|Application|App|Aplicación|Aplicação
+install|Installer l’application|Install the app|Instalar la app|Instalar a app
+demo|Données de démo|Demo data|Datos de ejemplo|Dados de exemplo
+wipe|Tout effacer|Erase all|Borrar todo|Apagar tudo
+localNote|Les données sont enregistrées sur cet appareil uniquement. Faites des sauvegardes régulières.|Data is stored on this device only. Make regular backups.|Los datos se guardan solo en este dispositivo. Haz copias con regularidad.|Os dados ficam guardados só neste dispositivo. Faça cópias regularmente.
+print|Imprimer / PDF|Print / PDF|Imprimir / PDF|Imprimir / PDF
+close|Fermer|Close|Cerrar|Fechar
+forgot|Code oublié|Forgot code|Código olvidado|Código esquecido
+bPrevuS|Prévu|Expected|Previsto|Previsto
+bRealS|Réalisé|Realised|Realizado|Realizado
+cDesc|Description|Description|Descripción|Descrição
+cUom|Unité|Unit|Unidad|Unidade
+cQty|Qté|Qty|Cant.|Qtd
+cPrice|Prix vente|Sell price|Precio venta|Preço venda
+cCost|Prix achat|Buy price|Precio compra|Preço compra
+cExp|Dépenses|Expenses|Gastos|Despesas
+cTotal|Total général|Grand total|Total general|Total geral
+cCostAll|Achat + dép.|Cost + exp.|Compra + gastos|Compra + desp.
+cProfit|Bénéfice|Profit|Beneficio|Lucro
+cOut|Sorties|Out|Salidas|Saídas
+cStock|Stock actuel|Stock now|Stock actual|Stock atual
+cRem|Remarque|Remark|Observación|Observação
+cGiven|Remis|Given|Entregado|Entregue
+cRet|Retour|Return|Devuelto|Devolvido
+cSold|Vendu|Sold|Vendido|Vendido
+cValue|Valeur vendue|Sold value|Valor vendido|Valor vendido
+cLeft|Chez revendeur|With reseller|En revendedor|No revendedor
+cDue|Dû|Due|Debe|Devido
+cPaid|Versé|Paid|Pagado|Pago
+cRest|Reste|Balance|Saldo|Saldo
+cStatus|Statut|Status|Estado|Estado
+cItem|Article|Item|Artículo|Artigo
+cMoves|Mouvements|Moves|Movimientos|Movimentos
+stOk|À jour|Settled|Al día|Em dia
+stCours|En cours|Ongoing|En curso|Em curso
+stLate|En retard|Late|Retrasado|Atrasado
+stBlock|Bloqué|Blocked|Bloqueado|Bloqueado
+kSales|Ventes (valeur)|Sales (value)|Ventas (valor)|Vendas (valor)
+kStock|Stock en magasin|Stock in shop|Stock en tienda|Stock na loja
+kOut|Chez revendeurs|With resellers|En revendedores|Nos revendedores
+kRest|À encaisser|To collect|Por cobrar|A receber
+kPaid|Encaissé|Collected|Cobrado|Recebido
+kProfit|Bénéfice prévu|Expected profit|Beneficio previsto|Lucro previsto
+aTotal|Total général|Grand total|Total general|Total geral
+aBuy|Achat|Purchase|Compra|Compra
+aExp|Dépenses|Expenses|Gastos|Despesas
+aCost|Coût (achat + dépenses)|Cost (purchase + expenses)|Coste (compra + gastos)|Custo (compra + despesas)
+aProfit|Bénéfice = total − coût|Profit = total − cost|Beneficio = total − coste|Lucro = total − custo
+aSal|Salaire ({p} %)|Salary ({p} %)|Salario ({p} %)|Salário ({p} %)
+aInv|Réinvesti ({p} %)|Reinvested ({p} %)|Reinvertido ({p} %)|Reinvestido ({p} %)
+aLoss|Aucun bénéfice : rien à répartir.|No profit: nothing to split.|Sin beneficio: nada que repartir.|Sem lucro: nada a repartir.
+alLate|{n} en retard de paiement|{n} late on payment|{n} con retraso de pago|{n} com atraso de pagamento
+alLow|Stock bas : {n} ({q} restant)|Low stock: {n} ({q} left)|Stock bajo: {n} ({q} quedan)|Stock baixo: {n} ({q} restantes)
+alNeg|Stock négatif : {n} (vérifier les sorties)|Negative stock: {n} (check outflows)|Stock negativo: {n} (revisar salidas)|Stock negativo: {n} (verificar saídas)
+noData|Pas encore de données. Ajoutez des articles ou chargez la démo dans Réglages.|No data yet. Add items or load the demo in Settings.|Aún no hay datos. Añade artículos o carga el ejemplo en Ajustes.|Sem dados. Adicione artigos ou carregue o exemplo em Ajustes.
+noMoves|Aucune sortie.|No outflows.|Sin salidas.|Sem saídas.
+noPays|Aucun paiement.|No payments.|Sin pagos.|Sem pagamentos.
+noRes|Aucun revendeur.|No resellers.|Sin revendedores.|Sem revendedores.
+d1|Jour|Day|Día|Dia
+d7|Semaine|Week|Semana|Semana
+d30|Mois|Month|Mes|Mês
+yes|Oui|Yes|Sí|Sim
+no|Non|No|No|Não
+ok|OK|OK|OK|OK
+cancel|Annuler|Cancel|Cancelar|Cancelar
+edit|Modifier|Edit|Editar|Editar
+done|Terminer|Done|Terminar|Concluir
+block|Bloquer|Block|Bloquear|Bloquear
+unblock|Débloquer|Unblock|Desbloquear|Desbloquear
+stmt|Relevé|Statement|Extracto|Extrato
+bon|Bon|Slip|Vale|Guia
+pay|Payer|Pay|Pagar|Pagar
+cfDelRow|Supprimer cet article ?|Delete this item?|¿Eliminar este artículo?|Eliminar este artigo?
+cfDelRowM|Cet article a des sorties liées. Les supprimer quand même ?|This item has linked outflows. Delete anyway?|Este artículo tiene salidas vinculadas. ¿Eliminar igualmente?|Este artigo tem saídas ligadas. Eliminar mesmo assim?
+cfDelMove|Supprimer cette sortie ?|Delete this outflow?|¿Eliminar esta salida?|Eliminar esta saída?
+cfDelPay|Supprimer ce paiement ?|Delete this payment?|¿Eliminar este pago?|Eliminar este pagamento?
+cfDelRes|Supprimer ce revendeur et tout son historique ?|Delete this reseller and all history?|¿Eliminar este revendedor y su historial?|Eliminar este revendedor e o histórico?
+cfDelBook|Supprimer cette fiche ?|Delete this sheet?|¿Eliminar esta hoja?|Eliminar esta ficha?
+cfWipe|Tout effacer ? (annulable avec Ctrl+Z)|Erase everything? (undo with Ctrl+Z)|¿Borrar todo? (se puede deshacer con Ctrl+Z)|Apagar tudo? (pode desfazer com Ctrl+Z)
+cfDemo|Remplacer les données par la démo ? (annulable)|Replace data with the demo? (undoable)|¿Reemplazar datos por el ejemplo? (se puede deshacer)|Substituir dados pelo exemplo? (pode desfazer)
+cfImport|Remplacer les données par cette sauvegarde ?|Replace data with this backup?|¿Reemplazar datos por esta copia?|Substituir dados por esta cópia?
+cfForgot|Code oublié : cela efface toutes les données de cet appareil. Continuer ?|Forgot code: this erases all data on this device. Continue?|Código olvidado: borra todos los datos de este dispositivo. ¿Continuar?|Código esquecido: apaga todos os dados deste dispositivo. Continuar?
+pRename|Nouveau nom de la fiche :|New sheet name:|Nuevo nombre de la hoja:|Novo nome da ficha:
+pNewBook|Nom de la nouvelle fiche :|New sheet name:|Nombre de la nueva hoja:|Nome da nova ficha:
+tOk|Fait|Done|Hecho|Feito
+tUndo|Annulé|Undone|Deshecho|Desfeito
+tRedo|Rétabli|Redone|Rehecho|Refeito
+tNeed|Nom et montant requis|Name and amount required|Nombre e importe requeridos|Nome e valor obrigatórios
+tNeedR|Ajoutez d’abord un revendeur|Add a reseller first|Añade primero un revendedor|Adicione primeiro um revendedor
+tBadFile|Fichier invalide|Invalid file|Archivo no válido|Ficheiro inválido
+tPin|Code enregistré|Code saved|Código guardado|Código guardado
+tPin4|6 chiffres requis|6 digits required|Se requieren 6 dígitos|São necessários 6 dígitos
+lkEnter|Entrez votre code|Enter your code|Introduce tu código|Introduza o seu código
+lkBad|Code incorrect|Incorrect code|Código incorrecto|Código incorreto
+lkWait|Trop d’essais, attendez {s} s|Too many tries, wait {s} s|Demasiados intentos, espera {s} s|Demasiadas tentativas, aguarde {s} s
+dBon|Bon de remise|Handover slip|Vale de entrega|Guia de entrega
+dStmt|Relevé de compte|Account statement|Extracto de cuenta|Extrato de conta
+dRep|Rapport de gestion|Management report|Informe de gestión|Relatório de gestão
+dTotal|Total|Total|Total|Total
+direct|Vente directe (boutique)|Direct sale (shop)|Venta directa (tienda)|Venda direta (loja)
+addDirect|Enregistrer la vente|Save sale|Guardar venta|Guardar venda
+shopL|Boutique|Shop|Tienda|Loja
+tNeedD|Article et quantité requis|Item and quantity required|Artículo y cantidad requeridos|Artigo e quantidade obrigatórios
+email|Email|Email|Correo|Email
+addr|Adresse|Address|Dirección|Morada
+account|Compte et équipe|Account and team|Cuenta y equipo|Conta e equipa
+pass|Mot de passe|Password|Contraseña|Palavra-passe
+login|Se connecter|Log in|Entrar|Entrar
+signup|Créer un compte|Create account|Crear cuenta|Criar conta
+logout|Déconnexion|Log out|Cerrar sesión|Terminar sessão
+createShop|Créer la boutique en ligne|Create the online shop|Crear la tienda en línea|Criar a loja online
+syncNow|Synchroniser|Sync now|Sincronizar|Sincronizar
+journal|Journal|Log|Registro|Registo
+reload|Actualiser|Refresh|Actualizar|Atualizar
+mgrMail|Email du gérant|Manager email|Correo del gerente|Email do gerente
+addMgr|Ajouter le gérant|Add manager|Añadir gerente|Adicionar gerente
+cloudHint|Connectez-vous pour partager les données avec le gérant et activer le journal.|Log in to share data with your manager and enable the log.|Inicia sesión para compartir los datos con el gerente y activar el registro.|Inicie sessão para partilhar os dados com o gerente e ativar o registo.
+cOff|Non connecté (données sur cet appareil seulement)|Not logged in (data on this device only)|Sin sesión (datos solo en este dispositivo)|Sem sessão (dados só neste dispositivo)
+cOn|{e} · {r} · {s}|{e} · {r} · {s}|{e} · {r} · {s}|{e} · {r} · {s}
+cRoleO|Propriétaire|Owner|Propietario|Proprietário
+cRoleM|Gérant|Manager|Gerente|Gerente
+cSyncOk|synchronisé|synced|sincronizado|sincronizado
+cSyncErr|hors ligne ou erreur, nouvel essai automatique|offline or error, retrying automatically|sin conexión o error, reintento automático|offline ou erro, nova tentativa automática
+cSyncing|synchronisation…|syncing…|sincronizando…|a sincronizar…
+cNoShop|Aucune boutique liée à ce compte. Le propriétaire doit vous ajouter avec cet email.|No shop linked to this account. The owner must add you with this email.|Ninguna tienda vinculada. El propietario debe añadirte con este correo.|Nenhuma loja ligada. O proprietário deve adicioná-lo com este email.
+cfJoin|Les données de cet appareil seront remplacées par celles de la boutique en ligne. Continuer ?|This device’s data will be replaced by the online shop data. Continue?|Los datos de este dispositivo se reemplazarán por los de la tienda en línea. ¿Continuar?|Os dados deste dispositivo serão substituídos pelos da loja online. Continuar?
+tOwner|Réservé au propriétaire|Owner only|Solo para el propietario|Só para o proprietário
+tAuthNeed|Email et mot de passe (6 caractères min.) requis|Email and password (min. 6 characters) required|Correo y contraseña (mín. 6 caracteres)|Email e palavra-passe (mín. 6 caracteres)
+cErr|Erreur : {e}|Error: {e}|Error: {e}|Erro: {e}
+cOffl|Pas de connexion internet|No internet connection|Sin conexión a internet|Sem ligação à internet
+cMade|Boutique en ligne créée|Online shop created|Tienda en línea creada|Loja online criada
+mgrOk|Gérant ajouté|Manager added|Gerente añadido|Gerente adicionado
+mgrUnknown|Aucun compte avec cet email : le gérant doit d’abord créer son compte|No account with this email: the manager must sign up first|No hay cuenta con ese correo: el gerente debe registrarse primero|Sem conta com este email: o gerente deve primeiro criar conta
+mgrDenied|Seul le propriétaire peut ajouter un gérant|Only the owner can add a manager|Solo el propietario puede añadir un gerente|Só o proprietário pode adicionar um gerente
+jWhen|Date|Date|Fecha|Data
+jWho|Qui|Who|Quién|Quem
+jWhat|Action|Action|Acción|Ação
+jDetail|Détail|Detail|Detalle|Detalhe
+jAll|Tous|Everyone|Todos|Todos
+jEmpty|Journal vide ou non disponible|Log empty or unavailable|Registro vacío o no disponible|Registo vazio ou indisponível
+ja_addMgr|Gérant ajouté|Manager added|Gerente añadido|Gerente adicionado
+ja_login|Connexion|Login|Inicio de sesión|Início de sessão
+ja_edit|Modification|Edit|Edición|Edição
+ja_settings|Réglage|Setting|Ajuste|Ajuste
+ja_addRow|Article ajouté|Item added|Artículo añadido|Artigo adicionado
+ja_delRow|Article supprimé|Item deleted|Artículo eliminado|Artigo eliminado
+ja_addReseller|Revendeur ajouté|Reseller added|Revendedor añadido|Revendedor adicionado
+ja_resDel|Revendeur supprimé|Reseller deleted|Revendedor eliminado|Revendedor eliminado
+ja_resBlock|Statut revendeur|Reseller status|Estado del revendedor|Estado do revendedor
+ja_addMove|Sortie ajoutée|Outflow added|Salida añadida|Saída adicionada
+ja_delMove|Sortie supprimée|Outflow deleted|Salida eliminada|Saída eliminada
+ja_addPay|Paiement|Payment|Pago|Pagamento
+ja_delPay|Paiement supprimé|Payment deleted|Pago eliminado|Pagamento eliminado
+ja_addDirect|Vente directe|Direct sale|Venta directa|Venda direta
+ja_wipe|Tout effacé|Erased all|Todo borrado|Tudo apagado
+ja_demo|Démo chargée|Demo loaded|Ejemplo cargado|Exemplo carregado
+ja_newBook|Fiche créée|Sheet created|Hoja creada|Ficha criada
+ja_renBook|Fiche renommée|Sheet renamed|Hoja renombrada|Ficha renomeada
+ja_delBook|Fiche supprimée|Sheet deleted|Hoja eliminada|Ficha eliminada
+ja_import|Import|Import|Importación|Importação
+updNew|Nouvelle version disponible|New version available|Nueva versión disponible|Nova versão disponível
+updGo|Recharger|Reload|Recargar|Recarregar
+updNew|Nouvelle version disponible|New version available|Nueva versión disponible|Nova versão disponível
+updBtn|Recharger|Reload|Recargar|Recarregar
+units|Unités de stock (séparées par des virgules)|Stock units (comma separated)|Unidades de stock (separadas por comas)|Unidades de stock (separadas por vírgulas)
+cats|Catégories d’activité (séparées par des virgules)|Business categories (comma separated)|Categorías de actividad (separadas por comas)|Categorias de atividade (separadas por vírgulas)
+cCat|Catégorie|Category|Categoría|Categoria
+waHi|Bonjour {n}, voici votre point chez {b} : remis {g}, vendu {s}, versé {p}, reste à payer {r}. Merci !|Hello {n}, your balance at {b}: given {g}, sold {s}, paid {p}, balance due {r}. Thanks!|Hola {n}, tu situación en {b}: entregado {g}, vendido {s}, pagado {p}, pendiente {r}. ¡Gracias!|Olá {n}, o seu ponto na {b}: entregue {g}, vendido {s}, pago {p}, em falta {r}. Obrigado!
+`.trim().split('\n').forEach(l=>{const a=l.split('|');D[a[0]]=a.slice(1)});
+const KEY='premium-qualite-v1',KEYS=[KEY];
+const LANGS=[['fr','Français','fr-FR'],['en','English','en-US'],['es','Español','es-ES'],['pt','Português','pt-PT']];
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const uid=()=>Math.random().toString(36).slice(2,9);
+const num=v=>{const n=parseFloat(String(v).replace(',','.'));return isFinite(n)?n:0};
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const todayS=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const addDays=(s,n)=>{const d=new Date(s+'T00:00:00Z');d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10)};
+const dayDiff=(a,b)=>Math.round((new Date(b+'T00:00:00Z')-new Date(a+'T00:00:00Z'))/864e5);
+function h(tag,p,kids){const e=document.createElement(tag);for(const k in(p||{})){const v=p[k];if(k==='class')e.className=v;else if(k==='text')e.textContent=v;else if(k==='data')for(const d in v)e.dataset[d]=v[d];else if(k==='style')e.style.cssText=v;else if(k==='aria')for(const a in v)e.setAttribute('aria-'+a,v[a]);else if(k==='attr')for(const a in v)e.setAttribute(a,v[a]);else e[k]=v}(kids||[]).forEach(c=>c!=null&&e.append(c.nodeType?c:document.createTextNode(c)));return e}
+/* ---- i18n ---- */
+let LANG='fr';
+const LI=()=>Math.max(0,LANGS.findIndex(l=>l[0]===LANG));
+const LOC=()=>LANGS[LI()][2];
+function t(k,p){const a=D[k];let s=a?(a[LI()]||a[0]):k;if(p)for(const x in p)s=s.split('{'+x+'}').join(p[x]);return s}
+function applyI18n(){document.documentElement.lang=LANG;$$('[data-i]').forEach(e=>e.textContent=t(e.dataset.i));$$('[data-ph]').forEach(e=>e.placeholder=t(e.dataset.ph));$$('[data-ti]').forEach(e=>{e.title=t(e.dataset.ti);e.setAttribute('aria-label',t(e.dataset.ti))});$('#bLang').textContent=LANG.toUpperCase()}
+/* ---- state ---- */
+const DEF=()=>({v:3,brand:{name:'PREMIUM QUALITÉ',slogan:'Gérez. Vendez. Encaissez.',signature:'Propulsé par PREMIUM QUALITÉ',logo:'',city:'',email:'',phone:'',addr:''},set:{owner:'',units:['Pc','kg','L','Carton'],cats:['Mode','Alimentation','Cosmétiques','Quincaillerie'],manager:'',monnaie:'$',taux:2800,lowStock:5,lateDays:14,salaryPct:20,basis:'prevu',pin:'',lang:'fr',langDone:false,pinLen:4},books:[{id:'b1',label:'Fiche 1',rows:[]}],cur:'b1',resellers:[],moves:[],pays:[],view:'home'});
+let state=DEF(),noFlush=false;
+function fixup(s){const d=DEF();s.brand=Object.assign(d.brand,s.brand||{});s.set=Object.assign(d.set,s.set||{});s.v=3;
+ if(!Array.isArray(s.books)||!s.books.length)s.books=d.books;
+ s.books.forEach(b=>{b.id=b.id||uid();b.label=b.label||'Fiche';b.rows=(b.rows||[]).map(r=>{r.id=r.id||uid();if(r.cost==null){r.cost=Math.max(0,num(r.price)-num(r.gain||0));delete r.gain}r.exp=num(r.exp);r.cost=num(r.cost);r.qty=num(r.qty);r.price=num(r.price);r.desc=r.desc||'';r.uom=r.uom||'Pc';r.cat=r.cat||'';r.date=r.date||'';r.rem=r.rem||'';return r})});
+ if(!s.books.some(b=>b.id===s.cur))s.cur=s.books[0].id;
+ s.resellers=(s.resellers||[]).map(r=>Object.assign({id:uid(),name:'',phone:'',zone:'',blocked:false},r));
+ s.moves=(s.moves||[]).map(m=>{m.id=m.id||uid();m.given=num(m.given);m.ret=num(m.ret);m.sold=num(m.sold);m.price=num(m.price);m.item=m.item||'';if(m.aid==null){const r=s.books.flatMap(b=>b.rows).find(r=>r.desc&&r.desc.toLowerCase()===m.item.toLowerCase());m.aid=r?r.id:''}return m});
+ s.pays=s.pays||[];if(!s.view||s.view==='calc')s.view='home';return s}
+function migrate(raw,key){let s=JSON.parse(raw);if(key==='stock-vetements-v1'||s.info){const i=s.info||{};const n={set:{monnaie:i.monnaie||'$',taux:i.taux||2800,manager:i.manager||''},books:[{id:'b1',label:i.mois||'Fiche 1',rows:s.rows||[]}],cur:'b1',resellers:s.resellers||[],moves:[],pays:[]};(s.suivi||[]).forEach(m=>{n.moves.push({id:m.id,date:m.date,rid:m.rid,item:m.item,given:m.given,ret:0,sold:m.sold,price:m.price});if(num(m.paid)>0)n.pays.push({id:uid(),date:m.date,rid:m.rid,amount:num(m.paid),note:''})});s=n}return fixup(s)}
+function load(){for(const k of KEYS){try{const r=localStorage.getItem(k);if(r){state=migrate(r,k);return}}catch(e){}}state=fixup(DEF())}
+let svT=0;
+let sb=null,CL={shop:'',rev:0,base:null,role:'',email:''},cloudUser=null,syncing=false,syncAgain=false,syncT=0,jq=[],jT=0,chan=null,cstat='off';
+function save(){touch();scheduleSync(1500);clearTimeout(svT);svT=setTimeout(flush,300)}
+function flush(){if(noFlush)return;try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
+addEventListener('pagehide',flush);
+/* ---- undo / redo ---- */
+const snap=()=>JSON.stringify({books:state.books,cur:state.cur,resellers:state.resellers,moves:state.moves,pays:state.pays});
+let last='',lastT=0,UND=[],RED=[],restoring=false;
+function touch(){if(restoring)return;const s=snap();if(s===last)return;const n=Date.now();if(n-lastT>700){UND.push(last);if(UND.length>100)UND.shift()}lastT=n;last=s;RED=[];updUR()}
+function updUR(){$('#bUndo').disabled=!UND.length;$('#bRedo').disabled=!RED.length}
+function restore(s){restoring=true;Object.assign(state,JSON.parse(s));lastT=0;last=s;flush();renderAll();restoring=false;updUR()}
+function undo(){if(!UND.length)return;RED.push(last);restore(UND.pop());toast(t('tUndo'))}
+function redo(){if(!RED.length)return;UND.push(last);restore(RED.pop());toast(t('tRedo'))}
+/* ---- ui helpers ---- */
+let toT=0;function toast(m){const e=$('#toast');e.textContent=m;e.style.display='block';clearTimeout(toT);toT=setTimeout(()=>e.style.display='none',2200)}
+function ask(msg,o){o=o||{};return new Promise(res=>{const ov=$('#dlg'),inp=$('#dlgIn');$('#dlgMsg').textContent=msg;inp.style.display=o.input?'block':'none';inp.value=o.def||'';$('#dlgYes').textContent=o.yes||t(o.input?'ok':'yes');$('#dlgNo').textContent=o.no||t(o.input?'cancel':'no');$('#dlgYes').className='btn'+(o.danger?' r':'');ov.classList.add('on');setTimeout(()=>(o.input?inp:$('#dlgNo')).focus(),30);const fin=v=>{ov.classList.remove('on');$('#dlgYes').onclick=$('#dlgNo').onclick=null;ov.onkeydown=null;res(v)};$('#dlgYes').onclick=()=>fin(o.input?inp.value:true);$('#dlgNo').onclick=()=>fin(o.input?null:false);ov.onkeydown=e=>{if(e.key==='Escape')fin(o.input?null:false);if(e.key==='Enter'&&o.input)fin(inp.value)}})}
+const cur=()=>state.books.find(b=>b.id===state.cur)||state.books[0];
+const money=n=>{n=Math.round(n*100)/100;const s=n.toLocaleString(LOC(),{maximumFractionDigits:2});return state.set.monnaie==='$'?'$'+s:s+' FC'};
+const nf=n=>(Math.round(n*100)/100).toLocaleString(LOC(),{maximumFractionDigits:2});
+const fdate=s=>s?new Date(s+'T00:00:00').toLocaleDateString(LOC()):'';
+const compact=n=>{const a=Math.abs(n);return a>=1e6?(n/1e6).toFixed(1)+'M':a>=1e3?(n/1e3).toFixed(a>=1e4?0:1)+'k':String(Math.round(n))};
+/* ---- accounting ---- */
+const rowOut=r=>state.moves.reduce((s,m)=>m.aid===r.id?s+m.given-m.ret:s,0);
+const rowStock=r=>r.qty-rowOut(r);
+function acct(b){b=b||cur();let T=0,A=0,E=0,R=0;b.rows.forEach(r=>{T+=r.qty*r.price;A+=r.qty*r.cost;E+=r.exp;const uc=r.qty>0?r.cost+r.exp/r.qty:r.cost;state.moves.forEach(m=>{if(m.aid===r.id)R+=m.sold*(m.price-uc)})});
+ const C=A+E,B=T-C,base=state.set.basis==='realise'?R:B,pp=Math.min(100,Math.max(0,state.set.salaryPct)),sal=Math.max(0,base)*pp/100,inv=Math.max(0,base)-sal;return{T,A,E,C,B,R,base,pp,sal,inv}}
+function agg(rid){let g=0,rt=0,s=0,due=0,paid=0,first='',lastP='';state.moves.forEach(m=>{if(m.rid===rid){g+=m.given;rt+=m.ret;s+=m.sold;due+=m.sold*m.price;if(m.date&&(!first||m.date<first))first=m.date}});state.pays.forEach(p=>{if(p.rid===rid){paid+=num(p.amount);if(p.date&&p.date>lastP)lastP=p.date}});
+ const rest=due-paid,ref=lastP||first,late=rest>0&&ref&&dayDiff(ref,todayS())>state.set.lateDays;const r=state.resellers.find(x=>x.id===rid)||{};
+ const st=r.blocked?'bloque':rest<=0?'ok':late?'retard':'cours';return{g,rt,s,due,paid,rest,left:g-rt-s,st}}
+const stLabel={ok:'stOk',cours:'stCours',retard:'stLate',bloque:'stBlock'};
+/* ---- market series ---- */
+let GRAN='d';
+function bucketKey(d){if(GRAN==='d')return d;if(GRAN==='m')return d.slice(0,7);const x=new Date(d+'T00:00:00Z');const w=(x.getUTCDay()+6)%7;x.setUTCDate(x.getUTCDate()-w);return x.toISOString().slice(0,10)}
+function nextKey(k){if(GRAN==='d')return addDays(k,1);if(GRAN==='w')return addDays(k,7);const[y,m]=k.split('-').map(Number);return m===12?(y+1)+'-01':y+'-'+String(m+1).padStart(2,'0')}
+function series(rid,gran){const old=GRAN;GRAN=gran||GRAN;const N=GRAN==='d'?14:12;const map={};state.moves.forEach(m=>{if(m.date&&(!rid||m.rid===rid)){const k=bucketKey(m.date);map[k]=(map[k]||0)+m.sold*m.price}});let end=bucketKey(todayS());const keys=[];let k=end;for(let i=0;i<N;i++){keys.unshift(k);k=GRAN==='d'?addDays(k,-1):GRAN==='w'?addDays(k,-7):(()=>{const[y,m]=k.split('-').map(Number);return m===1?(y-1)+'-12':y+'-'+String(m-1).padStart(2,'0')})()}
+ const out=keys.map(k=>({k,v:map[k]||0}));GRAN=old;return out}
+function delta(vals){const n=vals.length,w=Math.max(1,Math.floor(n/3));const sm=(x,y)=>vals.slice(x,y).reduce((s,v)=>s+v,0);const a=sm(n-2*w,n-w),b=sm(n-w,n);if(a===0)return b>0?100:0;return(b-a)/a*100}
+const dChip=d=>'<span class="chip '+(d<0?'dn':'')+'">'+(d<0?'▼ ':'▲ ')+(d>=0?'+':'')+Math.round(d)+'%</span>';
+function spark(vals){const W=84,H=28,mx=Math.max(1,...vals);const p=vals.map((v,i)=>[2+(W-4)*(vals.length>1?i/(vals.length-1):.5),H-3-(H-6)*v/mx]);const up=delta(vals)>=0;return'<svg viewBox="0 0 '+W+' '+H+'"><polyline fill="none" stroke-width="2" style="stroke:var(--'+(up?'up':'dn')+')" points="'+p.map(a=>a[0].toFixed(1)+','+a[1].toFixed(1)).join(' ')+'"/></svg>'}
+function marketChart(box,d){const W=360,H=190,pl=8,pr=56,pt=14,pb=22;const vs=d.map(x=>x.v),mx=Math.max(1,...vs);const X=i=>pl+(W-pl-pr)*(d.length>1?i/(d.length-1):.5),Y=v=>pt+(H-pt-pb)*(1-v/mx);
+ const up=delta(vs)>=0,col=up?'var(--up)':'var(--dn)';let s='<svg viewBox="0 0 '+W+' '+H+'" role="img"><defs><linearGradient id="ag'+(box.id||'')+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+col+'" stop-opacity=".35"/><stop offset="1" stop-color="'+col+'" stop-opacity="0"/></linearGradient></defs>';
+ for(let i=0;i<=3;i++){const y=pt+(H-pt-pb)*i/3;s+='<line x1="'+pl+'" x2="'+(W-pr)+'" y1="'+y+'" y2="'+y+'" stroke="#272c26" stroke-width="1"/><text x="'+(W-pr+5)+'" y="'+(y+3)+'" fill="#8f968d" font-size="9">'+compact(mx*(1-i/3))+'</text>'}
+ const pts=d.map((x,i)=>[X(i),Y(x.v)]);s+='<polygon fill="url(#ag'+(box.id||'')+')" points="'+pts.map(p=>p.join(',')).join(' ')+' '+X(d.length-1)+','+(H-pb)+' '+X(0)+','+(H-pb)+'"/>';
+ for(let i=1;i<pts.length;i++){const u=vs[i]>=vs[i-1];s+='<line x1="'+pts[i-1][0].toFixed(1)+'" y1="'+pts[i-1][1].toFixed(1)+'" x2="'+pts[i][0].toFixed(1)+'" y2="'+pts[i][1].toFixed(1)+'" stroke-width="2.4" stroke-linecap="round" style="stroke:var(--'+(u?'up':'dn')+')"/>'}
+ const L=pts[pts.length-1];s+='<line x1="'+pl+'" x2="'+(W-pr)+'" y1="'+L[1]+'" y2="'+L[1]+'" stroke="'+col+'" stroke-dasharray="3 3" opacity=".6"/><rect x="'+(W-pr+1)+'" y="'+(L[1]-8)+'" width="'+(pr-3)+'" height="16" fill="'+col+'"/><text x="'+(W-pr+4)+'" y="'+(L[1]+4)+'" fill="#000" font-size="10" font-weight="800">'+compact(vs[vs.length-1])+'</text>';
+ s+='<circle cx="'+L[0]+'" cy="'+L[1]+'" r="3.5" fill="'+col+'"/><circle class="pulse" cx="'+L[0]+'" cy="'+L[1]+'" r="3.5" fill="'+col+'"/>';
+ [0,Math.floor((d.length-1)/2),d.length-1].forEach((i,j)=>{s+='<text x="'+X(i)+'" y="'+(H-6)+'" fill="#8f968d" font-size="9" text-anchor="'+(j===0?'start':j===2?'end':'middle')+'">'+esc(lab(d[i].k))+'</text>'});
+ s+='<line id="cx" y1="'+pt+'" y2="'+(H-pb)+'" stroke="#8f968d" style="display:none"/></svg><div class="tip"></div>';box.innerHTML=s;
+ const svg=box.querySelector('svg'),tip=box.querySelector('.tip'),cx=box.querySelector('#cx');
+ function mv(e){const r=svg.getBoundingClientRect();const x=(e.clientX-r.left)/r.width*W;let bi=0,bd=1e9;pts.forEach((p,i)=>{const dd=Math.abs(p[0]-x);if(dd<bd){bd=dd;bi=i}});cx.setAttribute('x1',pts[bi][0]);cx.setAttribute('x2',pts[bi][0]);cx.style.display='';tip.style.display='block';tip.innerHTML='<b>'+esc(lab(d[bi].k))+'</b><br>'+money(d[bi].v);tip.style.left=Math.min(r.width-110,Math.max(0,pts[bi][0]/W*r.width-40))+'px';tip.style.top='0px'}
+ svg.addEventListener('pointermove',mv);svg.addEventListener('pointerdown',mv);svg.addEventListener('pointerleave',()=>{cx.style.display='none';tip.style.display='none'})}
+function lab(k){if(k.length===7)return new Date(k+'-01T00:00:00').toLocaleDateString(LOC(),{month:'short',year:'2-digit'});return new Date(k+'T00:00:00').toLocaleDateString(LOC(),{day:'2-digit',month:'short'})}
+/* ---- cloud (Supabase) : comptes, synchro, rôles, journal ---- */
+const SB_URL='https://rizfkydkxjxlicyrfyvy.supabase.co',SB_KEY='sb_publishable_eaAGJ39GCfOf39NtIr3JRg_UJ_AB38X';
+const LOCALK=['pin','pinLen','lang','langDone','lastExport'];
+const isMgr=()=>!!CL.shop&&CL.role==='manager';
+function loadCL(){try{const r=localStorage.getItem('pq-cloud');if(r)Object.assign(CL,JSON.parse(r))}catch(e){}try{jq=JSON.parse(localStorage.getItem('pq-jq')||'[]')}catch(e){}}
+function saveCL(){try{localStorage.setItem('pq-cloud',JSON.stringify(CL));localStorage.setItem('pq-jq',JSON.stringify(jq.slice(-500)))}catch(e){}}
+function pack(){const set=Object.assign({},state.set);LOCALK.forEach(k=>delete set[k]);return JSON.parse(JSON.stringify({brand:state.brand,set,books:state.books,resellers:state.resellers,moves:state.moves,pays:state.pays}))}
+function flat(d){const c={books:{},rows:{},resellers:{},moves:{},pays:{},kv:{}};(d.books||[]).forEach(b=>{const x=Object.assign({},b);delete x.rows;c.books[b.id]=JSON.stringify(x);(b.rows||[]).forEach(r=>c.rows[r.id]=JSON.stringify(Object.assign({},r,{bid:b.id})))});['resellers','moves','pays'].forEach(k=>(d[k]||[]).forEach(x=>c[k][x.id]=JSON.stringify(x)));['brand','set'].forEach(g=>Object.keys(d[g]||{}).forEach(k=>c.kv[g+'.'+k]=JSON.stringify(d[g][k])));return c}
+function m3(b,l,r){const o={};new Set([...Object.keys(b),...Object.keys(l),...Object.keys(r)]).forEach(id=>{const v=l[id]===b[id]?r[id]:l[id];if(v!==undefined)o[id]=v});return o}
+function sameMap(a,b){const k=Object.keys(a);return k.length===Object.keys(b).length&&k.every(x=>a[x]===b[x])}
+function sameFlat(a,b){return Object.keys(a).every(c=>sameMap(a[c],b[c]))}
+function mergeDocs(base,loc,rem){const B=flat(base),L=flat(loc),R=flat(rem),M={};Object.keys(B).forEach(c=>M[c]=m3(B[c],L[c],R[c]));
+ const ord=(key)=>{const seen=[];[rem,loc].forEach(d=>(d[key]||[]).forEach(x=>{if(!seen.includes(x.id))seen.push(x.id)}));return seen};
+ const doc={brand:{},set:{},books:[],resellers:[],moves:[],pays:[]};
+ Object.keys(M.kv).forEach(k=>{const i=k.indexOf('.');doc[k.slice(0,i)][k.slice(i+1)]=JSON.parse(M.kv[k])});
+ ord('books').forEach(id=>{if(M.books[id])doc.books.push(Object.assign(JSON.parse(M.books[id]),{rows:[]}))});
+ const rowIds=[];[rem,loc].forEach(d=>(d.books||[]).forEach(b=>(b.rows||[]).forEach(r=>{if(!rowIds.includes(r.id))rowIds.push(r.id)})));
+ rowIds.forEach(id=>{if(!M.rows[id])return;const r=JSON.parse(M.rows[id]),b=doc.books.find(x=>x.id===r.bid);if(b){delete r.bid;b.rows.push(r)}});
+ ['resellers','moves','pays'].forEach(k=>ord(k).forEach(id=>{if(M[k][id])doc[k].push(JSON.parse(M[k][id]))}));return doc}
+const clone=o=>JSON.parse(JSON.stringify(o));
+function setDoc(d){d=clone(d);restoring=true;const keep={};LOCALK.forEach(k=>keep[k]=state.set[k]);const cur0=state.cur;state.brand=Object.assign({},d.brand);state.set=Object.assign({},d.set,keep);state.books=d.books;state.resellers=d.resellers;state.moves=d.moves;state.pays=d.pays;state.cur=cur0;fixup(state);last=snap();flush();restoring=false}
+const typing=()=>{const a=document.activeElement;return a&&/^(INPUT|SELECT|TEXTAREA)$/.test(a.tagName)&&!a.closest('#dlg,#lock')&&a.closest('#app')};
+const hasLocalData=()=>state.books.some(b=>b.rows.length)||state.resellers.length||state.moves.length||state.pays.length;
+function scheduleSync(ms){if(!sb||!CL.shop||!cloudUser)return;clearTimeout(syncT);syncT=setTimeout(sync,ms||0)}
+async function sync(){if(!sb||!CL.shop||!cloudUser)return;if(syncing){syncAgain=true;return}syncing=true;cstat='sync';updCloudUI();
+ try{for(let n=0;n<3;n++){const r0=await sb.from('shops').select('data,rev').eq('id',CL.shop).single();if(r0.error)throw r0.error;const rem=r0.data.data&&r0.data.data.books?r0.data.data:null,loc=pack();
+   const merged=rem?mergeDocs(CL.base||rem,loc,rem):loc;window.__dbg&&console.log('SYNC rev',r0.data.rev,'rem',rem&&rem.pays.length,'loc',loc.pays.length,'base',CL.base&&CL.base.pays.length,'merged',merged.pays.length);
+   if(!rem||!sameFlat(flat(merged),flat(rem))){const u=await sb.from('shops').update({data:merged,rev:r0.data.rev+1,updated_at:new Date().toISOString()}).eq('id',CL.shop).eq('rev',r0.data.rev).select('rev');if(u.error)throw u.error;if(!u.data||!u.data.length)continue;CL.rev=r0.data.rev+1}else CL.rev=r0.data.rev;
+   if(!sameFlat(flat(pack()),flat(merged))){if(typing()){syncAgain=true;break}if(!sameFlat(flat(pack()),flat(loc))){syncAgain=true;break}setDoc(merged);CL.base=clone(merged);saveCL();renderAll()}else{CL.base=clone(merged);saveCL()}
+   cstat='ok';break}}
+ catch(e){cstat='err';window.__dbg&&console.log('SYNCERR',e&&e.message||e)}finally{syncing=false;updCloudUI();if(syncAgain){syncAgain=false;syncT=setTimeout(sync,1500)}}flushJ()}
+/* journal */
+function log(a,d){if(!CL.shop)return;jq.push({a,d:String(d||'').slice(0,300)});saveCL();clearTimeout(jT);jT=setTimeout(flushJ,800)}
+async function flushJ(){if(!sb||!cloudUser||!CL.shop||!jq.length)return;const b=jq.slice(0,50);try{const r=await sb.from('journal').insert(b.map(x=>({shop_id:CL.shop,email:cloudUser.email,role:CL.role,action:x.a,detail:x.d})));if(!r.error){jq=jq.slice(b.length);saveCL();if(jq.length)flushJ()}}catch(e){}}
+async function loadJournal(){const body=$('#jBody');$('#jHead').innerHTML=['jWhen','jWho','jWhat','jDetail'].map(k=>'<th>'+esc(t(k))+'</th>').join('');
+ if(!sb||!CL.shop){body.innerHTML='<tr><td colspan="4" class="empty">'+esc(t('jEmpty'))+'</td></tr>';return}await flushJ();
+ const r=await sb.from('journal').select('at,email,role,action,detail').eq('shop_id',CL.shop).order('at',{ascending:false}).limit(300);const rows=(r.data||[]);const f=$('#jFilter'),fv=f.value;f.innerHTML='<option value="">'+esc(t('jAll'))+'</option>';[...new Set(rows.map(x=>x.email))].forEach(e=>f.append(h('option',{value:e,text:e})));f.value=fv;
+ const sh=rows.filter(x=>!f.value||x.email===f.value);body.innerHTML=sh.length?sh.map(x=>'<tr><td>'+esc(new Date(x.at).toLocaleString(LOC()))+'</td><td>'+esc(x.email)+' <span class="mu">('+esc(t(x.role==='owner'?'cRoleO':'cRoleM'))+')</span></td><td>'+esc(D['ja_'+x.action]?t('ja_'+x.action):x.action)+'</td><td style="white-space:normal;min-width:180px">'+esc(x.detail||'')+'</td></tr>').join(''):'<tr><td colspan="4" class="empty">'+esc(t('jEmpty'))+'</td></tr>'}
+/* comptes */
+function loadSB(){return new Promise((res,rej)=>{if(window.supabase)return res();const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js';s.onload=res;s.onerror=()=>rej('offline');document.head.append(s)})}
+async function cloudInit(){try{await loadSB()}catch(e){cstat='err';updCloudUI();return}
+ sb=window.supabase.createClient(SB_URL,SB_KEY);const s=await sb.auth.getSession();cloudUser=s.data&&s.data.session?s.data.session.user:null;
+ sb.auth.onAuthStateChange((ev,ss)=>{cloudUser=ss?ss.user:null});if(cloudUser)await attach();updCloudUI()}
+function subscribe(){try{if(chan)sb.removeChannel(chan);chan=sb.channel('shop-'+CL.shop).on('postgres_changes',{event:'UPDATE',schema:'public',table:'shops',filter:'id=eq.'+CL.shop},()=>scheduleSync(300)).subscribe()}catch(e){}}
+function applyRole(){document.body.classList.toggle('role-manager',isMgr())}
+async function attach(){const r=await sb.from('members').select('shop_id,role,email').eq('user_id',cloudUser.id);if(r.error){cstat='err';return}
+ const m=r.data&&r.data[0];if(!m){CL.shop='';CL.role='';CL.email=cloudUser.email;saveCL();applyRole();cstat='noshop';return}
+ if(CL.shop!==m.shop_id){const sh=await sb.from('shops').select('data,rev').eq('id',m.shop_id).single();if(sh.error){cstat='err';return}
+  const has=sh.data.data&&sh.data.data.books;if(has&&hasLocalData()&&!await ask(t('cfJoin'),{danger:1})){await ACT.cOut();return}
+  CL={shop:m.shop_id,rev:sh.data.rev,base:has?clone(sh.data.data):null,role:m.role,email:cloudUser.email};if(has){setDoc(sh.data.data)}saveCL();renderAll()}
+ CL.role=m.role;CL.email=cloudUser.email;saveCL();applyRole();subscribe();log('login',CL.email);await sync()}
+async function loadTeam(){const e=$('#team');if(!CL.shop||!sb){e.textContent='';return}const r=await sb.from('members').select('email,role').eq('shop_id',CL.shop);e.textContent=(r.data||[]).map(x=>x.email+' ('+t(x.role==='owner'?'cRoleO':'cRoleM')+')').join('  ·  ')}
+function updCloudUI(){if(!$('#accSt'))return;const on=!!(sb&&cloudUser),sh=!!CL.shop;const st=cstat==='sync'?t('cSyncing'):cstat==='ok'?t('cSyncOk'):cstat==='err'?t('cSyncErr'):'';
+ $('#accOut').style.display=on?'none':'';$('#accIn').style.display=on?'':'none';$('#bCreate').style.display=on&&!sh&&cstat!=='err'?'':'none';$('#ownTeam').style.display=on&&sh&&CL.role==='owner'?'':'none';
+ $('#accSt').textContent=!on?(CL.email&&CL.shop?t('cOn',{e:CL.email,r:t(CL.role==='owner'?'cRoleO':'cRoleM'),s:t('cSyncErr')}):t('cOff')):sh?t('cOn',{e:CL.email,r:t(CL.role==='owner'?'cRoleO':'cRoleM'),s:st}):t('cNoShop');
+ const c=$('#bCloud');c.className='ib '+(!on&&!sh?'off':cstat==='err'?'err':'ok');$('#cloudBanner').style.display=sh?'none':'';$('#homeJ').style.display=sh?'':'none';applyRole();if(on&&sh)loadTeam()}
+const authErr=e=>toast(t('cErr',{e:(e&&e.message)||String(e)}));
+async function needSB(){if(!sb)await cloudInit();if(!sb){toast(t('cOffl'));return false}return true}
+async function cAuth(kind){const em=$('#aMail').value.trim(),pw=$('#aPass').value;if(!em||pw.length<6){toast(t('tAuthNeed'));return}if(!await needSB())return;
+ try{const r=kind==='up'?await sb.auth.signUp({email:em,password:pw}):await sb.auth.signInWithPassword({email:em,password:pw});if(r.error)throw r.error;if(!r.data.session&&kind==='up'){const r2=await sb.auth.signInWithPassword({email:em,password:pw});if(r2.error)throw r2.error;cloudUser=r2.data.user}else cloudUser=r.data.user;$('#aPass').value='';await attach();updCloudUI()}catch(e){authErr(e)}}
+/* ---- renderers ---- */
+const ICON={home:'<path d="M3 11 12 3l9 8v10H3z"/>',sheet:'<path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/>',resellers:'<circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-4 3-6 7-6s7 2 7 6"/><path d="M17 5a3 3 0 0 1 0 6M19 14c2 1 3 3 3 6"/>',suivi:'<path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h5"/>',stats:'<path d="M3 17l5-6 4 3 8-9"/><path d="M15 5h5v5"/>',settings:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>'};
+const VIEWS=['home','sheet','resellers','suivi','stats','settings'];
+function buildTabs(){const n=$('#tabs');n.innerHTML='';VIEWS.forEach(v=>{const b=h('button',{data:{act:'go',arg:v}});b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">'+ICON[v]+'</svg><span data-i="t'+({home:'Home',sheet:'Sheet',resellers:'Res',suivi:'Suivi',stats:'Stats',settings:'Set'})[v]+'"></span>';n.append(b)})}
+function renderBrand(){const b=state.brand,row=$('#brandRow');row.innerHTML='';if(b.logo)row.append(h('img',{class:'logo',src:b.logo,alt:''}));const w=b.name.trim().split(/\s+/),lastw=w.pop();const wm=h('div',{class:'wm'});wm.append(w.join(' ')+(w.length?' ':''));wm.append(h('b',{text:lastw}));row.append(h('div',{},[wm,h('div',{class:'sub',text:b.city})]));document.title=b.name+' — Gestion'}
+function dbadge(st){return'<span class="bd '+st+'">'+esc(t(stLabel[st]))+'</span>'}
+function renderHome(){const b=state.brand;$('#hName').innerHTML=esc(b.name);$('#hSlogan').textContent='« '+b.slogan.replace(/\.$/,'.')+' »'.replace(/^ /,'');$('#hSlogan').textContent='« '+b.slogan+' »';$('#hSig').textContent=b.signature;$('#hCity').textContent=state.set.owner+' · '+b.city;
+ const all=series('','d').map(x=>x.v),dl=delta(all);let sales=0,paid=0,rest=0,left=0;state.moves.forEach(m=>{sales+=m.sold*m.price;if(m.rid==='shop')paid+=m.sold*m.price});state.pays.forEach(p=>paid+=num(p.amount));state.resellers.forEach(r=>{const a=agg(r.id);rest+=Math.max(0,a.rest);left+=a.left});const bk=cur();const stk=bk.rows.reduce((s,r)=>s+rowStock(r),0),ac=acct();
+ const K=[['kSales',money(sales),dl<0?'dn':'up',dChip(dl)],['kStock',nf(stk)+' pc','',''],['kOut',nf(left)+' pc','',''],['kRest',money(rest),rest>0?'dn':'',''],['kPaid',money(paid),'up',''],['kProfit',money(ac.B),ac.B<0?'dn':'up','']];
+ $('#kpis').innerHTML=K.map(k=>'<div class="kpi '+k[2]+'"><div class="kl">'+esc(t(k[0]))+'</div><div class="kv">'+esc(k[1])+'</div>'+k[3]+'</div>').join('');
+ marketChart($('#mkHome'),series('','d'));$('#acct').innerHTML=acctHtml();
+ const tk=state.resellers.map(r=>{const v=series(r.id,'d').map(x=>x.v),d=delta(v);return'<span class="'+(d<0?'dn':'up')+'">'+esc(r.name.toUpperCase())+' '+(d<0?'▼':'▲')+' '+(d>=0?'+':'')+Math.round(d)+'%</span>'});tk.unshift('<span class="'+(dl<0?'dn':'up')+'">TOTAL '+(dl<0?'▼':'▲')+' '+(dl>=0?'+':'')+Math.round(dl)+'%</span>');const tx=tk.join('');$('#tickIn').innerHTML=tx+tx;
+ const al=[];state.resellers.forEach(r=>{if(agg(r.id).st==='retard')al.push('<div class="al">'+esc(t('alLate',{n:r.name}))+'</div>')});bk.rows.forEach(r=>{const s=rowStock(r);if(s<0)al.push('<div class="al">'+esc(t('alNeg',{n:r.desc}))+'</div>');else if(r.desc&&s<=state.set.lowStock)al.push('<div class="al w">'+esc(t('alLow',{n:r.desc,q:s}))+'</div>')});
+ $('#alerts').innerHTML=al.join('')||(!bk.rows.length&&!state.resellers.length?'<div class="empty">'+esc(t('noData'))+'</div>':'')}
+function acctHtml(){const a=acct(),pp=a.pp,C=2*Math.PI*40;const L=(k,v,c,b)=>'<div style="display:flex;justify-content:space-between;gap:8px;padding:5px 0;border-top:1px solid var(--ln);'+(b?'font-weight:800':'')+'"><span class="mu">'+esc(k)+'</span><span class="'+(c||'')+'">'+esc(v)+'</span></div>';
+ let s='<div class="seg" style="margin-bottom:10px"><button data-act="basis" data-arg="prevu" class="'+(state.set.basis==='prevu'?'on':'')+'">'+esc(t('bPrevuS'))+'</button><button data-act="basis" data-arg="realise" class="'+(state.set.basis==='realise'?'on':'')+'">'+esc(t('bRealS'))+'</button></div>';
+ s+=L(t('aTotal'),money(a.T))+L(t('aBuy'),'− '+money(a.A))+L(t('aExp'),'− '+money(a.E))+L(t('aCost'),money(a.C))+L(t('aProfit'),money(a.B),a.B<0?'dn':'up',1);
+ if(state.set.basis==='realise')s+=L(t('bRealS'),money(a.R),a.R<0?'dn':'up',1);
+ if(a.base>0)s+='<div class="split" style="margin-top:12px"><svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="#1f7a43" stroke-width="16"/><circle cx="50" cy="50" r="40" fill="none" stroke="#f1f1ec" stroke-width="16" stroke-dasharray="'+(C*pp/100)+' '+C+'" transform="rotate(-90 50 50)"/></svg><div style="flex:1;min-width:150px"><div><b>'+esc(t('aSal',{p:pp}))+'</b><br><span class="kv">'+esc(money(a.sal))+'</span></div><div style="margin-top:8px"><b class="up">'+esc(t('aInv',{p:100-pp}))+'</b><br><span class="kv">'+esc(money(a.inv))+'</span></div></div></div>';else s+='<p class="mu" style="margin-top:10px">'+esc(t('aLoss'))+'</p>';return s}
+/* ---- sheet ---- */
+function cell(o,f,type,onch,w){const i=h('input',{type:type==='n'?'number':type==='d'?'date':'text',value:o[f]==null?'':o[f]});if(type==='n'){i.setAttribute('step','any');i.setAttribute('min','0');i.setAttribute('inputmode','decimal')}if(w)i.style.minWidth=w;let old='';i.addEventListener('focus',()=>{old=String(o[f]==null?'':o[f])});i.addEventListener('change',()=>{const nv=String(o[f]==null?'':o[f]);if(old!==nv)log('edit',(o.desc||o.item||o.name||'')+' · '+f+': '+old+' → '+nv)});i.addEventListener('input',()=>{o[f]=type==='n'?num(i.value):i.value;save();onch&&onch()});return h('td',{},[i])}
+const ncell=()=>h('td',{class:'n'});
+function selCell(o,f,list){const s=h('select');const L=list.slice();if(o[f]&&!L.includes(o[f]))L.push(o[f]);if(f==='cat')s.append(h('option',{value:'',text:'—'}));L.forEach(v=>s.append(h('option',{value:v,text:v})));s.value=o[f]||(f==='cat'?'':L[0]||'');s.addEventListener('change',()=>{o[f]=s.value;save()});return h('td',{},[s])}
+function renderSheet(){const bs=$('#bookSel');bs.innerHTML='';state.books.forEach(b=>bs.append(h('option',{value:b.id,text:b.label})));bs.value=state.cur;
+ $('#sheetHead').innerHTML=['N°','cDesc','cCat','cUom','cQty','date','cPrice','cCost','cExp','cTotal','cCostAll','cProfit','cOut','cStock','cRem',''].map(k=>'<th>'+esc(k==='N°'||k===''?k:t(k))+'</th>').join('');
+ const tb=$('#rows');tb.innerHTML='';const bk=cur(),ups=[];
+ const upAll=()=>{ups.forEach(f=>f());updFoot();$('#acct2').innerHTML=acctHtml();updItems()};
+ bk.rows.forEach((r,ix)=>{const tr=h('tr'),tT=ncell(),tC=ncell(),tB=ncell(),tO=ncell(),tS=ncell();tS.className='n stk';
+  tr.append(h('td',{class:'n mu',text:ix+1}),cell(r,'desc','t',upAll,'150px'),selCell(r,'cat',state.set.cats),selCell(r,'uom',state.set.units),cell(r,'qty','n',upAll,'70px'),cell(r,'date','d',null,'130px'),cell(r,'price','n',upAll,'80px'),cell(r,'cost','n',upAll,'80px'),cell(r,'exp','n',upAll,'80px'),tT,tC,tB,tO,tS,cell(r,'rem','t',null,'120px'),h('td',{},[h('button',{class:'btn sm r',text:'×',data:{act:'delRow',id:r.id},aria:{label:t('del')}})]));
+  ups.push(()=>{const T=r.qty*r.price,C=r.qty*r.cost+r.exp,B=T-C,o=rowOut(r),s=r.qty-o;tT.textContent=nf(T);tC.textContent=nf(C);tB.textContent=nf(B);tB.className='n '+(B<0?'dn':'up');tO.textContent=nf(o);tS.textContent=nf(s);tr.classList.toggle('low',s<=state.set.lowStock)});tr.dataset.d=(r.desc||'').toLowerCase();tb.append(tr)});
+ ups.forEach(f=>f());updFoot();$('#acct2').innerHTML=acctHtml();filterRows();
+ function updFoot(){const a=acct(),q=bk.rows.reduce((s,r)=>s+r.qty,0),st=bk.rows.reduce((s,r)=>s+rowStock(r),0),o=bk.rows.reduce((s,r)=>s+rowOut(r),0);$('#foot').innerHTML='<tr><td></td><td>TOTAL</td><td></td><td></td><td class="n">'+nf(q)+'</td><td></td><td></td><td></td><td></td><td class="n">'+nf(a.T)+'</td><td class="n">'+nf(a.C)+'</td><td class="n '+(a.B<0?'dn':'up')+'">'+nf(a.B)+'</td><td class="n">'+nf(o)+'</td><td class="n">'+nf(st)+'</td><td></td><td></td></tr>'}}
+function filterRows(){const q=$('#stockSearch').value.trim().toLowerCase();$$('#rows tr').forEach(tr=>tr.style.display=!q||tr.dataset.d.includes(q)?'':'none')}
+function updItems(){const dl=$('#dlItems');dl.innerHTML='';cur().rows.forEach(r=>{if(r.desc)dl.append(h('option',{value:r.desc}))})}
+/* ---- resellers ---- */
+let editRid='';
+function renderResellers(){const L=$('#resList');L.innerHTML='';if(!state.resellers.length){L.innerHTML='<div class="empty">'+esc(t('noRes'))+'</div>';return}
+ state.resellers.forEach(r=>{const a=agg(r.id),c=h('div',{class:'rc'});
+  if(editRid===r.id){const f=(k,l)=>{const i=h('input',{value:r[k],attr:{'aria-label':l}});i.addEventListener('input',()=>{r[k]=i.value;save()});return i};c.append(h('div',{class:'fg'},[f('name',t('name')),f('phone',t('phone')),f('zone',t('zone'))]),h('div',{class:'btns'},[h('button',{class:'btn sm',text:t('done'),data:{act:'resDone'}})]));L.append(c);return}
+  c.innerHTML='<div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><div class="rn">'+esc(r.name)+'</div>'+dbadge(a.st)+'</div><div class="mu" style="font-size:.8rem">'+esc(r.phone)+(r.zone?' · '+esc(r.zone):'')+'</div><div class="rg"><div class="mu">'+esc(t('cGiven'))+'<b>'+nf(a.g-a.rt)+'</b></div><div class="mu">'+esc(t('cSold'))+'<b>'+nf(a.s)+'</b></div><div class="mu">'+esc(t('cLeft'))+'<b>'+nf(a.left)+'</b></div><div class="mu">'+esc(t('cDue'))+'<b>'+esc(money(a.due))+'</b></div><div class="mu">'+esc(t('cPaid'))+'<b>'+esc(money(a.paid))+'</b></div><div class="mu">'+esc(t('cRest'))+'<b class="'+(a.rest>0?'dn':'up')+'">'+esc(money(a.rest))+'</b></div></div>';
+  const bt=(k,l,cls)=>h('button',{class:'btn sm '+(cls||'g2'),text:l,data:{act:k,id:r.id}});c.append(h('div',{class:'btns',style:'margin:0'},[bt('resStatement',t('stmt')),bt('resWA','WhatsApp'),bt('resEdit',t('edit')),bt('resBlock',r.blocked?t('unblock'):t('block')),bt('resDel','×','r')]));L.append(c)})}
+/* ---- suivi ---- */
+function renderSummary(){$('#sHead').innerHTML=['reseller','cGiven','cSold','cDue','cPaid','cRest','cStatus'].map(k=>'<th>'+esc(t(k))+'</th>').join('');
+ $('#sBody').innerHTML=state.resellers.length?state.resellers.map(r=>{const a=agg(r.id);return'<tr><td><b>'+esc(r.name)+'</b></td><td class="n">'+nf(a.g-a.rt)+'</td><td class="n">'+nf(a.s)+'</td><td class="n">'+esc(money(a.due))+'</td><td class="n">'+esc(money(a.paid))+'</td><td class="n '+(a.rest>0?'dn':'up')+'">'+esc(money(a.rest))+'</td><td>'+dbadge(a.st)+'</td></tr>'}).join(''):'<tr><td colspan="7" class="empty">'+esc(t('noRes'))+'</td></tr>';
+}
+function renderSuivi(){renderSummary();
+ const fr=$('#fRes'),pr=$('#pRes'),fv=fr.value;fr.innerHTML='<option value="">'+esc(t('allRes'))+'</option>';pr.innerHTML='';state.resellers.forEach(r=>{fr.append(h('option',{value:r.id,text:r.name}));pr.append(h('option',{value:r.id,text:r.name}))});fr.append(h('option',{value:'shop',text:t('shopL')}));fr.value=fv;if(!$('#dDate').value)$('#dDate').value=todayS();if(!$('#pDate').value)$('#pDate').value=todayS();
+ $('#mHead').innerHTML=['date','reseller','cItem','cGiven','cRet','cSold','cPrice','cValue','cLeft','',''].map(k=>'<th>'+esc(k?t(k):'')+'</th>').join('');
+ $('#pHead').innerHTML=['date','reseller','amount','note',''].map(k=>'<th>'+esc(k?t(k):'')+'</th>').join('');updItems();renderMoves();
+ const pb=$('#pBody');pb.innerHTML='';const ps=state.pays.slice().sort((a,b)=>(b.date||'').localeCompare(a.date||''));if(!ps.length)pb.innerHTML='<tr><td colspan="5" class="empty">'+esc(t('noPays'))+'</td></tr>';ps.forEach(p=>{const r=state.resellers.find(x=>x.id===p.rid);pb.append(h('tr',{},[h('td',{text:fdate(p.date)}),h('td',{text:r?r.name:'?'}),h('td',{class:'n',text:money(num(p.amount))}),h('td',{text:p.note||''}),h('td',{},[h('button',{class:'btn sm r',text:'×',data:{act:'delPay',id:p.id}})])]))})}
+function renderMoves(){const mb=$('#mBody');mb.innerHTML='';const q=$('#fText').value.trim().toLowerCase(),fr=$('#fRes').value;const list=state.moves.map((m,i)=>[m,i]).filter(x=>(!q||x[0].item.toLowerCase().includes(q))&&(!fr||x[0].rid===fr)).sort((a,b)=>(b[0].date||'').localeCompare(a[0].date||'')||a[1]-b[1]).map(x=>x[0]);
+ if(!list.length){mb.innerHTML='<tr><td colspan="11" class="empty">'+esc(t('noMoves'))+'</td></tr>';return}
+ list.forEach(m=>{const tv=ncell(),tl=ncell(),up=()=>{tv.textContent=money(m.sold*m.price);tl.textContent=nf(m.given-m.ret-m.sold)};
+  const sel=h('select');state.resellers.forEach(r=>sel.append(h('option',{value:r.id,text:r.name})));sel.append(h('option',{value:'shop',text:t('shopL')}));sel.value=m.rid;sel.addEventListener('change',()=>{m.rid=sel.value;save();renderSummary()});
+  const it=cell(m,'item','t',()=>{const r=cur().rows.find(r=>r.desc&&r.desc.toLowerCase()===m.item.toLowerCase());m.aid=r?r.id:'';if(r&&!m.price){m.price=r.price}renderSummary()},'140px');it.firstChild.setAttribute('list','dlItems');
+  const chg=()=>{up();renderSummary()};
+  mb.append(h('tr',{},[cell(m,'date','d',null,'130px'),h('td',{},[sel]),it,cell(m,'given','n',chg,'64px'),cell(m,'ret','n',chg,'64px'),cell(m,'sold','n',chg,'64px'),cell(m,'price','n',chg,'72px'),tv,tl,h('td',{},[h('button',{class:'btn sm g2',text:t('bon'),data:{act:'bon',id:m.id}})]),h('td',{},[h('button',{class:'btn sm r',text:'×',data:{act:'delMove',id:m.id}})])]));up()})}
+/* ---- stats ---- */
+let STRES='';
+function renderStats(){const gs=$('#granSeg');gs.innerHTML='';[['d','d1'],['w','d7'],['m','d30']].forEach(g=>{const b=h('button',{text:t(g[1]),class:GRAN===g[0]?'on':'',data:{act:'gran',arg:g[0]}});gs.append(b)});
+ const sr=$('#stRes');sr.innerHTML='<option value="">'+esc(t('allRes'))+'</option>';state.resellers.forEach(r=>sr.append(h('option',{value:r.id,text:r.name})));sr.value=STRES;
+ marketChart($('#mkBig'),series(STRES,GRAN));
+ const rows=state.resellers.map(r=>{const v=series(r.id,GRAN).map(x=>x.v);return{r,v,tot:v.reduce((s,x)=>s+x,0),d:delta(v)}}).sort((a,b)=>b.tot-a.tot);
+ $('#watch').innerHTML=rows.length?rows.map(x=>'<div class="wl '+(STRES===x.r.id?'sel':'')+'" data-act="selRes" data-arg="'+esc(x.r.id)+'"><div class="nm">'+esc(x.r.name)+'</div>'+spark(x.v)+'<div class="vv">'+esc(money(x.tot))+'<br>'+dChip(x.d)+'</div></div>').join(''):'<div class="empty">'+esc(t('noRes'))+'</div>'}
+/* ---- settings ---- */
+function renderSettings(){const s=state.set,b=state.brand;const set=(id,v)=>{const e=$(id);if(document.activeElement!==e)e.value=v};set('#sBname',b.name);set('#sUnits',(s.units||[]).join(', '));set('#sCats',(s.cats||[]).join(', '));set('#sEmail',b.email);set('#sBPhone',b.phone);set('#sAddr',b.addr);updCloudUI();set('#sOwner',s.owner);set('#sManager',s.manager);set('#sCity',b.city);set('#sSlogan',b.slogan);set('#sMonnaie',s.monnaie);set('#sTaux',s.taux);set('#sLow',s.lowStock);set('#sLate',s.lateDays);set('#sSal',s.salaryPct);set('#sBasis',s.basis);
+ const sl=$('#sLang');sl.innerHTML='';LANGS.forEach(l=>sl.append(h('option',{value:l[0],text:l[1]})));sl.value=LANG}
+function renderAll(){renderBrand();applyI18n();renderHome();renderSheet();renderResellers();renderSuivi();renderStats();renderSettings();showView(state.view,true)}
+function showView(v,noSave){state.view=v;$$('.view').forEach(e=>e.classList.toggle('on',e.id==='v-'+v));$$('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.arg===v));if(v==='journal')loadJournal();if(v==='calc'||v==='home'||v==='stats'||v==='sheet'||v==='suivi')refreshView(v);scrollTo(0,0)}
+function refreshView(v){if(v==='home')renderHome();if(v==='stats')renderStats();if(v==='sheet')renderSheet();if(v==='suivi')renderSuivi()}
+/* ---- documents ---- */
+function showDoc(title,body){const b=state.brand;$('#doc').innerHTML='<div class="doc-page"><div class="dhd"><div style="display:flex;gap:10px;align-items:center">'+(b.logo?'<img class="dlogo" src="'+esc(b.logo)+'" style="width:48px;height:48px;object-fit:cover" alt="">':'')+'<div><div style="font-family:var(--f);font-weight:900;font-size:1.5rem;text-transform:uppercase">'+esc(b.name)+'</div><div>'+esc(b.city)+'</div><div style="font-size:.75rem">'+esc([b.addr,b.phone,b.email].filter(Boolean).join(' · '))+'</div></div></div><div style="text-align:right"><b>'+esc(title)+'</b><br>'+esc(fdate(todayS()))+'</div></div>'+body+'<p style="margin-top:22px;text-align:center;border-top:1px solid #000;padding-top:8px">« '+esc(b.slogan)+' » — <b>'+esc(b.signature)+'</b></p></div>';document.body.classList.add('print-doc');$('#docWrap').style.display='block';scrollTo(0,0)}
+function closeDoc(){document.body.classList.remove('print-doc');$('#docWrap').style.display='none'}
+const dk=a=>'<div class="dk">'+a.map(x=>'<div>'+esc(x[0])+'<b>'+esc(x[1])+'</b></div>').join('')+'</div>';
+const dt=(hd,rows)=>'<div class="dtw"><table class="dt"><thead><tr>'+hd.map(x=>'<th>'+esc(x)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+r.map(c=>'<td>'+esc(c)+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>';
+function reportDoc(){const a=acct(),bk=cur();let sales=0,paid=0;state.moves.forEach(m=>{sales+=m.sold*m.price;if(m.rid==='shop')paid+=m.sold*m.price});state.pays.forEach(p=>paid+=num(p.amount));
+ showDoc(t('dRep')+' — '+bk.label,dk([[t('aTotal'),money(a.T)],[t('aCost'),money(a.C)],[t('aProfit'),money(a.B)],[t('aSal',{p:a.pp}),money(a.sal)],[t('aInv',{p:100-a.pp}),money(a.inv)],[t('kPaid'),money(paid)]])+'<h3>'+esc(t('tSheet'))+'</h3>'+dt([t('cDesc'),t('cQty'),t('cPrice'),t('cCost'),t('cProfit'),t('cStock')],bk.rows.map(r=>[r.desc,nf(r.qty),nf(r.price),nf(r.cost),nf(r.qty*r.price-r.qty*r.cost-r.exp),nf(rowStock(r))]))+'<h3 style="margin-top:14px">'+esc(t('tRes'))+'</h3>'+dt([t('reseller'),t('cSold'),t('cDue'),t('cPaid'),t('cRest'),t('cStatus')],state.resellers.map(r=>{const g=agg(r.id);return[r.name,nf(g.s),money(g.due),money(g.paid),money(g.rest),t(stLabel[g.st])]})))}
+function statementDoc(id){const r=state.resellers.find(x=>x.id===id),a=agg(id);const ms=state.moves.filter(m=>m.rid===id).sort((x,y)=>(x.date||'').localeCompare(y.date||''));
+ showDoc(t('dStmt')+' — '+r.name,dk([[t('cDue'),money(a.due)],[t('cPaid'),money(a.paid)],[t('cRest'),money(a.rest)]])+dt([t('date'),t('cItem'),t('cGiven'),t('cRet'),t('cSold'),t('cValue')],ms.map(m=>[fdate(m.date),m.item,nf(m.given),nf(m.ret),nf(m.sold),money(m.sold*m.price)]))+'<h3 style="margin-top:14px">'+esc(t('pays'))+'</h3>'+dt([t('date'),t('amount'),t('note')],state.pays.filter(p=>p.rid===id).map(p=>[fdate(p.date),money(num(p.amount)),p.note||''])))}
+function bonDoc(id){const m=state.moves.find(x=>x.id===id),r=state.resellers.find(x=>x.id===m.rid)||{name:m.rid==='shop'?t('shopL'):'?'};showDoc(t('dBon'),dk([[t('reseller'),r.name],[t('date'),fdate(m.date)],[t('cItem'),m.item]])+dt([t('cItem'),t('cGiven'),t('cRet'),t('cSold'),t('cPrice')],[[m.item,nf(m.given),nf(m.ret),nf(m.sold),money(m.price)]])+'<p style="margin-top:30px">'+esc(t('reseller'))+' : ____________ &nbsp;&nbsp; '+esc(state.set.owner)+' : ____________</p>')}
+const waNum=p=>{let d=String(p||'').replace(/\D/g,'');if(d.startsWith('00'))d=d.slice(2);if(d.startsWith('0'))d='243'+d.slice(1);else if(d.length===9)d='243'+d;return d};
+function waOpen(id){const r=state.resellers.find(x=>x.id===id),a=agg(id);const msg=t('waHi',{n:r.name,b:state.brand.name,g:nf(a.g-a.rt),s:nf(a.s),p:money(a.paid),r:money(a.rest)});window.open('https://wa.me/'+waNum(r.phone)+'?text='+encodeURIComponent(msg),'_blank')}
+/* ---- PIN ---- */
+function hsh(s){let h1=0xdeadbeef,h2=0x41c6ce57;for(let i=0;i<s.length;i++){const c=s.charCodeAt(i);h1=Math.imul(h1^c,2654435761);h2=Math.imul(h2^c,1597334677)}h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);return(4294967296*(2097151&h2)+(h1>>>0)).toString(36)}
+const hp=p=>hsh('kb-pin:'+p);
+let pinBuf='',fails=0,lockUntil=0;
+const PL=()=>state.set.pinLen||4;
+function showLock(){if(!state.set.pin)return;pinBuf='';$('#dots').innerHTML='<i></i>'.repeat(PL());$('#lkName').textContent=state.brand.name;$('#lkMsg').textContent=t('lkEnter');drawDots();$('#lock').classList.add('on')}
+function drawDots(){$$('#dots i').forEach((d,i)=>d.classList.toggle('f',i<pinBuf.length))}
+function padKey(k){const now=Date.now();if(now<lockUntil){$('#lkMsg').textContent=t('lkWait',{s:Math.ceil((lockUntil-now)/1000)});return}
+ if(k==='b')pinBuf=pinBuf.slice(0,-1);else if(pinBuf.length<PL())pinBuf+=k;drawDots();
+ if(pinBuf.length===PL()){if(hp(pinBuf)===state.set.pin){fails=0;$('#lock').classList.remove('on');afterUnlock()}else{fails++;pinBuf='';drawDots();if(fails>=5){fails=0;lockUntil=Date.now()+15000;$('#lkMsg').textContent=t('lkWait',{s:15})}else $('#lkMsg').textContent=t('lkBad')}}}
+function afterUnlock(){if(!state.set.langDone)langPick()}
+function langPick(){const b=$('#langBtns');b.innerHTML='';LANGS.forEach(l=>b.append(h('button',{text:l[1],class:l[0]===LANG?'on':'',data:{act:'setLang',arg:l[0]}})));$('#langOv').classList.add('on')}
+let hiddenAt=0;document.addEventListener('visibilitychange',()=>{if(document.hidden)hiddenAt=Date.now();else if(state.set.pin&&hiddenAt&&Date.now()-hiddenAt>60000)showLock()});
+/* ---- demo ---- */
+function demo(){const rows=[['T-shirt coton',80,12,5,30],['Riz 25 kg',40,30,14,40],['Crème visage',12,22,10,15],['Clous (carton)',50,8,3,10],['Huile 5 L',30,45,22,25]].map((x,i)=>({id:'r'+(i+1),desc:x[0],uom:['Pc','kg','Pc','Carton','L'][i],cat:['Mode','Alimentation','Cosmétiques','Quincaillerie','Alimentation'][i],qty:x[1],date:addDays(todayS(),-40),price:x[2],cost:x[3],exp:x[4],rem:''}));
+ const rs=[{id:'p1',name:'Patrick',phone:'0812345678',zone:'Gombe'},{id:'p2',name:'Grace',phone:'0998765432',zone:'Lemba'},{id:'p3',name:'Joël',phone:'0855512345',zone:'Matete'}].map(r=>Object.assign({blocked:false},r));
+ const mv=[],P={p1:12,p2:22};const add=(d,rid,aid,item,g,s,pr)=>mv.push({id:uid(),date:addDays(todayS(),-d),rid,aid,item,given:g,ret:0,sold:s,price:pr});
+ for(let k=0;k<20;k++){const sp=1+Math.floor(k/3),sj=Math.max(1,3-Math.floor(k/7));const d0=57-3*k;
+  if(k%2===0)add(d0,'p1','r1','T-shirt coton',sp+1,sp,12);else{const s=Math.ceil(sp/2);add(d0,'p1','r2','Riz 25 kg',s+1,s,30)}
+  if(k<10)add(Math.max(0,d0-1),'p2','r3','Crème visage',1,1,22);else add(Math.max(0,d0-1),'p2','r4','Clous (carton)',3,2,8);
+  if(k%2===0)add(Math.max(0,d0-2),'p3','r5','Huile 5 L',sj,sj,45);else add(Math.max(0,d0-2),'p3','r1','T-shirt coton',sj+1,sj,12)}
+ const due={};mv.forEach(m=>due[m.rid]=(due[m.rid]||0)+m.sold*m.price);
+ const pays=[{id:uid(),date:addDays(todayS(),-3),rid:'p1',amount:Math.round(due.p1*.6),note:''},{id:uid(),date:addDays(todayS(),-2),rid:'p2',amount:due.p2,note:''},{id:uid(),date:addDays(todayS(),-22),rid:'p3',amount:Math.round(due.p3*.4),note:''}];
+ state.books=[{id:'b1',label:'Fiche 1',rows}];state.cur='b1';state.resellers=rs;state.moves=mv;state.pays=pays}
+/* ---- actions ---- */
+const ACT={
+ go(a){closeDoc();showView(a)},undo,redo,langPick,
+ setLang(a){LANG=a;state.set.lang=a;state.set.langDone=true;flush();$('#langOv').classList.remove('on');renderAll()},
+ basis(a){state.set.basis=a;save();renderHome();renderSheet()},
+ gran(a){GRAN=a;renderStats()},selRes(a){STRES=STRES===a?'':a;renderStats()},
+ async newBook(){const n=await ask(t('pNewBook'),{input:1,def:'Fiche '+(state.books.length+1)});if(!n)return;const b={id:uid(),label:n,rows:cur().rows.map(r=>({id:uid(),desc:r.desc,cat:r.cat,uom:r.uom,qty:0,date:'',price:r.price,cost:r.cost,exp:0,rem:''}))};state.books.push(b);state.cur=b.id;save();renderSheet();renderHome()},
+ async renBook(){const n=await ask(t('pRename'),{input:1,def:cur().label});if(!n)return;cur().label=n;save();renderSheet()},
+ async delBook(){if(state.books.length<2)return;if(!await ask(t('cfDelBook'),{danger:1}))return;state.books=state.books.filter(b=>b.id!==state.cur);state.cur=state.books[0].id;save();renderSheet();renderHome()},
+ addRow(){cur().rows.push({id:uid(),desc:'',cat:'',uom:state.set.units[0]||'Pc',qty:0,date:todayS(),price:0,cost:0,exp:0,rem:''});save();renderSheet()},
+ async delRow(a,el){const id=el.dataset.id,linked=state.moves.some(m=>m.aid===id);if(!await ask(t(linked?'cfDelRowM':'cfDelRow'),{danger:1}))return;cur().rows=cur().rows.filter(r=>r.id!==id);state.moves.forEach(m=>{if(m.aid===id)m.aid=''});save();renderSheet()},
+ addDirect(){const it=$('#dItem').value.trim(),q=num($('#dQty').value);if(!it||q<=0){toast(t('tNeedD'));return}const r=cur().rows.find(r=>r.desc&&r.desc.toLowerCase()===it.toLowerCase());const pr=num($('#dPrice').value)||(r?r.price:0);state.moves.unshift({id:uid(),date:$('#dDate').value||todayS(),rid:'shop',aid:r?r.id:'',item:it,given:q,ret:0,sold:q,price:pr});['#dItem','#dQty','#dPrice'].forEach(s=>$(s).value='');save();renderSuivi();toast(t('tOk'))},
+ addReseller(){const n=$('#rName').value.trim();if(!n){toast(t('tNeed'));return}state.resellers.push({id:uid(),name:n,phone:$('#rPhone').value.trim(),zone:$('#rZone').value.trim(),blocked:false});['#rName','#rPhone','#rZone'].forEach(s=>$(s).value='');save();renderResellers()},
+ resEdit(a,el){editRid=el.dataset.id;renderResellers()},resDone(){editRid='';renderResellers()},
+ resBlock(a,el){const r=state.resellers.find(x=>x.id===el.dataset.id);r.blocked=!r.blocked;save();renderResellers()},
+ async resDel(a,el){if(!await ask(t('cfDelRes'),{danger:1}))return;const id=el.dataset.id;state.resellers=state.resellers.filter(r=>r.id!==id);state.moves=state.moves.filter(m=>m.rid!==id);state.pays=state.pays.filter(p=>p.rid!==id);save();renderResellers()},
+ resStatement(a,el){statementDoc(el.dataset.id)},resWA(a,el){waOpen(el.dataset.id)},
+ addMove(){if(!state.resellers.length){toast(t('tNeedR'));return}state.moves.unshift({id:uid(),date:todayS(),rid:$('#fRes').value||state.resellers[0].id,aid:'',item:'',given:0,ret:0,sold:0,price:0});save();renderSuivi()},
+ async delMove(a,el){if(!await ask(t('cfDelMove'),{danger:1}))return;state.moves=state.moves.filter(m=>m.id!==el.dataset.id);save();renderSuivi()},
+ resetFilters(){$('#fText').value='';$('#fRes').value='';renderMoves()},
+ addPay(){const am=num($('#pAmt').value),rid=$('#pRes').value;if(!rid||am<=0){toast(t('tNeed'));return}state.pays.push({id:uid(),date:$('#pDate').value||todayS(),rid,amount:am,note:$('#pNote').value.trim()});$('#pAmt').value='';$('#pNote').value='';save();renderSuivi()},
+ async delPay(a,el){if(!await ask(t('cfDelPay'),{danger:1}))return;state.pays=state.pays.filter(p=>p.id!==el.dataset.id);save();renderSuivi()},
+ bon(a,el){bonDoc(el.dataset.id)},reportDoc,docClose:closeDoc,docPrint(){print()},
+ pinSave(){const v=$('#sPin').value;if(!/^\d{6}$/.test(v)){toast(t('tPin4'));return}state.set.pin=hp(v);state.set.pinLen=6;$('#sPin').value='';flush();toast(t('tPin'))},
+ pinOff(){state.set.pin='';flush();toast(t('tOk'))},
+ async forgot(){if(!await ask(t('cfForgot'),{danger:1}))return;noFlush=true;KEYS.forEach(k=>{try{localStorage.removeItem(k)}catch(e){}});location.reload()},
+ exportData(){const b=new Blob([JSON.stringify(state,null,1)],{type:'application/json'}),a=h('a',{href:URL.createObjectURL(b),download:'premium-qualite-'+todayS()+'.json'});document.body.append(a);a.click();a.remove();state.set.lastExport=todayS()},
+ async shareData(){const f=new File([JSON.stringify(state)],'premium-qualite-'+todayS()+'.json',{type:'application/json'});if(navigator.canShare&&navigator.canShare({files:[f]}))try{await navigator.share({files:[f],title:state.brand.name})}catch(e){}else ACT.exportData()},
+ async demo(){if(!await ask(t('cfDemo'),{danger:1}))return;demo();save();renderAll()},
+ async wipe(){if(!await ask(t('cfWipe'),{danger:1}))return;const d=DEF();state.books=d.books;state.cur='b1';state.resellers=[];state.moves=[];state.pays=[];save();renderAll()},
+ cLogin(){cAuth('in')},cSignup(){cAuth('up')},cSync(){scheduleSync(0)},
+ async cOut(){try{if(sb)await sb.auth.signOut()}catch(e){}cloudUser=null;CL={shop:'',rev:0,base:null,role:'',email:''};jq=[];saveCL();cstat='off';applyRole();updCloudUI()},
+ async cCreate(){if(!await needSB())return;try{const r=await sb.rpc('create_shop',{n:state.brand.name,d:pack()});if(r.error)throw r.error;CL={shop:r.data,rev:0,base:clone(pack()),role:'owner',email:cloudUser.email};saveCL();subscribe();cstat='ok';log('login',CL.email);toast(t('cMade'));updCloudUI()}catch(e){authErr(e)}},
+ async cAddMgr(){const m=$('#aMgr').value.trim();if(!m)return;try{const r=await sb.rpc('add_manager',{s:CL.shop,mail:m});if(r.error)throw r.error;toast(t(r.data==='ok'?'mgrOk':r.data==='inconnu'?'mgrUnknown':'mgrDenied'));if(r.data==='ok'){$('#aMgr').value='';log('addMgr',m);loadTeam()}}catch(e){authErr(e)}},
+ jReload(){loadJournal()},
+ reload(){try{sessionStorage.setItem('pq-upd','1')}catch(e){}location.reload()},updClose(){$('#upd').style.display='none'},
+ install(){if(deferred){deferred.prompt();deferred=null;$('#installBtn').style.display='none'}}
+};
+const NOPE=['delRow','delBook','resDel','delMove','delPay','wipe','demo'];
+function describe(k,el){const id=el&&el.dataset&&el.dataset.id;try{if(k==='delRow'){const r=cur().rows.find(x=>x.id===id);return r?r.desc:''}if(k==='delMove'){const m=state.moves.find(x=>x.id===id);return m?m.item+' x'+m.given:''}if(k==='delPay'){const p=state.pays.find(x=>x.id===id);return p?money(num(p.amount)):''}if(k==='resDel'||k==='resBlock'){const r=state.resellers.find(x=>x.id===id);return r?r.name:''}if(k==='addDirect')return $('#dItem').value+' x'+$('#dQty').value+' @'+$('#dPrice').value;if(k==='addPay'){const r=state.resellers.find(x=>x.id===$('#pRes').value);return(r?r.name:'')+' '+$('#pAmt').value}if(k==='addReseller')return $('#rName').value;if(k==='delBook'||k==='renBook')return cur().label}catch(e){}return''}
+['addRow','delRow','addReseller','resDel','resBlock','addMove','delMove','addPay','delPay','addDirect','wipe','demo','newBook','renBook','delBook'].forEach(k=>{const o=ACT[k];ACT[k]=async function(a,el){if(isMgr()&&NOPE.includes(k)){toast(t('tOwner'));return}const info=describe(k,el),b=snap();await o.call(ACT,a,el);if(snap()!==b)log(k,info||(k==='newBook'||k==='renBook'?cur().label:''))}});
+let deferred=null;addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;$('#installBtn').style.display=''});
+document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if(!el)return;const f=ACT[el.dataset.act];if(f)f(el.dataset.arg,el)});
+document.addEventListener('keydown',e=>{if(e.target.closest&&e.target.closest('#v-settings,#v-calc,#lock,#dlg,#langOv'))return;if((e.ctrlKey||e.metaKey)&&!e.shiftKey&&e.key.toLowerCase()==='z'){e.preventDefault();undo()}else if((e.ctrlKey||e.metaKey)&&(e.key.toLowerCase()==='y'||(e.shiftKey&&e.key.toLowerCase()==='z'))){e.preventDefault();redo()}});
+/* ---- binds ---- */
+function bind(id,fn){$(id).addEventListener('input',e=>{fn(e.target.value);save();renderBrand();renderHome()});$(id).addEventListener('change',e=>log('settings',id.slice(2)+': '+e.target.value))}
+bind('#sBname',v=>state.brand.name=v||'PREMIUM QUALITÉ');bind('#sOwner',v=>state.set.owner=v);bind('#sManager',v=>state.set.manager=v);bind('#sCity',v=>state.brand.city=v);bind('#sSlogan',v=>state.brand.slogan=v);
+bind('#sEmail',v=>state.brand.email=v.trim());bind('#sBPhone',v=>state.brand.phone=v);bind('#sAddr',v=>state.brand.addr=v);const lst=v=>v.split(',').map(x=>x.trim()).filter(Boolean);bind('#sUnits',v=>state.set.units=lst(v).length?lst(v):['Pc']);bind('#sCats',v=>state.set.cats=lst(v));
+bind('#sMonnaie',v=>state.set.monnaie=v);bind('#sTaux',v=>state.set.taux=num(v));bind('#sLow',v=>state.set.lowStock=num(v));bind('#sLate',v=>state.set.lateDays=Math.max(1,num(v)));bind('#sSal',v=>state.set.salaryPct=Math.min(100,Math.max(0,num(v))));bind('#sBasis',v=>state.set.basis=v);
+$('#sMonnaie').addEventListener('change',e=>{state.set.monnaie=e.target.value;save();renderHome()});$('#sBasis').addEventListener('change',e=>{state.set.basis=e.target.value;save();renderHome()});
+$('#sLang').addEventListener('change',e=>ACT.setLang(e.target.value));
+$('#bookSel').addEventListener('change',e=>{state.cur=e.target.value;save();renderSheet();renderHome()});
+$('#jFilter').addEventListener('change',()=>loadJournal());$('#stockSearch').addEventListener('input',filterRows);$('#fText').addEventListener('input',renderMoves);$('#fRes').addEventListener('change',renderMoves);$('#stRes').addEventListener('change',e=>{STRES=e.target.value;renderStats()});
+$('#logoFile').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const c=document.createElement('canvas');c.width=c.height=96;const x=c.getContext('2d'),s=Math.min(im.width,im.height);x.drawImage(im,(im.width-s)/2,(im.height-s)/2,s,s,0,0,96,96);state.brand.logo=c.toDataURL('image/png');save();renderBrand()};im.src=r.result};r.readAsDataURL(f)});
+$('#impFile').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;let txt;try{txt=await f.text();const s=migrate(txt,'x');if(isMgr()){toast(t('tOwner'));return}if(!await ask(t('cfImport'),{danger:1}))return;log('import','');Object.assign(state,s);save();flush();renderAll()}catch(err){toast(t('tBadFile'))}e.target.value=''});
+/* ---- calculator ---- */
+let ce='';function cEval(){try{if(!/^[0-9+\-*/.() ]*$/.test(ce)||!ce)return'0';const v=Function('"use strict";return('+ce+')')();return isFinite(v)?String(Math.round(v*1e8)/1e8):'Err'}catch(e){return'…'}}
+function cPress(k){if(k==='C')ce='';else if(k==='⌫')ce=ce.slice(0,-1);else if(k==='='){ce=cEval();if(ce==='Err'||ce==='…')ce=''}else ce+=({'×':'*','÷':'/','−':'-'})[k]||k;$('#cEx').textContent=ce.replace(/\*/g,'×').replace(/\//g,'÷');$('#cRs').textContent=cEval()}
+['C','⌫','÷','×','7','8','9','−','4','5','6','+','1','2','3','=','0','.','(',')'].forEach(k=>$('#keys').append(h('button',{text:k,class:'ck'+('÷×−+='.includes(k)?' op':''),data:{k}})));
+$('#keys').addEventListener('click',e=>{const b=e.target.closest('button');if(b)cPress(b.dataset.k)});
+document.addEventListener('keydown',e=>{if(state.view!=='calc'||/^(INPUT|SELECT|TEXTAREA)$/.test(e.target.tagName))return;if(/^[0-9.()+\-*/]$/.test(e.key))cPress(e.key==='*'?'×':e.key==='/'?'÷':e.key==='-'?'−':e.key);else if(e.key==='Enter'||e.key==='=')cPress('=');else if(e.key==='Backspace')cPress('⌫')});
+$('#cvFc').addEventListener('input',e=>{const r=state.set.taux||1;$('#cvUsd').value=e.target.value===''?'':String(Math.round(num(e.target.value)/r*100)/100)});
+$('#cvUsd').addEventListener('input',e=>{$('#cvFc').value=e.target.value===''?'':String(Math.round(num(e.target.value)*(state.set.taux||1)))});
+/* ---- init ---- */
+$('#pad').innerHTML='';['1','2','3','4','5','6','7','8','9','','0','b'].forEach(k=>{const b=h('button',{text:k==='b'?'⌫':k,data:{k}});if(!k)b.style.visibility='hidden';$('#pad').append(b)});
+$('#pad').addEventListener('click',e=>{const b=e.target.closest('button');if(b&&b.dataset.k)padKey(b.dataset.k)});
+load();loadCL();LANG=state.set.lang||'fr';last=snap();buildTabs();renderAll();applyRole();
+if(state.set.pin)showLock();else afterUnlock();
+if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){const had=!!navigator.serviceWorker.controller;navigator.serviceWorker.register('sw.js').then(r=>{r.update();document.addEventListener('visibilitychange',()=>{if(!document.hidden)r.update()});setInterval(()=>r.update(),3600000)}).catch(()=>{});navigator.serviceWorker.addEventListener('controllerchange',()=>{if(had){let s='';try{s=sessionStorage.getItem('pq-upd')}catch(e){}if(!s)$('#upd').style.display='flex'}})}
+$('#updGo').addEventListener('click',()=>location.reload());
+
+try{sessionStorage.removeItem('pq-upd')}catch(e){}
+cloudInit();addEventListener('online',()=>{sb?scheduleSync(500):cloudInit()});document.addEventListener('visibilitychange',()=>{if(!document.hidden)scheduleSync(300)});setInterval(()=>scheduleSync(0),60000);
+})();
+</script></body></html>
