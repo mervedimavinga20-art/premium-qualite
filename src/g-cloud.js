@@ -1,7 +1,10 @@
 /* ---- cloud (Supabase) : comptes, synchro, rôles, journal ---- */
 const SB_URL='https://rizfkydkxjxlicyrfyvy.supabase.co',SB_KEY='sb_publishable_eaAGJ39GCfOf39NtIr3JRg_UJ_AB38X';
 const LOCALK=['pin','pinLen','lang','langDone','lastExport'];
-const isMgr=()=>!!CL.shop&&CL.role==='manager';
+const isMgr=()=>!!CL.shop&&(CL.role==='manager'||CL.role==='seller');
+const isSeller=()=>!!CL.shop&&CL.role==='seller';
+const roleLbl=r=>t(r==='owner'?'cRoleO':r==='seller'?'cRoleS':'cRoleM');
+const SELL_OK=['pos','sheet','settings'];
 function loadCL(){try{const r=localStorage.getItem('pq-cloud');if(r)Object.assign(CL,JSON.parse(r))}catch(e){}try{jq=JSON.parse(localStorage.getItem('pq-jq')||'[]')}catch(e){}}
 function saveCL(){try{localStorage.setItem('pq-cloud',JSON.stringify(CL));localStorage.setItem('pq-jq',JSON.stringify(jq.slice(-500)))}catch(e){}}
 function pack(){const set=Object.assign({},state.set);LOCALK.forEach(k=>delete set[k]);return JSON.parse(JSON.stringify({brand:state.brand,set,books:state.books,resellers:state.resellers,moves:state.moves,pays:state.pays,clients:state.clients,cbl:state.cbl}))}
@@ -35,24 +38,24 @@ async function flushJ(){if(!sb||!cloudUser||!CL.shop||!jq.length)return;const b=
 async function loadJournal(){const body=$('#jBody');$('#jHead').innerHTML=['jWhen','jWho','jWhat','jDetail'].map(k=>'<th>'+esc(t(k))+'</th>').join('');
  if(!sb||!CL.shop){body.innerHTML='<tr><td colspan="4" class="empty">'+esc(t('jEmpty'))+'</td></tr>';return}await flushJ();
  const r=await sb.from('journal').select('at,email,role,action,detail').eq('shop_id',CL.shop).order('at',{ascending:false}).limit(300);const rows=(r.data||[]);const f=$('#jFilter'),fv=f.value;f.innerHTML='<option value="">'+esc(t('jAll'))+'</option>';[...new Set(rows.map(x=>x.email))].forEach(e=>f.append(h('option',{value:e,text:e})));f.value=fv;
- const sh=rows.filter(x=>!f.value||x.email===f.value);body.innerHTML=sh.length?sh.map(x=>'<tr><td>'+esc(new Date(x.at).toLocaleString(LOC()))+'</td><td>'+esc(x.email)+' <span class="mu">('+esc(t(x.role==='owner'?'cRoleO':'cRoleM'))+')</span></td><td>'+esc(D['ja_'+x.action]?t('ja_'+x.action):x.action)+'</td><td style="white-space:normal;min-width:180px">'+esc(x.detail||'')+'</td></tr>').join(''):'<tr><td colspan="4" class="empty">'+esc(t('jEmpty'))+'</td></tr>'}
+ const sh=rows.filter(x=>!f.value||x.email===f.value);body.innerHTML=sh.length?sh.map(x=>'<tr><td>'+esc(new Date(x.at).toLocaleString(LOC()))+'</td><td>'+esc(x.email)+' <span class="mu">('+esc(roleLbl(x.role))+')</span></td><td>'+esc(D['ja_'+x.action]?t('ja_'+x.action):x.action)+'</td><td style="white-space:normal;min-width:180px">'+esc(x.detail||'')+'</td></tr>').join(''):'<tr><td colspan="4" class="empty">'+esc(t('jEmpty'))+'</td></tr>'}
 /* comptes */
 function loadSB(){return new Promise((res,rej)=>{if(window.supabase)return res();const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js';s.onload=res;s.onerror=()=>rej('offline');document.head.append(s)})}
 async function cloudInit(){try{await loadSB()}catch(e){cstat='err';updCloudUI();return}
  sb=window.supabase.createClient(SB_URL,SB_KEY);const s=await sb.auth.getSession();cloudUser=s.data&&s.data.session?s.data.session.user:null;
  sb.auth.onAuthStateChange((ev,ss)=>{cloudUser=ss?ss.user:null});if(cloudUser)await attach();updCloudUI()}
 function subscribe(){try{if(chan)sb.removeChannel(chan);chan=sb.channel('shop-'+CL.shop).on('postgres_changes',{event:'UPDATE',schema:'public',table:'shops',filter:'id=eq.'+CL.shop},()=>scheduleSync(300)).subscribe()}catch(e){}}
-function applyRole(){document.body.classList.toggle('role-manager',isMgr())}
+function applyRole(){document.body.classList.toggle('role-manager',isMgr());document.body.classList.toggle('role-seller',isSeller());if(isSeller()&&!SELL_OK.includes(state.view))showView('pos')}
 async function attach(){const r=await sb.from('members').select('shop_id,role,email').eq('user_id',cloudUser.id);if(r.error){cstat='err';return}
  const m=r.data&&r.data[0];if(!m){CL.shop='';CL.role='';CL.email=cloudUser.email;saveCL();applyRole();cstat='noshop';return}
  if(CL.shop!==m.shop_id){const sh=await sb.from('shops').select('data,rev').eq('id',m.shop_id).single();if(sh.error){cstat='err';return}
   const has=sh.data.data&&sh.data.data.books;if(has&&hasLocalData()&&!await ask(t('cfJoin'),{danger:1})){await ACT.cOut();return}
   CL={shop:m.shop_id,rev:sh.data.rev,base:has?clone(sh.data.data):null,role:m.role,email:cloudUser.email};if(has){setDoc(sh.data.data)}saveCL();renderAll()}
  CL.role=m.role;CL.email=cloudUser.email;saveCL();applyRole();subscribe();log('login',CL.email);await sync();loadPlan()}
-async function loadTeam(){const e=$('#team');if(!CL.shop||!sb){e.textContent='';return}const r=await sb.from('members').select('email,role').eq('shop_id',CL.shop);e.textContent=(r.data||[]).map(x=>x.email+' ('+t(x.role==='owner'?'cRoleO':'cRoleM')+')').join('  ·  ')}
+async function loadTeam(){const e=$('#team');if(!CL.shop||!sb){e.textContent='';return}const r=await sb.from('members').select('email,role').eq('shop_id',CL.shop);e.textContent=(r.data||[]).map(x=>x.email+' ('+roleLbl(x.role)+')').join('  ·  ')}
 function updCloudUI(){if(!$('#accSt'))return;const on=!!(sb&&cloudUser),sh=!!CL.shop;const st=cstat==='sync'?t('cSyncing'):cstat==='ok'?t('cSyncOk'):cstat==='err'?t('cSyncErr'):'';
  $('#accOut').style.display=on?'none':'';$('#accIn').style.display=on?'':'none';$('#bCreate').style.display=on&&!sh&&cstat!=='err'?'':'none';$('#ownTeam').style.display=on&&sh&&CL.role==='owner'?'':'none';
- $('#planLine').textContent=sh?planText():'';$('#accSt').textContent=!on?(CL.email&&CL.shop?t('cOn',{e:CL.email,r:t(CL.role==='owner'?'cRoleO':'cRoleM'),s:t('cSyncErr')}):t('cOff')):sh?t('cOn',{e:CL.email,r:t(CL.role==='owner'?'cRoleO':'cRoleM'),s:st}):t('cNoShop');
+ $('#planLine').textContent=sh?planText():'';$('#accSt').textContent=!on?(CL.email&&CL.shop?t('cOn',{e:CL.email,r:roleLbl(CL.role),s:t('cSyncErr')}):t('cOff')):sh?t('cOn',{e:CL.email,r:roleLbl(CL.role),s:st}):t('cNoShop');
  const c=$('#bCloud');c.className='ib '+(!on&&!sh?'off':cstat==='err'?'err':'ok');$('#cloudBanner').style.display=sh?'none':'';$('#homeJ').style.display=sh?'':'none';applyRole();if(on&&sh)loadTeam()}
 const authErr=e=>toast(t('cErr',{e:(e&&e.message)||String(e)}));
 async function needSB(){if(!sb)await cloudInit();if(!sb){toast(t('cOffl'));return false}return true}

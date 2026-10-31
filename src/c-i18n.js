@@ -305,5 +305,13 @@ cfDelClient|Supprimer ce client ?|Delete this customer?|¿Eliminar este cliente?
 ja_addClient|Client ajouté|Customer added|Cliente añadido|Cliente adicionado
 ja_clientPay|Paiement client|Customer payment|Pago de cliente|Pagamento de cliente
 ja_delClient|Client supprimé|Customer deleted|Cliente eliminado|Cliente eliminado
+roleSel|Rôle|Role|Rol|Função
+cRoleS|Vendeur|Seller|Vendedor|Vendedor
+dayTitle|Ventes du jour (encaissé)|Today's sales (collected)|Ventas de hoy (cobrado)|Vendas de hoje (cobrado)
+dayCredit|crédit|credit|crédito|crédito
+dayNone|Aucune vente aujourd'hui.|No sales today.|Sin ventas hoy.|Sem vendas hoje.
+dayMe|Moi (local)|Me (local)|Yo (local)|Eu (local)
+newClientQ|Nom du client :|Customer name:|Nombre del cliente:|Nome do cliente:
+newClientPh|Téléphone (facultatif) :|Phone (optional):|Teléfono (opcional):|Telefone (opcional):
 waHi|Bonjour {n}, voici votre point chez {b} : remis {g}, vendu {s}, versé {p}, reste à payer {r}. Merci !|Hello {n}, your balance at {b}: given {g}, sold {s}, paid {p}, balance due {r}. Thanks!|Hola {n}, tu situación en {b}: entregado {g}, vendido {s}, pagado {p}, pendiente {r}. ¡Gracias!|Olá {n}, o seu ponto na {b}: entregue {g}, vendido {s}, pago {p}, em falta {r}. Obrigado!
 `.trim().split('\n').forEach(l=>{const a=l.split('|');D[a[0]]=a.slice(1)});
