@@ -20,6 +20,9 @@ Object.assign(ACT,{
  catShare(){window.open('https://wa.me/?text='+encodeURIComponent(t('catMsg',{n:state.brand.name,u:catUrl()})),'_blank')},
  catOpen(){window.open(catUrl(),'_blank')},
  catHide(a,el){const r=allRows().find(x=>x.id===el.dataset.id);if(!r)return;r.hide=!el.checked;save();renderCatalog()},
+ newShop(){newShop()},
+ switchTo(a,el){switchShop(el.dataset.id).then(()=>showView('home'))},
+ trfStart(a,el){trfStart(el.dataset.id)},
  posPayMode(a){POS.pay=a;renderPos()},
  posPay(){if(!POS.cart.length)return;const cl=state.clients.find(x=>x.id===$('#posClient').value),credit=POS.pay==='credit';
   if(credit&&!cl){toast(t('needClient'));return}if(credit&&cl&&num(cl.limit)>0){const tt=POS.cart.reduce((s,l)=>s+l.q*l.p,0);if(cDue(cl.id)+tt>num(cl.limit)){toast(t('creditLimit',{d:money(Math.max(0,cDue(cl.id))),l:money(num(cl.limit))}));return}}if((cl||credit)&&lockedPrem()){toast(t('premOnly'));showView('premium');return}
@@ -40,5 +43,5 @@ Object.assign(ACT,{
  async delClient(a,el){if(!await ask(t('cfDelClient'),{danger:1}))return;const id=el.dataset.id;state.clients=state.clients.filter(x=>x.id!==id);state.moves.forEach(m=>{if(m.cid===id)m.cid=''});save();log('delClient','');renderClients()}
 });
 $('#posCode').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();ACT.posAdd()}});
-$('#posClient').addEventListener('change',renderPos);$('#zDate').addEventListener('change',renderZ);
+$('#posClient').addEventListener('change',renderPos);$('#shopSel').addEventListener('change',e=>switchShop(e.target.value));$('#zDate').addEventListener('change',renderZ);
 document.addEventListener('click',e=>{if(e.target.closest('.btn,#tabs button,.seg button'))buzz(8)});

@@ -10,7 +10,33 @@ create table if not exists payment_requests(id bigint generated always as identi
 alter table shops enable row level security;alter table members enable row level security;alter table journal enable row level security;alter table admins enable row level security;alter table app_config enable row level security;alter table payment_requests enable row level security;
 create or replace function is_member(s uuid) returns boolean language sql security definer stable set search_path=public as $$select exists(select 1 from members where shop_id=s and user_id=auth.uid())$$;
 create or replace function is_admin() returns boolean language sql security definer stable set search_path=public as $$select exists(select 1 from admins where user_id=auth.uid())$$;
-create or replace function is_premium(s uuid) returns boolean language sql security definer stable set search_path=public as $$select exists(select 1 from shops where id=s and plan='premium' and plan_until>now())$$;
+create or replace function is_premium(s uuid) returns boolean language sql security definer stable set search_path=public as $$
+ select exists(select 1 from shops x join members mo on mo.shop_id=x.id and mo.role='owner'
+  where x.plan='premium' and x.plan_until>now() and mo.user_id in (select user_id from members where shop_id=s and role='owner'))$$;
+create or replace function plan_info(s uuid) returns jsonb language plpgsql security definer stable set search_path=public as $$declare u timestamptz;begin
+ if not is_member(s) then return null;end if;
+ select max(x.plan_until) into u from shops x join members mo on mo.shop_id=x.id and mo.role='owner'
+  where x.plan='premium' and mo.user_id in (select user_id from members where shop_id=s and role='owner');
+ return jsonb_build_object('plan',case when u>now() then 'premium' else 'free' end,'until',u);end$$;
+create or replace function create_shop(n text,d jsonb) returns uuid language plpgsql security definer set search_path=public as $$declare i uuid;begin
+ if auth.uid() is null then raise exception 'non connecte';end if;
+ if exists(select 1 from members where user_id=auth.uid() and role='owner')
+  and not exists(select 1 from shops s join members m on m.shop_id=s.id where m.user_id=auth.uid() and m.role='owner' and s.plan='premium' and s.plan_until>now())
+ then raise exception 'premium_requis';end if;
+ insert into shops(name,data) values(n,d) returning id into i;
+ insert into members values(i,auth.uid(),(select email from auth.users where id=auth.uid()),'owner');return i;end$$;
+create or replace function shop_guard() returns trigger language plpgsql security definer set search_path=public as $$
+declare n int; prem boolean;
+begin
+ if tg_op='INSERT' and auth.uid() is not null then new.plan:='free'; new.plan_until:=null; end if;
+ if tg_op='UPDATE' and auth.uid() is not null and not is_admin() then new.plan:=old.plan; new.plan_until:=old.plan_until; end if;
+ prem:=(new.plan='premium' and new.plan_until>now()) or (tg_op='UPDATE' and is_premium(new.id));
+ if not prem then
+  select coalesce(sum(jsonb_array_length(b->'rows')),0) into n from jsonb_array_elements(coalesce(new.data->'books','[]'::jsonb)) b;
+  if n>50 then raise exception 'limite_gratuite'; end if;
+ end if;
+ return new;
+end$$;
 drop policy if exists shops_sel on shops;create policy shops_sel on shops for select using(is_member(id));
 drop policy if exists shops_upd on shops;create policy shops_upd on shops for update using(is_member(id)) with check(is_member(id));
 drop policy if exists mem_sel on members;create policy mem_sel on members for select using(is_member(shop_id));
@@ -19,23 +45,6 @@ drop policy if exists jr_sel on journal;create policy jr_sel on journal for sele
 drop policy if exists cfg_sel on app_config;create policy cfg_sel on app_config for select to authenticated using(true);
 drop policy if exists pr_sel on payment_requests;create policy pr_sel on payment_requests for select using(is_member(shop_id) or is_admin());
 insert into app_config values('mpesa_number','0839892839'),('price_month','10') on conflict(key) do update set value=excluded.value;
-create or replace function create_shop(n text,d jsonb) returns uuid language plpgsql security definer set search_path=public as $$declare i uuid;begin
- if auth.uid() is null then raise exception 'non connecte';end if;
- if exists(select 1 from members where user_id=auth.uid() and role='owner') then raise exception 'deja_boutique';end if;
- insert into shops(name,data) values(n,d) returning id into i;
- insert into members values(i,auth.uid(),(select email from auth.users where id=auth.uid()),'owner');return i;end$$;
-create or replace function shop_guard() returns trigger language plpgsql security definer set search_path=public as $$
-declare n int; prem boolean;
-begin
- if tg_op='INSERT' and auth.uid() is not null then new.plan:='free'; new.plan_until:=null; end if;
- if tg_op='UPDATE' and auth.uid() is not null and not is_admin() then new.plan:=old.plan; new.plan_until:=old.plan_until; end if;
- prem:=new.plan='premium' and new.plan_until>now();
- if not prem then
-  select coalesce(sum(jsonb_array_length(b->'rows')),0) into n from jsonb_array_elements(coalesce(new.data->'books','[]'::jsonb)) b;
-  if n>50 then raise exception 'limite_gratuite'; end if;
- end if;
- return new;
-end$$;
 drop trigger if exists shop_guard_t on shops;
 create trigger shop_guard_t before insert or update on shops for each row execute function shop_guard();
 create or replace function add_manager(s uuid,mail text,r text default 'manager') returns text language plpgsql security definer set search_path=public as $$declare u uuid;begin

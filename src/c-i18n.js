@@ -386,5 +386,26 @@ catErr|Publication impossible (SQL du catalogue lancé ?)|Could not publish (cat
 catMsg|Découvrez le catalogue de {n} : {u}|Discover the {n} catalogue: {u}|Descubre el catálogo de {n}: {u}|Descubra o catálogo de {n}: {u}
 ja_catPublish|Catalogue publié|Catalogue published|Catálogo publicado|Catálogo publicado
 catNoPhone|Ajoutez le téléphone de la boutique (Paramètres) pour recevoir les commandes WhatsApp.|Add the shop phone (Settings) to receive WhatsApp orders.|Añade el teléfono de la tienda (Ajustes) para recibir pedidos por WhatsApp.|Adicione o telefone da loja (Definições) para receber encomendas por WhatsApp.
+shopActive|Boutique active|Active shop|Tienda activa|Loja ativa
+newShop|Nouvelle boutique|New shop|Nueva tienda|Nova loja
+newShopQ|Nom de la nouvelle boutique :|Name of the new shop:|Nombre de la nueva tienda:|Nome da nova loja:
+shopMade|Boutique créée|Shop created|Tienda creada|Loja criada
+shopSwitched|Boutique : {n}|Shop: {n}|Tienda: {n}|Loja: {n}
+shopNeedPrem|Plusieurs boutiques : fonction Premium|Several shops: Premium feature|Varias tiendas: función Premium|Várias lojas: função Premium
+mTitle|Toutes mes boutiques|All my shops|Todas mis tiendas|Todas as minhas lojas
+mSales|Ventes du jour|Today’s sales|Ventas de hoy|Vendas de hoje
+mDebt|Créances|Receivables|Por cobrar|A receber
+mLow|Stocks bas|Low stock|Stock bajo|Stock baixo
+mVal|Valeur du stock (achat)|Stock value (cost)|Valor del stock (coste)|Valor do stock (custo)
+mCross|Stocks croisés|Stock across shops|Stock cruzado|Stock cruzado
+mActive|Active|Active|Activa|Ativa
+mNone|Une seule boutique pour l’instant. Créez-en une autre dans Paramètres.|Only one shop for now. Create another in Settings.|Solo una tienda por ahora. Crea otra en Ajustes.|Só uma loja por agora. Crie outra em Definições.
+mTrf|Transférer|Transfer|Transferir|Transferir
+mTrfQ|Quantité à transférer de « {n} » (stock {s}) :|Quantity of “{n}” to transfer (stock {s}):|Cantidad de «{n}» a transferir (stock {s}):|Quantidade de «{n}» a transferir (stock {s}):
+mTrfTo|Vers quelle boutique ? {l}|To which shop? {l}|¿A qué tienda? {l}|Para que loja? {l}
+mTrfOk|Transfert effectué|Transfer done|Transferencia realizada|Transferência feita
+mTrfErr|Transfert impossible (boutique vide, limite ou conflit)|Transfer failed (empty shop, limit or conflict)|Transferencia imposible (tienda vacía, límite o conflicto)|Transferência impossível (loja vazia, limite ou conflito)
+ja_transfer|Transfert de stock|Stock transfer|Transferencia de stock|Transferência de stock
+ja_transferIn|Stock reçu|Stock received|Stock recibido|Stock recebido
 waHi|Bonjour {n}, voici votre point chez {b} : remis {g}, vendu {s}, versé {p}, reste à payer {r}. Merci !|Hello {n}, your balance at {b}: given {g}, sold {s}, paid {p}, balance due {r}. Thanks!|Hola {n}, tu situación en {b}: entregado {g}, vendido {s}, pagado {p}, pendiente {r}. ¡Gracias!|Olá {n}, o seu ponto na {b}: entregue {g}, vendido {s}, pago {p}, em falta {r}. Obrigado!
 `.trim().split('\n').forEach(l=>{const a=l.split('|');D[a[0]]=a.slice(1)});
