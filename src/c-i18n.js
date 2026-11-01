@@ -407,5 +407,11 @@ mTrfOk|Transfert effectué|Transfer done|Transferencia realizada|Transferência 
 mTrfErr|Transfert impossible (boutique vide, limite ou conflit)|Transfer failed (empty shop, limit or conflict)|Transferencia imposible (tienda vacía, límite o conflicto)|Transferência impossível (loja vazia, limite ou conflito)
 ja_transfer|Transfert de stock|Stock transfer|Transferencia de stock|Transferência de stock
 ja_transferIn|Stock reçu|Stock received|Stock recibido|Stock recebido
+aCostMinus|(Achat + Dépenses) −|(Purchase + Expenses) −|(Compra + Gastos) −|(Compra + Despesas) −
+forgot|Mot de passe oublié ?|Forgot password?|¿Olvidaste la contraseña?|Esqueceu a palavra-passe?
+rstNeed|Entrez votre email, puis appuyez sur « Mot de passe oublié ».|Enter your email, then tap “Forgot password”.|Introduce tu correo y pulsa «¿Olvidaste la contraseña?».|Introduza o email e toque em «Esqueceu a palavra-passe».
+rstSent|Email envoyé. Ouvrez le lien reçu pour choisir un nouveau mot de passe.|Email sent. Open the link to choose a new password.|Correo enviado. Abre el enlace para elegir una nueva contraseña.|Email enviado. Abra o link para escolher uma nova palavra-passe.
+rstNew|Nouveau mot de passe (6 caractères minimum) :|New password (at least 6 characters):|Nueva contraseña (mínimo 6 caracteres):|Nova palavra-passe (mínimo 6 caracteres):
+rstOk|Mot de passe modifié|Password changed|Contraseña cambiada|Palavra-passe alterada
 waHi|Bonjour {n}, voici votre point chez {b} : remis {g}, vendu {s}, versé {p}, reste à payer {r}. Merci !|Hello {n}, your balance at {b}: given {g}, sold {s}, paid {p}, balance due {r}. Thanks!|Hola {n}, tu situación en {b}: entregado {g}, vendido {s}, pagado {p}, pendiente {r}. ¡Gracias!|Olá {n}, o seu ponto na {b}: entregue {g}, vendido {s}, pago {p}, em falta {r}. Obrigado!
 `.trim().split('\n').forEach(l=>{const a=l.split('|');D[a[0]]=a.slice(1)});

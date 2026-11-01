@@ -43,7 +43,8 @@ async function loadJournal(){const body=$('#jBody');$('#jHead').innerHTML=['jWhe
 function loadSB(){return new Promise((res,rej)=>{if(window.supabase)return res();const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js';s.onload=res;s.onerror=()=>rej('offline');document.head.append(s)})}
 async function cloudInit(){try{try{await loadSB()}catch(e){cstat='err';updCloudUI();return}
  sb=window.supabase.createClient(SB_URL,SB_KEY);const s=await sb.auth.getSession();cloudUser=s.data&&s.data.session?s.data.session.user:null;
- sb.auth.onAuthStateChange((ev,ss)=>{cloudUser=ss?ss.user:null});if(cloudUser)await attach();updCloudUI()}finally{document.body.classList.remove('booting')}}
+ sb.auth.onAuthStateChange((ev,ss)=>{cloudUser=ss?ss.user:null;if(ev==='PASSWORD_RECOVERY')setTimeout(recoverPw,300)});if(cloudUser)await attach();updCloudUI()}finally{document.body.classList.remove('booting')}}
+async function recoverPw(){const p=await ask(t('rstNew'),{input:1,type:'password'});if(!p)return;if(p.length<6){toast(t('tAuthNeed'));return recoverPw()}try{const r=await sb.auth.updateUser({password:p});if(r.error)throw r.error;toast(t('rstOk'));try{history.replaceState(null,'',location.pathname)}catch(e){}if(cloudUser&&!CL.shop)await attach();updCloudUI()}catch(e){authErr(e)}}
 function subscribe(){try{if(chan)sb.removeChannel(chan);chan=sb.channel('shop-'+CL.shop).on('postgres_changes',{event:'UPDATE',schema:'public',table:'shops',filter:'id=eq.'+CL.shop},()=>scheduleSync(300)).subscribe()}catch(e){}}
 function applyRole(){document.body.classList.toggle('role-manager',isMgr());document.body.classList.toggle('role-seller',isSeller());if(isSeller()&&!SELL_OK.includes(state.view))showView('pos')}
 async function attach(){const r=await sb.from('members').select('shop_id,role,email').eq('user_id',cloudUser.id);if(r.error){cstat='err';return}
