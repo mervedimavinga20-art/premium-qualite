@@ -14,6 +14,12 @@ Object.assign(ACT,{
  debtTone(a){DEBT.tone=num(a)||1;renderDebts()},
  debtNext(){const l=state.clients.map(c=>({c,d:cDue(c.id)})).filter(x=>x.d>0.005&&x.c.phone&&!DEBT.sent[x.c.id]).sort((a,b)=>b.d-a.d);if(!l.length){toast(t('debtDone'));return}const c=l[0].c;DEBT.sent[c.id]=1;sendRemind(c);renderClients()},
  async clientLimit(a,el){if(lockedPrem()){toast(t('premOnly'));showView('premium');return}const c=state.clients.find(x=>x.id===el.dataset.id);if(!c)return;const v=await ask(t('limitAsk',{n:c.name}),{input:1,def:String(num(c.limit)||0)});if(v==null||v==='')return;c.limit=Math.max(0,num(v));save();log('clientLimit',c.name+' '+money(c.limit));renderClients()},
+ catPublish(){catPublish(false)},
+ async catOff(){if(!await ask(t('catOffQ'),{danger:1}))return;try{const r=await sb.rpc('unpublish_catalog',{s:CL.shop});if(r.error)throw r.error}catch(e){toast(t('catErr'));return}state.set.catOn=false;save();renderCatalog()},
+ async catCopy(){try{await navigator.clipboard.writeText(catUrl());toast(t('copied'))}catch(e){toast(catUrl())}},
+ catShare(){window.open('https://wa.me/?text='+encodeURIComponent(t('catMsg',{n:state.brand.name,u:catUrl()})),'_blank')},
+ catOpen(){window.open(catUrl(),'_blank')},
+ catHide(a,el){const r=allRows().find(x=>x.id===el.dataset.id);if(!r)return;r.hide=!el.checked;save();renderCatalog()},
  posPayMode(a){POS.pay=a;renderPos()},
  posPay(){if(!POS.cart.length)return;const cl=state.clients.find(x=>x.id===$('#posClient').value),credit=POS.pay==='credit';
   if(credit&&!cl){toast(t('needClient'));return}if(credit&&cl&&num(cl.limit)>0){const tt=POS.cart.reduce((s,l)=>s+l.q*l.p,0);if(cDue(cl.id)+tt>num(cl.limit)){toast(t('creditLimit',{d:money(Math.max(0,cDue(cl.id))),l:money(num(cl.limit))}));return}}if((cl||credit)&&lockedPrem()){toast(t('premOnly'));showView('premium');return}

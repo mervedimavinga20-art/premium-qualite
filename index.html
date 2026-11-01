@@ -204,6 +204,7 @@ body.print-doc #docWrap{display:block}
  <div class="card" id="accCard"><h2 data-i="account"></h2><p class="mu" id="accSt" style="font-size:.82rem;margin-bottom:10px"></p>
   <div id="accOut"><div class="fg"><div><label data-i="email"></label><input id="aMail" type="email" autocomplete="username" inputmode="email"></div><div><label data-i="pass"></label><input id="aPass" type="password" autocomplete="current-password"></div></div><div class="btns" style="margin-top:0"><button class="btn sm" data-act="cLogin" data-i="login"></button><button class="btn sm g2" data-act="cSignup" data-i="signup"></button></div></div>
   <div id="accIn" style="display:none"><p class="mu" id="planLine" style="font-size:.82rem;margin-bottom:8px"></p><div class="btns" style="margin-top:0"><button class="btn sm" id="bCreate" data-act="cCreate" data-i="createShop"></button><button class="btn sm g2" data-act="cSync" data-i="syncNow"></button><button class="btn sm" data-act="go" data-arg="premium" data-i="goPremium"></button><button class="btn sm g2" data-act="go" data-arg="journal" data-i="journal"></button><button class="btn sm r" data-act="cOut" data-i="logout"></button></div>
+  <div class="card" data-own id="catCard"><h2 data-i="catTitle"></h2><div id="catBox"></div></div>
   <div id="ownTeam"><div class="fg"><div><label data-i="mgrMail"></label><input id="aMgr" type="email" inputmode="email"></div><div><label data-i="roleSel"></label><select id="aRole"><option value="manager" data-i="cRoleM"></option><option value="seller" data-i="cRoleS"></option></select></div></div><button class="btn sm" data-act="cAddMgr" data-i="addMgr"></button></div><div id="team" class="mu" style="font-size:.8rem;margin-top:8px"></div></div></div>
  <div class="card" data-own><h2 data-i="shop"></h2><div class="fg">
   <div><label data-i="shopName"></label><input id="sBname"></div><div><label data-i="owner"></label><input id="sOwner"></div><div><label data-i="manager"></label><input id="sManager"></div><div><label data-i="city"></label><input id="sCity"></div><div><label data-i="email"></label><input id="sEmail" type="email" inputmode="email"></div><div><label data-i="phone"></label><input id="sBPhone" inputmode="tel"></div><div><label data-i="addr"></label><input id="sAddr"></div><div><label data-i="units"></label><input id="sUnits"></div><div><label data-i="cats"></label><input id="sCats"></div><div><label>Slogan</label><input id="sSlogan"></div>
@@ -638,6 +639,21 @@ creditLimit|Plafond dépassé : {d} déjà dû, limite {l}|Limit exceeded: {d} a
 lastRem|Dernier rappel : {d}|Last reminder: {d}|Último recordatorio: {d}|Último lembrete: {d}
 ja_remind|Rappel envoyé|Reminder sent|Recordatorio enviado|Lembrete enviado
 ja_clientLimit|Plafond modifié|Limit changed|Límite modificado|Limite alterado
+catTitle|Catalogue en ligne|Online catalogue|Catálogo en línea|Catálogo online
+catHint|Un lien à partager : vos clients voient vos articles, prix et disponibilité, et commandent par WhatsApp. Les prix d’achat ne sont jamais publiés.|A shareable link: customers see your items, prices and availability and order via WhatsApp. Purchase prices are never published.|Un enlace para compartir: tus clientes ven artículos, precios y disponibilidad y piden por WhatsApp. Los precios de compra nunca se publican.|Um link para partilhar: os clientes veem artigos, preços e disponibilidade e encomendam por WhatsApp. Os preços de compra nunca são publicados.
+catLock|Le catalogue en ligne est une fonction Premium.|The online catalogue is a Premium feature.|El catálogo en línea es una función Premium.|O catálogo online é uma função Premium.
+catNeedCloud|Connectez d’abord la boutique au cloud (Paramètres, compte).|Connect the shop to the cloud first (Settings, account).|Conecta primero la tienda a la nube (Ajustes, cuenta).|Ligue primeiro a loja à nuvem (Definições, conta).
+catEnable|Créer mon catalogue|Create my catalogue|Crear mi catálogo|Criar o meu catálogo
+catUpdate|Mettre à jour|Update|Actualizar|Atualizar
+catOpen|Ouvrir|Open|Abrir|Abrir
+catOff|Retirer|Remove|Retirar|Retirar
+catOffQ|Retirer le catalogue ? Le lien ne marchera plus.|Remove the catalogue? The link will stop working.|¿Retirar el catálogo? El enlace dejará de funcionar.|Retirar o catálogo? O link deixará de funcionar.
+catItems|Articles affichés|Items shown|Artículos mostrados|Artigos mostrados
+catDone|Catalogue publié|Catalogue published|Catálogo publicado|Catálogo publicado
+catErr|Publication impossible (SQL du catalogue lancé ?)|Could not publish (catalogue SQL run?)|No se pudo publicar (¿SQL del catálogo ejecutado?)|Não foi possível publicar (SQL do catálogo executado?)
+catMsg|Découvrez le catalogue de {n} : {u}|Discover the {n} catalogue: {u}|Descubre el catálogo de {n}: {u}|Descubra o catálogo de {n}: {u}
+ja_catPublish|Catalogue publié|Catalogue published|Catálogo publicado|Catálogo publicado
+catNoPhone|Ajoutez le téléphone de la boutique (Paramètres) pour recevoir les commandes WhatsApp.|Add the shop phone (Settings) to receive WhatsApp orders.|Añade el teléfono de la tienda (Ajustes) para recibir pedidos por WhatsApp.|Adicione o telefone da loja (Definições) para receber encomendas por WhatsApp.
 waHi|Bonjour {n}, voici votre point chez {b} : remis {g}, vendu {s}, versé {p}, reste à payer {r}. Merci !|Hello {n}, your balance at {b}: given {g}, sold {s}, paid {p}, balance due {r}. Thanks!|Hola {n}, tu situación en {b}: entregado {g}, vendido {s}, pagado {p}, pendiente {r}. ¡Gracias!|Olá {n}, o seu ponto na {b}: entregue {g}, vendido {s}, pago {p}, em falta {r}. Obrigado!
 `.trim().split('\n').forEach(l=>{const a=l.split('|');D[a[0]]=a.slice(1)});
 const KEY='premium-qualite-v1',KEYS=[KEY];
@@ -670,7 +686,7 @@ function migrate(raw,key){let s=JSON.parse(raw);if(key==='stock-vetements-v1'||s
 function load(){for(const k of KEYS){try{const r=localStorage.getItem(k);if(r){state=migrate(r,k);return}}catch(e){}}state=fixup(DEF())}
 let svT=0;
 let sb=null,CL={shop:'',rev:0,base:null,role:'',email:''},cloudUser=null,syncing=false,syncAgain=false,syncT=0,jq=[],jT=0,chan=null,cstat='off';
-function save(){touch();scheduleSync(1500);clearTimeout(svT);svT=setTimeout(flush,300)}
+function save(){try{catSoon()}catch(e){}touch();scheduleSync(1500);clearTimeout(svT);svT=setTimeout(flush,300)}
 function flush(){if(noFlush)return;try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
 addEventListener('pagehide',flush);
 /* ---- undo / redo ---- */
@@ -790,7 +806,7 @@ let PLN={plan:'free',until:null,cfg:{},admin:false,reqs:[]};
 const isPrem=()=>PLN.plan==='premium'&&PLN.until&&new Date(PLN.until)>new Date();
 const gated=()=>!!CL.shop&&!isPrem();
 const price=()=>num(PLN.cfg.price_month)||10;
-async function loadPlan(){if(!sb||!cloudUser||!CL.shop)return;try{const r=await sb.from('shops').select('plan,plan_until').eq('id',CL.shop).single();if(r.data){PLN.plan=r.data.plan;PLN.until=r.data.plan_until}const c=await sb.from('app_config').select('key,value');(c.data||[]).forEach(x=>PLN.cfg[x.key]=x.value);const a=await sb.rpc('is_admin');PLN.admin=a.data===true;const q=await sb.from('payment_requests').select('id,email,months,amount,tx,phone,status,created_at').order('created_at',{ascending:false}).limit(60);PLN.reqs=q.data||[]}catch(e){}updCloudUI();if(state.view==='premium')renderPremium()}
+async function loadPlan(){if(!sb||!cloudUser||!CL.shop)return;try{const r=await sb.from('shops').select('plan,plan_until').eq('id',CL.shop).single();if(r.data){PLN.plan=r.data.plan;PLN.until=r.data.plan_until}const c=await sb.from('app_config').select('key,value');(c.data||[]).forEach(x=>PLN.cfg[x.key]=x.value);const a=await sb.rpc('is_admin');PLN.admin=a.data===true;const q=await sb.from('payment_requests').select('id,email,months,amount,tx,phone,status,created_at').order('created_at',{ascending:false}).limit(60);PLN.reqs=q.data||[]}catch(e){}updCloudUI();renderCatalog();renderForecast();if(state.view==='premium')renderPremium()}
 function planText(){if(!CL.shop)return t('planFree');if(isPrem())return t('planPrem',{d:new Date(PLN.until).toLocaleDateString(LOC())});return PLN.plan==='premium'?t('planExp'):t('planFree')}
 const usd=n=>'$'+(Math.round(n*100)/100).toLocaleString(LOC(),{maximumFractionDigits:2});
 function renderPremium(){$('#plStat').textContent=planText();$('#pqNum').value=PLN.cfg.mpesa_number||'';const m=num($('#pqMonths').value)||1;$('#payHow').textContent=t('payHow',{a:usd(price()*m)});
@@ -877,6 +893,26 @@ function renderDebts(){const B=$('#debtBox');if(!B)return;const dues=state.clien
  const sum=f=>dues.filter(f).reduce((s,x)=>s+x.d,0),tot=sum(()=>true),row=(l,v,cls)=>'<div style="display:flex;justify-content:space-between;padding:3px 0"><span>'+esc(l)+'</span><b class="'+(cls||'')+'">'+esc(money(v))+'</b></div>';
  const todo=dues.filter(x=>x.c.phone&&!DEBT.sent[x.c.id]).length;
  B.innerHTML=row(t('debtTotal'),tot,'dn')+row(t('debtB1'),sum(x=>x.a<=7))+row(t('debtB2'),sum(x=>x.a>7&&x.a<=30))+row(t('debtB3'),sum(x=>x.a>30),'dn')+'<div class="mu" style="font-size:.78rem;margin:8px 0 4px">'+esc(t('toneL'))+'</div><div class="seg" id="toneSeg">'+[1,2,3].map(k=>'<button data-act="debtTone" data-arg="'+k+'" class="'+(DEBT.tone===k?'on':'')+'">'+esc(t('tone'+k))+'</button>').join('')+'</div><div class="btns" style="margin:10px 0 0"><button class="btn" data-act="debtNext">'+esc(t('debtNext'))+' ('+todo+')</button></div>'}
+/* ---- Mini-catalogue web ---- */
+let catT=0;
+function catSlug(){let s=state.set.catSlug;if(!s){s=(state.brand.name||'boutique').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,24)||'boutique';s+='-'+Math.random().toString(36).slice(2,6);state.set.catSlug=s}return s}
+const catUrl=()=>new URL('catalogue.html?c='+catSlug(),location.href).href;
+const catItems=()=>allRows().filter(r=>r.desc&&num(r.price)>0&&!r.hide).slice(0,500).map(r=>({n:r.desc,p:num(r.price),u:r.uom||'',c:r.cat||'',s:rowStock(r)>0?1:0}));
+async function catPublish(silent){if(!sb||!CL.shop||!cloudUser||isSeller()){if(!silent)toast(t('catNeedCloud'));return false}
+ const sl0=state.set.catSlug;for(let i=0;i<2;i++){let r;try{r=await sb.rpc('publish_catalog',{s:CL.shop,sl:catSlug(),nm:state.brand.name,ph:state.brand.phone||'',cu:state.set.monnaie,it:catItems()})}catch(e){if(!silent)toast(t('cOffl'));return false}
+  if(r.error){if(!silent)toast(t('catErr'));return false}
+  if(r.data==='slug_pris'){state.set.catSlug='';continue}
+  if(r.data==='ok'){if(!state.set.catOn||state.set.catSlug!==sl0){state.set.catOn=true;save()}if(!silent){toast(t('catDone'));log('catPublish','');}renderCatalog();return true}
+  if(!silent)toast(t(r.data==='premium'?'premOnly':'catErr'));return false}
+ return false}
+function catSoon(){try{if(!state.set.catOn||!sb||!CL.shop)return}catch(e){return}clearTimeout(catT);catT=setTimeout(()=>catPublish(true),20000)}
+function renderCatalog(){const B=$('#catBox');if(!B)return;
+ if(gated()||!CL.shop){B.innerHTML='<div class="mu" style="font-size:.85rem">'+esc(t(CL.shop?'catLock':'catNeedCloud'))+'</div>'+(CL.shop?'<div class="btns" style="margin:8px 0 0"><button class="btn sm" data-act="go" data-arg="premium">'+esc(t('premium'))+'</button></div>':'');return}
+ const on=!!state.set.catOn;let s='<div class="mu" style="font-size:.85rem;margin-bottom:8px">'+esc(t('catHint'))+'</div>'+(state.brand.phone?'':'<div class="al w">'+esc(t('catNoPhone'))+'</div>');
+ if(!on)s+='<div class="btns" style="margin:0"><button class="btn" data-act="catPublish">'+esc(t('catEnable'))+'</button></div>';
+ else s+='<div style="word-break:break-all;font-size:.82rem;margin-bottom:8px" class="up">'+esc(catUrl())+'</div><div class="btns" style="margin:0"><button class="btn sm" data-act="catPublish">'+esc(t('catUpdate'))+'</button><button class="btn sm g2" data-act="catCopy">'+esc(t('rcCopy'))+'</button><button class="btn sm g2" data-act="catShare">WhatsApp</button><button class="btn sm g2" data-act="catOpen">'+esc(t('catOpen'))+'</button><button class="btn sm r" data-act="catOff">'+esc(t('catOff'))+'</button></div>';
+ s+='<div class="mu" style="font-size:.78rem;margin:12px 0 4px">'+esc(t('catItems'))+'</div>'+allRows().filter(r=>r.desc).map(r=>'<label style="display:flex;gap:8px;align-items:center;padding:4px 0;text-transform:none;letter-spacing:0;font-size:.88rem;color:var(--tx)"><input type="checkbox" style="width:auto" data-act="catHide" data-id="'+esc(r.id)+'"'+(r.hide?'':' checked')+'><span>'+esc(r.desc)+'</span></label>').join('');
+ B.innerHTML=s}
 /* ---- renderers ---- */
 const ICON={home:'<path d="M3 11 12 3l9 8v10H3z"/>',pos:'<path d="M3 4h2l2.5 11h10L20 7H6"/><circle cx="9" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/>',sheet:'<path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/>',resellers:'<circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-4 3-6 7-6s7 2 7 6"/><path d="M17 5a3 3 0 0 1 0 6M19 14c2 1 3 3 3 6"/>',suivi:'<path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h5"/>',stats:'<path d="M3 17l5-6 4 3 8-9"/><path d="M15 5h5v5"/>',settings:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>'};
 const VIEWS=['home','pos','sheet','resellers','suivi','stats','settings'];
@@ -942,7 +978,7 @@ function renderStats(){const gs=$('#granSeg');gs.innerHTML='';[['d','d1'],['w','
  const rows=state.resellers.map(r=>{const v=series(r.id,GRAN).map(x=>x.v);return{r,v,tot:v.reduce((s,x)=>s+x,0),d:delta(v)}}).sort((a,b)=>b.tot-a.tot);
  $('#watch').innerHTML=rows.length?rows.map(x=>'<div class="wl '+(STRES===x.r.id?'sel':'')+'" data-act="selRes" data-arg="'+esc(x.r.id)+'"><div class="nm">'+esc(x.r.name)+'</div>'+spark(x.v)+'<div class="vv">'+esc(money(x.tot))+'<br>'+dChip(x.d)+'</div></div>').join(''):'<div class="empty">'+esc(t('noRes'))+'</div>'}
 /* ---- settings ---- */
-function renderSettings(){const s=state.set,b=state.brand;const set=(id,v)=>{const e=$(id);if(document.activeElement!==e)e.value=v};set('#sBname',b.name);set('#sUnits',(s.units||[]).join(', '));set('#sCats',(s.cats||[]).join(', '));set('#sEmail',b.email);set('#sBPhone',b.phone);set('#sAddr',b.addr);updCloudUI();set('#sOwner',s.owner);set('#sManager',s.manager);set('#sCity',b.city);set('#sSlogan',b.slogan);set('#sMonnaie',s.monnaie);set('#sTaux',s.taux);set('#sLow',s.lowStock);set('#sLate',s.lateDays);set('#sSal',s.salaryPct);set('#sLoy',s.loyaltyPct);set('#sLead',fcLead());set('#sMarg',fcMarg());set('#sBasis',s.basis);
+function renderSettings(){renderCatalog();const s=state.set,b=state.brand;const set=(id,v)=>{const e=$(id);if(document.activeElement!==e)e.value=v};set('#sBname',b.name);set('#sUnits',(s.units||[]).join(', '));set('#sCats',(s.cats||[]).join(', '));set('#sEmail',b.email);set('#sBPhone',b.phone);set('#sAddr',b.addr);updCloudUI();set('#sOwner',s.owner);set('#sManager',s.manager);set('#sCity',b.city);set('#sSlogan',b.slogan);set('#sMonnaie',s.monnaie);set('#sTaux',s.taux);set('#sLow',s.lowStock);set('#sLate',s.lateDays);set('#sSal',s.salaryPct);set('#sLoy',s.loyaltyPct);set('#sLead',fcLead());set('#sMarg',fcMarg());set('#sBasis',s.basis);
  const sl=$('#sLang');sl.innerHTML='';LANGS.forEach(l=>sl.append(h('option',{value:l[0],text:l[1]})));sl.value=LANG}
 function renderAll(){renderBrand();applyI18n();renderHome();renderSheet();renderResellers();renderSuivi();renderStats();renderSettings();showView(state.view,true)}
 function showView(v,noSave){if(isSeller()&&!SELL_OK.includes(v))v='pos';if(v==='journal'&&gated())v='premium';state.view=v;$$('.view').forEach(e=>e.classList.toggle('on',e.id==='v-'+v));$$('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.arg===(v==='clients'?'resellers':v)));if(v==='clients')renderClients();if(v!=='pos')scanStop();if(v==='pos')renderPos();if(v==='journal')loadJournal();if(v==='premium'){renderPremium();loadPlan()}if(v==='calc'||v==='home'||v==='stats'||v==='sheet'||v==='suivi')refreshView(v);scrollTo(0,0)}
@@ -1078,6 +1114,12 @@ Object.assign(ACT,{
  debtTone(a){DEBT.tone=num(a)||1;renderDebts()},
  debtNext(){const l=state.clients.map(c=>({c,d:cDue(c.id)})).filter(x=>x.d>0.005&&x.c.phone&&!DEBT.sent[x.c.id]).sort((a,b)=>b.d-a.d);if(!l.length){toast(t('debtDone'));return}const c=l[0].c;DEBT.sent[c.id]=1;sendRemind(c);renderClients()},
  async clientLimit(a,el){if(lockedPrem()){toast(t('premOnly'));showView('premium');return}const c=state.clients.find(x=>x.id===el.dataset.id);if(!c)return;const v=await ask(t('limitAsk',{n:c.name}),{input:1,def:String(num(c.limit)||0)});if(v==null||v==='')return;c.limit=Math.max(0,num(v));save();log('clientLimit',c.name+' '+money(c.limit));renderClients()},
+ catPublish(){catPublish(false)},
+ async catOff(){if(!await ask(t('catOffQ'),{danger:1}))return;try{const r=await sb.rpc('unpublish_catalog',{s:CL.shop});if(r.error)throw r.error}catch(e){toast(t('catErr'));return}state.set.catOn=false;save();renderCatalog()},
+ async catCopy(){try{await navigator.clipboard.writeText(catUrl());toast(t('copied'))}catch(e){toast(catUrl())}},
+ catShare(){window.open('https://wa.me/?text='+encodeURIComponent(t('catMsg',{n:state.brand.name,u:catUrl()})),'_blank')},
+ catOpen(){window.open(catUrl(),'_blank')},
+ catHide(a,el){const r=allRows().find(x=>x.id===el.dataset.id);if(!r)return;r.hide=!el.checked;save();renderCatalog()},
  posPayMode(a){POS.pay=a;renderPos()},
  posPay(){if(!POS.cart.length)return;const cl=state.clients.find(x=>x.id===$('#posClient').value),credit=POS.pay==='credit';
   if(credit&&!cl){toast(t('needClient'));return}if(credit&&cl&&num(cl.limit)>0){const tt=POS.cart.reduce((s,l)=>s+l.q*l.p,0);if(cDue(cl.id)+tt>num(cl.limit)){toast(t('creditLimit',{d:money(Math.max(0,cDue(cl.id))),l:money(num(cl.limit))}));return}}if((cl||credit)&&lockedPrem()){toast(t('premOnly'));showView('premium');return}

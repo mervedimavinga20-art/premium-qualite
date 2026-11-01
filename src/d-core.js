@@ -28,7 +28,7 @@ function migrate(raw,key){let s=JSON.parse(raw);if(key==='stock-vetements-v1'||s
 function load(){for(const k of KEYS){try{const r=localStorage.getItem(k);if(r){state=migrate(r,k);return}}catch(e){}}state=fixup(DEF())}
 let svT=0;
 let sb=null,CL={shop:'',rev:0,base:null,role:'',email:''},cloudUser=null,syncing=false,syncAgain=false,syncT=0,jq=[],jT=0,chan=null,cstat='off';
-function save(){touch();scheduleSync(1500);clearTimeout(svT);svT=setTimeout(flush,300)}
+function save(){try{catSoon()}catch(e){}touch();scheduleSync(1500);clearTimeout(svT);svT=setTimeout(flush,300)}
 function flush(){if(noFlush)return;try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
 addEventListener('pagehide',flush);
 /* ---- undo / redo ---- */

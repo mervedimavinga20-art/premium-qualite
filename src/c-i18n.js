@@ -371,5 +371,20 @@ creditLimit|Plafond dépassé : {d} déjà dû, limite {l}|Limit exceeded: {d} a
 lastRem|Dernier rappel : {d}|Last reminder: {d}|Último recordatorio: {d}|Último lembrete: {d}
 ja_remind|Rappel envoyé|Reminder sent|Recordatorio enviado|Lembrete enviado
 ja_clientLimit|Plafond modifié|Limit changed|Límite modificado|Limite alterado
+catTitle|Catalogue en ligne|Online catalogue|Catálogo en línea|Catálogo online
+catHint|Un lien à partager : vos clients voient vos articles, prix et disponibilité, et commandent par WhatsApp. Les prix d’achat ne sont jamais publiés.|A shareable link: customers see your items, prices and availability and order via WhatsApp. Purchase prices are never published.|Un enlace para compartir: tus clientes ven artículos, precios y disponibilidad y piden por WhatsApp. Los precios de compra nunca se publican.|Um link para partilhar: os clientes veem artigos, preços e disponibilidade e encomendam por WhatsApp. Os preços de compra nunca são publicados.
+catLock|Le catalogue en ligne est une fonction Premium.|The online catalogue is a Premium feature.|El catálogo en línea es una función Premium.|O catálogo online é uma função Premium.
+catNeedCloud|Connectez d’abord la boutique au cloud (Paramètres, compte).|Connect the shop to the cloud first (Settings, account).|Conecta primero la tienda a la nube (Ajustes, cuenta).|Ligue primeiro a loja à nuvem (Definições, conta).
+catEnable|Créer mon catalogue|Create my catalogue|Crear mi catálogo|Criar o meu catálogo
+catUpdate|Mettre à jour|Update|Actualizar|Atualizar
+catOpen|Ouvrir|Open|Abrir|Abrir
+catOff|Retirer|Remove|Retirar|Retirar
+catOffQ|Retirer le catalogue ? Le lien ne marchera plus.|Remove the catalogue? The link will stop working.|¿Retirar el catálogo? El enlace dejará de funcionar.|Retirar o catálogo? O link deixará de funcionar.
+catItems|Articles affichés|Items shown|Artículos mostrados|Artigos mostrados
+catDone|Catalogue publié|Catalogue published|Catálogo publicado|Catálogo publicado
+catErr|Publication impossible (SQL du catalogue lancé ?)|Could not publish (catalogue SQL run?)|No se pudo publicar (¿SQL del catálogo ejecutado?)|Não foi possível publicar (SQL do catálogo executado?)
+catMsg|Découvrez le catalogue de {n} : {u}|Discover the {n} catalogue: {u}|Descubre el catálogo de {n}: {u}|Descubra o catálogo de {n}: {u}
+ja_catPublish|Catalogue publié|Catalogue published|Catálogo publicado|Catálogo publicado
+catNoPhone|Ajoutez le téléphone de la boutique (Paramètres) pour recevoir les commandes WhatsApp.|Add the shop phone (Settings) to receive WhatsApp orders.|Añade el teléfono de la tienda (Ajustes) para recibir pedidos por WhatsApp.|Adicione o telefone da loja (Definições) para receber encomendas por WhatsApp.
 waHi|Bonjour {n}, voici votre point chez {b} : remis {g}, vendu {s}, versé {p}, reste à payer {r}. Merci !|Hello {n}, your balance at {b}: given {g}, sold {s}, paid {p}, balance due {r}. Thanks!|Hola {n}, tu situación en {b}: entregado {g}, vendido {s}, pagado {p}, pendiente {r}. ¡Gracias!|Olá {n}, o seu ponto na {b}: entregue {g}, vendido {s}, pago {p}, em falta {r}. Obrigado!
 `.trim().split('\n').forEach(l=>{const a=l.split('|');D[a[0]]=a.slice(1)});
