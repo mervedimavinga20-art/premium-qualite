@@ -349,5 +349,27 @@ fcRate|Vente moy.|Avg sales|Venta media|Venda média
 cLeft2|En stock|In stock|En stock|Em stock
 fcLead|Délai de livraison (jours)|Delivery lead time (days)|Plazo de entrega (días)|Prazo de entrega (dias)
 fcMarg|Marge de sécurité (jours)|Safety margin (days)|Margen de seguridad (días)|Margem de segurança (dias)
+debtTitle|Créances (Bilansi)|Receivables (Bilansi)|Cuentas por cobrar (Bilansi)|Contas a receber (Bilansi)
+debtTotal|Total à recevoir|Total to collect|Total por cobrar|Total a receber
+debtB1|0 à 7 jours|0 to 7 days|0 a 7 días|0 a 7 dias
+debtB2|8 à 30 jours|8 to 30 days|8 a 30 días|8 a 30 dias
+debtB3|Plus de 30 jours|Over 30 days|Más de 30 días|Mais de 30 dias
+toneL|Ton du rappel|Reminder tone|Tono del recordatorio|Tom do lembrete
+tone1|Poli|Polite|Cortés|Cortês
+tone2|Ferme|Firm|Firme|Firme
+tone3|Dernier avis|Final notice|Último aviso|Último aviso
+debtNext|Envoyer le rappel suivant|Send next reminder|Enviar el siguiente recordatorio|Enviar o próximo lembrete
+debtDone|Tous les rappels ont été envoyés|All reminders have been sent|Se enviaron todos los recordatorios|Todos os lembretes foram enviados
+debtNone|Aucune créance en cours.|No outstanding debts.|Sin deudas pendientes.|Sem dívidas pendentes.
+debtAge|impayé depuis {n} j|unpaid for {n} d|impago desde hace {n} d|por pagar há {n} d
+rm2|Bonjour {n}, votre solde de {r} chez {b} est impayé depuis {d} jours. Merci de régler rapidement.|Hello {n}, your balance of {r} at {b} has been unpaid for {d} days. Please pay promptly.|Hola {n}, su saldo de {r} en {b} lleva {d} días impago. Le rogamos pagar pronto.|Olá {n}, o seu saldo de {r} na {b} está por pagar há {d} dias. Agradecemos o pagamento rápido.
+rm3|{n}, dernier rappel : {r} dus chez {b} depuis {d} jours. Merci de régler aujourd’hui ou de nous contacter{p}.|{n}, final reminder: {r} owed at {b} for {d} days. Please pay today or contact us{p}.|{n}, último aviso: {r} adeudados en {b} desde hace {d} días. Pague hoy o contáctenos{p}.|{n}, último aviso: {r} em dívida na {b} há {d} dias. Pague hoje ou contacte-nos{p}.
+noPhone|Pas de numéro pour ce client|No phone number for this customer|Sin número para este cliente|Sem número para este cliente
+limitL|Plafond|Credit limit|Límite|Limite
+limitAsk|Plafond de crédit pour {n} (0 = sans limite) :|Credit limit for {n} (0 = none):|Límite de crédito para {n} (0 = sin límite):|Limite de crédito para {n} (0 = sem limite):
+creditLimit|Plafond dépassé : {d} déjà dû, limite {l}|Limit exceeded: {d} already owed, limit {l}|Límite superado: ya debe {d}, límite {l}|Limite excedido: já deve {d}, limite {l}
+lastRem|Dernier rappel : {d}|Last reminder: {d}|Último recordatorio: {d}|Último lembrete: {d}
+ja_remind|Rappel envoyé|Reminder sent|Recordatorio enviado|Lembrete enviado
+ja_clientLimit|Plafond modifié|Limit changed|Límite modificado|Limite alterado
 waHi|Bonjour {n}, voici votre point chez {b} : remis {g}, vendu {s}, versé {p}, reste à payer {r}. Merci !|Hello {n}, your balance at {b}: given {g}, sold {s}, paid {p}, balance due {r}. Thanks!|Hola {n}, tu situación en {b}: entregado {g}, vendido {s}, pagado {p}, pendiente {r}. ¡Gracias!|Olá {n}, o seu ponto na {b}: entregue {g}, vendido {s}, pago {p}, em falta {r}. Obrigado!
 `.trim().split('\n').forEach(l=>{const a=l.split('|');D[a[0]]=a.slice(1)});

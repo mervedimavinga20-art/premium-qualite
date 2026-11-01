@@ -174,6 +174,7 @@ body.print-doc #docWrap{display:block}
  <h1 data-i="tClients"></h1>
  <div class="seg" style="margin-bottom:12px"><button data-act="go" data-arg="resellers" data-i="tRes"></button><button class="on" data-act="go" data-arg="clients" data-i="tClients"></button></div>
  <div class="card"><div class="fg"><div><label data-i="name"></label><input id="cName"></div><div><label data-i="phone"></label><input id="cPhone" inputmode="tel"></div></div><button class="btn" data-act="addClient" data-i="addClient"></button></div>
+ <div class="card" id="debtCard"><h2 data-i="debtTitle"></h2><div id="debtBox"></div></div>
  <div id="clientList"></div>
 </section>
 <section class="view" id="v-suivi">
@@ -615,6 +616,28 @@ fcRate|Vente moy.|Avg sales|Venta media|Venda média
 cLeft2|En stock|In stock|En stock|Em stock
 fcLead|Délai de livraison (jours)|Delivery lead time (days)|Plazo de entrega (días)|Prazo de entrega (dias)
 fcMarg|Marge de sécurité (jours)|Safety margin (days)|Margen de seguridad (días)|Margem de segurança (dias)
+debtTitle|Créances (Bilansi)|Receivables (Bilansi)|Cuentas por cobrar (Bilansi)|Contas a receber (Bilansi)
+debtTotal|Total à recevoir|Total to collect|Total por cobrar|Total a receber
+debtB1|0 à 7 jours|0 to 7 days|0 a 7 días|0 a 7 dias
+debtB2|8 à 30 jours|8 to 30 days|8 a 30 días|8 a 30 dias
+debtB3|Plus de 30 jours|Over 30 days|Más de 30 días|Mais de 30 dias
+toneL|Ton du rappel|Reminder tone|Tono del recordatorio|Tom do lembrete
+tone1|Poli|Polite|Cortés|Cortês
+tone2|Ferme|Firm|Firme|Firme
+tone3|Dernier avis|Final notice|Último aviso|Último aviso
+debtNext|Envoyer le rappel suivant|Send next reminder|Enviar el siguiente recordatorio|Enviar o próximo lembrete
+debtDone|Tous les rappels ont été envoyés|All reminders have been sent|Se enviaron todos los recordatorios|Todos os lembretes foram enviados
+debtNone|Aucune créance en cours.|No outstanding debts.|Sin deudas pendientes.|Sem dívidas pendentes.
+debtAge|impayé depuis {n} j|unpaid for {n} d|impago desde hace {n} d|por pagar há {n} d
+rm2|Bonjour {n}, votre solde de {r} chez {b} est impayé depuis {d} jours. Merci de régler rapidement.|Hello {n}, your balance of {r} at {b} has been unpaid for {d} days. Please pay promptly.|Hola {n}, su saldo de {r} en {b} lleva {d} días impago. Le rogamos pagar pronto.|Olá {n}, o seu saldo de {r} na {b} está por pagar há {d} dias. Agradecemos o pagamento rápido.
+rm3|{n}, dernier rappel : {r} dus chez {b} depuis {d} jours. Merci de régler aujourd’hui ou de nous contacter{p}.|{n}, final reminder: {r} owed at {b} for {d} days. Please pay today or contact us{p}.|{n}, último aviso: {r} adeudados en {b} desde hace {d} días. Pague hoy o contáctenos{p}.|{n}, último aviso: {r} em dívida na {b} há {d} dias. Pague hoje ou contacte-nos{p}.
+noPhone|Pas de numéro pour ce client|No phone number for this customer|Sin número para este cliente|Sem número para este cliente
+limitL|Plafond|Credit limit|Límite|Limite
+limitAsk|Plafond de crédit pour {n} (0 = sans limite) :|Credit limit for {n} (0 = none):|Límite de crédito para {n} (0 = sin límite):|Limite de crédito para {n} (0 = sem limite):
+creditLimit|Plafond dépassé : {d} déjà dû, limite {l}|Limit exceeded: {d} already owed, limit {l}|Límite superado: ya debe {d}, límite {l}|Limite excedido: já deve {d}, limite {l}
+lastRem|Dernier rappel : {d}|Last reminder: {d}|Último recordatorio: {d}|Último lembrete: {d}
+ja_remind|Rappel envoyé|Reminder sent|Recordatorio enviado|Lembrete enviado
+ja_clientLimit|Plafond modifié|Limit changed|Límite modificado|Limite alterado
 waHi|Bonjour {n}, voici votre point chez {b} : remis {g}, vendu {s}, versé {p}, reste à payer {r}. Merci !|Hello {n}, your balance at {b}: given {g}, sold {s}, paid {p}, balance due {r}. Thanks!|Hola {n}, tu situación en {b}: entregado {g}, vendido {s}, pagado {p}, pendiente {r}. ¡Gracias!|Olá {n}, o seu ponto na {b}: entregue {g}, vendido {s}, pago {p}, em falta {r}. Obrigado!
 `.trim().split('\n').forEach(l=>{const a=l.split('|');D[a[0]]=a.slice(1)});
 const KEY='premium-qualite-v1',KEYS=[KEY];
@@ -803,9 +826,9 @@ function loadZX(){return new Promise((res,rej)=>{if(window.ZXing)return res();co
 const lockedPrem=()=>gated();
 const cDue=id=>state.moves.reduce((s,m)=>m.cid===id&&m.credit?s+m.sold*m.price:s,0)-state.pays.reduce((s,p)=>p.rid==='c:'+id?s+num(p.amount):s,0);
 const cCb=id=>Math.round(state.cbl.reduce((s,x)=>x.cid===id?s+num(x.amount):s,0)*100)/100;
-function renderClients(){const L=$('#clientList');L.innerHTML='';if(!state.clients.length){L.innerHTML='<div class="empty">'+esc(t('noClients'))+'</div>';return}
- state.clients.forEach(c=>{const d=cDue(c.id),cb=cCb(c.id),el=h('div',{class:'rc'});el.innerHTML='<div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><div class="rn">'+esc(c.name)+'</div><span class="bd '+(d>0?'retard':'ok')+'">'+esc(d>0?t('owes')+' '+money(d):t('stOk'))+'</span></div><div class="mu" style="font-size:.8rem">'+esc(c.phone||'')+'</div><div class="rg" style="grid-template-columns:repeat(2,1fr)"><div class="mu">'+esc(t('cashback'))+'<b class="up">'+esc(money(cb))+'</b></div><div class="mu">'+esc(t('cDue'))+'<b class="'+(d>0?'dn':'')+'">'+esc(money(Math.max(0,d)))+'</b></div></div>';
-  const bt=(k,l,cls)=>h('button',{class:'btn sm '+(cls||'g2'),text:l,data:{act:k,id:c.id}});el.append(h('div',{class:'btns',style:'margin:0'},[bt('clientPay',t('encash'),d>0?'':'g2'),bt('clientWA',t('remind')),bt('delClient','×','r')]));L.append(el)})}
+function renderClients(){renderDebts();const L=$('#clientList');L.innerHTML='';if(!state.clients.length){L.innerHTML='<div class="empty">'+esc(t('noClients'))+'</div>';return}
+ state.clients.slice().sort((a,b)=>cDue(b.id)-cDue(a.id)).forEach(c=>{const d=cDue(c.id),cb=cCb(c.id),ag=cAge(c.id),el=h('div',{class:'rc'});el.innerHTML='<div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><div class="rn">'+esc(c.name)+'</div><span class="bd '+(d>0?'retard':'ok')+'">'+esc(d>0?t('owes')+' '+money(d):t('stOk'))+'</span></div><div class="mu" style="font-size:.8rem">'+esc(c.phone||'')+(d>0&&ag>=0?' · '+esc(t('debtAge',{n:ag})):'')+'</div><div class="rg" style="grid-template-columns:repeat(2,1fr)"><div class="mu">'+esc(t('cashback'))+'<b class="up">'+esc(money(cb))+'</b></div><div class="mu">'+esc(t('limitL'))+'<b>'+esc(num(c.limit)>0?money(num(c.limit)):'—')+'</b></div></div>'+(c.rem?'<div class="mu" style="font-size:.75rem">'+esc(t('lastRem',{d:fdate(c.rem)}))+'</div>':'');
+  const bt=(k,l,cls)=>h('button',{class:'btn sm '+(cls||'g2'),text:l,data:{act:k,id:c.id}});const lb=bt('clientLimit',t('limitL'));lb.setAttribute('data-own','');el.append(h('div',{class:'btns',style:'margin:0'},[bt('clientPay',t('encash'),d>0?'':'g2'),bt('clientWA',t('remind')),lb,bt('delClient','×','r')]));L.append(el)})}
 function receiptText(o){const b=state.brand,L=[b.name+(b.phone?' · '+b.phone:''),fdate(todayS()),''];o.lines.forEach(l=>L.push(l.d+' x'+nf(l.q)+' = '+money(l.q*l.p)));if(o.disc>0)L.push(t('rcCb')+' : -'+money(o.disc));L.push('',t('dTotal')+' : '+money(o.net),o.credit?t('rcCredit')+' : '+money(o.due):t(o.pm==='momo'?'rcMomo':'rcPaid'));if(o.cl)L.push(t('rcCbBal')+' : '+money(cCb(o.cl.id)));L.push('',t('rcThanks'));if(b.signature)L.push(b.signature);return L.join('\n')}
 
 async function newClientQ(){if(lockedPrem()){toast(t('premOnly'));showView('premium');return}const n=await ask(t('newClientQ'),{input:1});if(!n||!n.trim())return;const p=await ask(t('newClientPh'),{input:1});const c={id:uid(),name:n.trim(),phone:(p||'').trim()};state.clients.push(c);save();log('addClient',c.name);renderPos();$('#posClient').value=c.id;renderPos()}
@@ -844,6 +867,16 @@ function renderForecast(){const C=$('#fcBody');if(!C)return;
  if(!soon.length){C.innerHTML='<div class="mu" style="font-size:.85rem">'+esc(t('fcOk',{n:L}))+'</div>';return}
  C.innerHTML=soon.slice(0,6).map(x=>{const c=x.days<=3?'dn':x.days<=7?'':'mu',lb=x.st<=0?t('fcOut'):t('fcDays',{n:Math.max(1,Math.round(x.days))});return'<div style="display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid var(--ln)"><span>'+esc(x.r.desc)+' <span class="mu" style="font-size:.78rem">('+esc(nf(Math.round(x.vel*10)/10))+t('fcPerDay')+')</span></span><b class="'+c+'">'+esc(lb)+'</b></div>'}).join('')+'<div class="btns" style="margin:10px 0 0"><button class="btn sm" data-act="fcOrder">'+esc(t('fcOrder'))+'</button></div><div class="mu" style="font-size:.72rem;margin-top:8px">'+esc(t('fcNote'))+'</div>'}
 function fcOrderRows(){return fcList().filter(x=>x.need>0).map(x=>[x.r.desc,nf(x.st),nf(Math.round(x.vel*10)/10)+t('fcPerDay'),nf(x.need)+' '+(x.r.uom||'')])}
+/* ---- Bilansi : créances, ancienneté, rappels ---- */
+const DEBT={tone:1,sent:{}};
+function cAge(id){const ms=state.moves.filter(m=>m.cid===id&&m.credit&&m.date).sort((a,b)=>a.date.localeCompare(b.date));let P=state.pays.reduce((s,p)=>p.rid==='c:'+id?s+num(p.amount):s,0);for(const m of ms){const v=m.sold*m.price,left=v-Math.min(v,Math.max(0,P));P-=v;if(left>0.005)return Math.max(0,dayDiff(m.date,todayS()))}return -1}
+function remindMsg(c){const d=Math.max(0,cAge(c.id)),r=money(Math.max(0,cDue(c.id))),b=state.brand,k=DEBT.tone,p={n:c.name,r,b:b.name,d,p:b.phone?(' '+b.phone):''};return t(k===1?'rcRemind':k===2?'rm2':'rm3',p)}
+function sendRemind(c){if(!c.phone){toast(t('noPhone'));return false}c.rem=todayS();save();log('remind',c.name+' '+money(cDue(c.id)));window.open('https://wa.me/'+waNum(c.phone)+'?text='+encodeURIComponent(remindMsg(c)),'_blank');return true}
+function renderDebts(){const B=$('#debtBox');if(!B)return;const dues=state.clients.map(c=>({c,d:cDue(c.id),a:cAge(c.id)})).filter(x=>x.d>0.005);
+ if(!dues.length){B.innerHTML='<div class="mu" style="font-size:.85rem">'+esc(t('debtNone'))+'</div>';return}
+ const sum=f=>dues.filter(f).reduce((s,x)=>s+x.d,0),tot=sum(()=>true),row=(l,v,cls)=>'<div style="display:flex;justify-content:space-between;padding:3px 0"><span>'+esc(l)+'</span><b class="'+(cls||'')+'">'+esc(money(v))+'</b></div>';
+ const todo=dues.filter(x=>x.c.phone&&!DEBT.sent[x.c.id]).length;
+ B.innerHTML=row(t('debtTotal'),tot,'dn')+row(t('debtB1'),sum(x=>x.a<=7))+row(t('debtB2'),sum(x=>x.a>7&&x.a<=30))+row(t('debtB3'),sum(x=>x.a>30),'dn')+'<div class="mu" style="font-size:.78rem;margin:8px 0 4px">'+esc(t('toneL'))+'</div><div class="seg" id="toneSeg">'+[1,2,3].map(k=>'<button data-act="debtTone" data-arg="'+k+'" class="'+(DEBT.tone===k?'on':'')+'">'+esc(t('tone'+k))+'</button>').join('')+'</div><div class="btns" style="margin:10px 0 0"><button class="btn" data-act="debtNext">'+esc(t('debtNext'))+' ('+todo+')</button></div>'}
 /* ---- renderers ---- */
 const ICON={home:'<path d="M3 11 12 3l9 8v10H3z"/>',pos:'<path d="M3 4h2l2.5 11h10L20 7H6"/><circle cx="9" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/>',sheet:'<path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/>',resellers:'<circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-4 3-6 7-6s7 2 7 6"/><path d="M17 5a3 3 0 0 1 0 6M19 14c2 1 3 3 3 6"/>',suivi:'<path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h5"/>',stats:'<path d="M3 17l5-6 4 3 8-9"/><path d="M15 5h5v5"/>',settings:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>'};
 const VIEWS=['home','pos','sheet','resellers','suivi','stats','settings'];
@@ -1042,9 +1075,12 @@ Object.assign(ACT,{
  zPrint(){const date=$('#zDate').value||todayS(),sc=zScope(),o=zCalc(date,sc),c=state.closures.find(x=>x.date===date&&x.scope===sc),r=[[t('zCash'),money(o.cash)],[t('zMomo'),money(o.momo)],[t('zCred'),money(o.credit)],[t('zSales'),money(o.total)]];if(o.debt)r.push([t('zDebt'),money(o.debt)]);r.push([t('zExp'),money(o.exp)]);if(c)r.push([t('zCount'),money(c.counted)],[t('zGap'),gm(c.gap)],['',t('zDone',{n:c.by||'—'})]);showDoc(t('zTitle')+' — '+fdate(date),dk(r))},
  fcOrder(){if(gated()){showView('premium');return}const r=fcOrderRows();if(!r.length){toast(t('fcNone'));return}showDoc(t('fcDoc')+' — '+fdate(todayS()),dt([t('cDesc'),t('cLeft2'),t('fcRate'),t('fcQty')],r)+'<div class="btns"><button class="btn sm" data-act="fcShare">'+esc(t('zShare'))+'</button></div>')},
  fcShare(){const r=fcOrderRows();window.open('https://wa.me/?text='+encodeURIComponent(t('fcDoc')+' — '+state.brand.name+'\n'+fdate(todayS())+'\n\n'+r.map(x=>'• '+x[0]+' : '+x[3]).join('\n')),'_blank')},
+ debtTone(a){DEBT.tone=num(a)||1;renderDebts()},
+ debtNext(){const l=state.clients.map(c=>({c,d:cDue(c.id)})).filter(x=>x.d>0.005&&x.c.phone&&!DEBT.sent[x.c.id]).sort((a,b)=>b.d-a.d);if(!l.length){toast(t('debtDone'));return}const c=l[0].c;DEBT.sent[c.id]=1;sendRemind(c);renderClients()},
+ async clientLimit(a,el){if(lockedPrem()){toast(t('premOnly'));showView('premium');return}const c=state.clients.find(x=>x.id===el.dataset.id);if(!c)return;const v=await ask(t('limitAsk',{n:c.name}),{input:1,def:String(num(c.limit)||0)});if(v==null||v==='')return;c.limit=Math.max(0,num(v));save();log('clientLimit',c.name+' '+money(c.limit));renderClients()},
  posPayMode(a){POS.pay=a;renderPos()},
  posPay(){if(!POS.cart.length)return;const cl=state.clients.find(x=>x.id===$('#posClient').value),credit=POS.pay==='credit';
-  if(credit&&!cl){toast(t('needClient'));return}if((cl||credit)&&lockedPrem()){toast(t('premOnly'));showView('premium');return}
+  if(credit&&!cl){toast(t('needClient'));return}if(credit&&cl&&num(cl.limit)>0){const tt=POS.cart.reduce((s,l)=>s+l.q*l.p,0);if(cDue(cl.id)+tt>num(cl.limit)){toast(t('creditLimit',{d:money(Math.max(0,cDue(cl.id))),l:money(num(cl.limit))}));return}}if((cl||credit)&&lockedPrem()){toast(t('premOnly'));showView('premium');return}
   for(const l of POS.cart){const r=allRows().find(x=>x.id===l.id);if(r&&l.q>rowStock(r)){toast(t('posStockLow',{n:r.desc,q:nf(rowStock(r))}));return}}
   const lines=[],ex={cid:cl?cl.id:'',credit:credit,pm:credit?'credit':(POS.pay==='momo'?'momo':'cash'),by:CL.shop?CL.email:''};let gross=0;
   POS.cart.forEach(l=>{const r=allRows().find(x=>x.id===l.id);if(!r)return;state.moves.unshift(Object.assign({id:uid(),date:todayS(),rid:'shop',aid:r.id,item:r.desc,given:l.q,ret:0,sold:l.q,price:l.p},ex));gross+=l.q*l.p;lines.push({d:r.desc,q:l.q,p:l.p})});
@@ -1058,7 +1094,7 @@ Object.assign(ACT,{
  async rcCopy(){if(!POS.rc)return;try{await navigator.clipboard.writeText(POS.rc.text);toast(t('copied'))}catch(e){const r=document.createRange();r.selectNodeContents($('#rcText'));const s=getSelection();s.removeAllRanges();s.addRange(r)}},
  addClient(){if(lockedPrem()){toast(t('premOnly'));showView('premium');return}const n=$('#cName').value.trim();if(!n){toast(t('tNeed'));return}state.clients.push({id:uid(),name:n,phone:$('#cPhone').value.trim()});$('#cName').value='';$('#cPhone').value='';save();log('addClient',n);renderClients()},
  async clientPay(a,el){if(lockedPrem()){toast(t('premOnly'));showView('premium');return}const c=state.clients.find(x=>x.id===el.dataset.id);if(!c)return;const v=await ask(t('cAmountAsk',{n:c.name}),{input:1,def:String(Math.max(0,Math.round(cDue(c.id)*100)/100))});const am=num(v);if(!am||am<=0)return;state.pays.push({id:uid(),date:todayS(),rid:'c:'+c.id,amount:am,note:'client'});save();log('clientPay',c.name+' '+money(am));renderClients();renderHome()},
- clientWA(a,el){const c=state.clients.find(x=>x.id===el.dataset.id);if(!c)return;const msg=t('rcRemind',{n:c.name,r:money(Math.max(0,cDue(c.id))),b:state.brand.name});window.open('https://wa.me/'+(c.phone?waNum(c.phone):'')+'?text='+encodeURIComponent(msg),'_blank')},
+ clientWA(a,el){const c=state.clients.find(x=>x.id===el.dataset.id);if(!c)return;sendRemind(c);renderClients();return;const msg=t('rcRemind',{n:c.name,r:money(Math.max(0,cDue(c.id))),b:state.brand.name});window.open('https://wa.me/'+(c.phone?waNum(c.phone):'')+'?text='+encodeURIComponent(msg),'_blank')},
  async delClient(a,el){if(!await ask(t('cfDelClient'),{danger:1}))return;const id=el.dataset.id;state.clients=state.clients.filter(x=>x.id!==id);state.moves.forEach(m=>{if(m.cid===id)m.cid=''});save();log('delClient','');renderClients()}
 });
 $('#posCode').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();ACT.posAdd()}});
