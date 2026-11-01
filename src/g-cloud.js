@@ -1,5 +1,5 @@
 /* ---- cloud (Supabase) : comptes, synchro, rôles, journal ---- */
-const SB_URL='https://rizfkydkxjxlicyrfyvy.supabase.co',SB_KEY='sb_publishable_eaAGJ39GCfOf39NtIr3JRg_UJ_AB38X';
+const SB_URL='https://cjrgqnbqeslrcdluasll.supabase.co',SB_KEY='sb_publishable_yGbdvEskKhhbaqr2Iz1nKA_VgIZcGMz';
 const LOCALK=['pin','pinLen','lang','langDone','lastExport'];
 const isMgr=()=>!!CL.shop&&(CL.role==='manager'||CL.role==='seller');
 const isSeller=()=>!!CL.shop&&CL.role==='seller';
@@ -36,14 +36,14 @@ async function sync(){if(!sb||!CL.shop||!cloudUser)return;if(syncing){syncAgain=
 function log(a,d){if(!CL.shop)return;jq.push({a,d:String(d||'').slice(0,300)});saveCL();clearTimeout(jT);jT=setTimeout(flushJ,800)}
 async function flushJ(){if(!sb||!cloudUser||!CL.shop||!jq.length)return;const b=jq.slice(0,50);try{const r=await sb.from('journal').insert(b.map(x=>({shop_id:CL.shop,email:cloudUser.email,role:CL.role,action:x.a,detail:x.d})));if(!r.error){jq=jq.slice(b.length);saveCL();if(jq.length)flushJ()}}catch(e){}}
 async function loadJournal(){const body=$('#jBody');$('#jHead').innerHTML=['jWhen','jWho','jWhat','jDetail'].map(k=>'<th>'+esc(t(k))+'</th>').join('');
- if(!sb||!CL.shop){body.innerHTML='<tr><td colspan="4" class="empty">'+esc(t('jEmpty'))+'</td></tr>';return}await flushJ();
+ if(!sb||!CL.shop){body.innerHTML='<tr><td colspan="4" class="empty">'+esc(t('jEmpty'))+'</td></tr>';return}body.innerHTML='<tr><td colspan="4"><div class="sk" style="height:18px;margin:8px 0"></div><div class="sk" style="height:18px;margin:8px 0"></div><div class="sk" style="height:18px;margin:8px 0"></div></td></tr>';await flushJ();
  const r=await sb.from('journal').select('at,email,role,action,detail').eq('shop_id',CL.shop).order('at',{ascending:false}).limit(300);const rows=(r.data||[]);const f=$('#jFilter'),fv=f.value;f.innerHTML='<option value="">'+esc(t('jAll'))+'</option>';[...new Set(rows.map(x=>x.email))].forEach(e=>f.append(h('option',{value:e,text:e})));f.value=fv;
  const sh=rows.filter(x=>!f.value||x.email===f.value);body.innerHTML=sh.length?sh.map(x=>'<tr><td>'+esc(new Date(x.at).toLocaleString(LOC()))+'</td><td>'+esc(x.email)+' <span class="mu">('+esc(roleLbl(x.role))+')</span></td><td>'+esc(D['ja_'+x.action]?t('ja_'+x.action):x.action)+'</td><td style="white-space:normal;min-width:180px">'+esc(x.detail||'')+'</td></tr>').join(''):'<tr><td colspan="4" class="empty">'+esc(t('jEmpty'))+'</td></tr>'}
 /* comptes */
 function loadSB(){return new Promise((res,rej)=>{if(window.supabase)return res();const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js';s.onload=res;s.onerror=()=>rej('offline');document.head.append(s)})}
-async function cloudInit(){try{await loadSB()}catch(e){cstat='err';updCloudUI();return}
+async function cloudInit(){try{try{await loadSB()}catch(e){cstat='err';updCloudUI();return}
  sb=window.supabase.createClient(SB_URL,SB_KEY);const s=await sb.auth.getSession();cloudUser=s.data&&s.data.session?s.data.session.user:null;
- sb.auth.onAuthStateChange((ev,ss)=>{cloudUser=ss?ss.user:null});if(cloudUser)await attach();updCloudUI()}
+ sb.auth.onAuthStateChange((ev,ss)=>{cloudUser=ss?ss.user:null});if(cloudUser)await attach();updCloudUI()}finally{document.body.classList.remove('booting')}}
 function subscribe(){try{if(chan)sb.removeChannel(chan);chan=sb.channel('shop-'+CL.shop).on('postgres_changes',{event:'UPDATE',schema:'public',table:'shops',filter:'id=eq.'+CL.shop},()=>scheduleSync(300)).subscribe()}catch(e){}}
 function applyRole(){document.body.classList.toggle('role-manager',isMgr());document.body.classList.toggle('role-seller',isSeller());if(isSeller()&&!SELL_OK.includes(state.view))showView('pos')}
 async function attach(){const r=await sb.from('members').select('shop_id,role,email').eq('user_id',cloudUser.id);if(r.error){cstat='err';return}

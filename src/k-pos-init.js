@@ -15,7 +15,7 @@ Object.assign(ACT,{
   const net=gross-disc;let earned=0;if(cl){earned=Math.round(net*num(state.set.loyaltyPct)/100*100)/100;if(earned>0)state.cbl.push({id:uid(),cid:cl.id,amount:earned,date:todayS()})}
   const txt=receiptText({lines,disc,net,credit,due:cl?Math.max(0,cDue(cl.id)):0,cl});POS.rc={text:txt,phone:cl?cl.phone:''};
   save();log('sale',lines.map(x=>x.d+' x'+x.q).join(', ')+' = '+money(net)+(cl?' · '+cl.name:'')+(credit?' (crédit)':''));
-  $('#rcText').textContent=txt;$('#rcCard').style.display='';$('#posLast').textContent='';toast(t('posSold',{t:money(net)}));if(navigator.vibrate)try{navigator.vibrate([40,40,40])}catch(e){}
+  $('#rcText').textContent=txt;$('#rcCard').style.display='';$('#posLast').textContent='';toast(t('posSold',{t:money(net)}));buzz([40,40,40]);
   POS.cart=[];POS.pay='cash';renderPos();renderHome()},
  rcWA(){if(!POS.rc)return;window.open('https://wa.me/'+(POS.rc.phone?waNum(POS.rc.phone):'')+'?text='+encodeURIComponent(POS.rc.text),'_blank')},
  async rcCopy(){if(!POS.rc)return;try{await navigator.clipboard.writeText(POS.rc.text);toast(t('copied'))}catch(e){const r=document.createRange();r.selectNodeContents($('#rcText'));const s=getSelection();s.removeAllRanges();s.addRange(r)}},
@@ -26,3 +26,4 @@ Object.assign(ACT,{
 });
 $('#posCode').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();ACT.posAdd()}});
 $('#posClient').addEventListener('change',renderPos);
+document.addEventListener('click',e=>{if(e.target.closest('.btn,#tabs button,.seg button'))buzz(8)});

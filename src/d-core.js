@@ -40,6 +40,8 @@ function restore(s){restoring=true;Object.assign(state,JSON.parse(s));lastT=0;la
 function undo(){if(!UND.length)return;RED.push(last);restore(UND.pop());toast(t('tUndo'))}
 function redo(){if(!RED.length)return;UND.push(last);restore(RED.pop());toast(t('tRedo'))}
 /* ---- ui helpers ---- */
+function buzz(p){try{if(navigator.vibrate)navigator.vibrate(p)}catch(e){}}
+try{if(JSON.parse(localStorage.getItem('pq-cloud')||'{}').shop){document.body.classList.add('booting');setTimeout(()=>document.body.classList.remove('booting'),5000)}}catch(e){}
 let toT=0;function toast(m){const e=$('#toast');e.textContent=m;e.style.display='block';clearTimeout(toT);toT=setTimeout(()=>e.style.display='none',2200)}
 function ask(msg,o){o=o||{};return new Promise(res=>{const ov=$('#dlg'),inp=$('#dlgIn');$('#dlgMsg').textContent=msg;inp.style.display=o.input?'block':'none';inp.value=o.def||'';$('#dlgYes').textContent=o.yes||t(o.input?'ok':'yes');$('#dlgNo').textContent=o.no||t(o.input?'cancel':'no');$('#dlgYes').className='btn'+(o.danger?' r':'');ov.classList.add('on');setTimeout(()=>(o.input?inp:$('#dlgNo')).focus(),30);const fin=v=>{ov.classList.remove('on');$('#dlgYes').onclick=$('#dlgNo').onclick=null;ov.onkeydown=null;res(v)};$('#dlgYes').onclick=()=>fin(o.input?inp.value:true);$('#dlgNo').onclick=()=>fin(o.input?null:false);ov.onkeydown=e=>{if(e.key==='Escape')fin(o.input?null:false);if(e.key==='Enter'&&o.input)fin(inp.value)}})}
 const cur=()=>state.books.find(b=>b.id===state.cur)||state.books[0];

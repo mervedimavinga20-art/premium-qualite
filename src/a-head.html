@@ -14,6 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
 <style>
+.sk{background:linear-gradient(90deg,var(--p2) 25%,#262c24 50%,var(--p2) 75%);background-size:200% 100%;animation:skm 1.2s linear infinite;border-radius:10px}@keyframes skm{to{background-position:-200% 0}}#bootSk{display:none;padding:0 0 12px}body.booting #bootSk{display:block}@media(prefers-reduced-motion:reduce){.sk{animation:none}}
 :root{--bg:#090a09;--p:#121411;--p2:#1a1d19;--ln:#272c26;--g:#14b865;--gd:#0c5b34;--up:#2dff8a;--dn:#ff4d52;--tx:#f1f1ec;--mu:#8f968d;--f:'Anton','Impact','Haettenschweiler','Arial Black',sans-serif}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html{font-size:16px}
@@ -143,3 +144,4 @@ body.print-doc #docWrap{display:block}
 </header>
 <nav class="tabs" id="tabs"></nav>
 <div id="app"><main>
+<div id="bootSk"><div class="sk" style="height:22px;width:55%;margin:10px 0"></div><div class="sk" style="height:84px;margin-bottom:10px"></div><div class="sk" style="height:84px;margin-bottom:10px"></div><div class="sk" style="height:140px"></div></div>
