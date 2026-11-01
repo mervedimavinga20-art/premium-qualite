@@ -15,7 +15,7 @@ const LOC=()=>LANGS[LI()][2];
 function t(k,p){const a=D[k];let s=a?(a[LI()]||a[0]):k;if(p)for(const x in p)s=s.split('{'+x+'}').join(p[x]);return s}
 function applyI18n(){document.documentElement.lang=LANG;$$('[data-i]').forEach(e=>e.textContent=t(e.dataset.i));$$('[data-ph]').forEach(e=>e.placeholder=t(e.dataset.ph));$$('[data-ti]').forEach(e=>{e.title=t(e.dataset.ti);e.setAttribute('aria-label',t(e.dataset.ti))});$('#bLang').textContent=LANG.toUpperCase()}
 /* ---- state ---- */
-const DEF=()=>({v:3,brand:{name:'PREMIUM QUALITÉ',slogan:'Gérez. Vendez. Encaissez.',signature:'Propulsé par PREMIUM QUALITÉ',logo:'',city:'',email:'',phone:'',addr:''},set:{owner:'',units:['Pc','kg','L','Carton'],cats:['Mode','Alimentation','Cosmétiques','Quincaillerie'],manager:'',monnaie:'$',taux:2800,lowStock:5,lateDays:14,salaryPct:20,loyaltyPct:2,basis:'prevu',pin:'',lang:'fr',langDone:false,pinLen:4},books:[{id:'b1',label:'Fiche 1',rows:[]}],cur:'b1',resellers:[],moves:[],pays:[],clients:[],cbl:[],view:'home'});
+const DEF=()=>({v:3,brand:{name:'PREMIUM QUALITÉ',slogan:'Gérez. Vendez. Encaissez.',signature:'Propulsé par PREMIUM QUALITÉ',logo:'',city:'',email:'',phone:'',addr:''},set:{owner:'',units:['Pc','kg','L','Carton'],cats:['Mode','Alimentation','Cosmétiques','Quincaillerie'],manager:'',monnaie:'$',taux:2800,lowStock:5,lateDays:14,salaryPct:20,loyaltyPct:2,basis:'prevu',pin:'',lang:'fr',langDone:false,pinLen:4},books:[{id:'b1',label:'Fiche 1',rows:[]}],cur:'b1',resellers:[],moves:[],pays:[],clients:[],cbl:[],closures:[],view:'home'});
 let state=DEF(),noFlush=false;
 function fixup(s){const d=DEF();s.brand=Object.assign(d.brand,s.brand||{});s.set=Object.assign(d.set,s.set||{});s.v=3;
  if(!Array.isArray(s.books)||!s.books.length)s.books=d.books;
@@ -23,7 +23,7 @@ function fixup(s){const d=DEF();s.brand=Object.assign(d.brand,s.brand||{});s.set
  if(!s.books.some(b=>b.id===s.cur))s.cur=s.books[0].id;
  s.resellers=(s.resellers||[]).map(r=>Object.assign({id:uid(),name:'',phone:'',zone:'',blocked:false},r));
  s.moves=(s.moves||[]).map(m=>{m.id=m.id||uid();m.given=num(m.given);m.ret=num(m.ret);m.sold=num(m.sold);m.price=num(m.price);m.item=m.item||'';if(m.aid==null){const r=s.books.flatMap(b=>b.rows).find(r=>r.desc&&r.desc.toLowerCase()===m.item.toLowerCase());m.aid=r?r.id:''}return m});
- s.pays=s.pays||[];s.clients=(s.clients||[]).map(c=>Object.assign({id:uid(),name:'',phone:''},c));s.cbl=s.cbl||[];if(!s.view||s.view==='calc')s.view='home';return s}
+ s.pays=s.pays||[];s.clients=(s.clients||[]).map(c=>Object.assign({id:uid(),name:'',phone:''},c));s.cbl=s.cbl||[];s.closures=s.closures||[];if(!s.view||s.view==='calc')s.view='home';return s}
 function migrate(raw,key){let s=JSON.parse(raw);if(key==='stock-vetements-v1'||s.info){const i=s.info||{};const n={set:{monnaie:i.monnaie||'$',taux:i.taux||2800,manager:i.manager||''},books:[{id:'b1',label:i.mois||'Fiche 1',rows:s.rows||[]}],cur:'b1',resellers:s.resellers||[],moves:[],pays:[]};(s.suivi||[]).forEach(m=>{n.moves.push({id:m.id,date:m.date,rid:m.rid,item:m.item,given:m.given,ret:0,sold:m.sold,price:m.price});if(num(m.paid)>0)n.pays.push({id:uid(),date:m.date,rid:m.rid,amount:num(m.paid),note:''})});s=n}return fixup(s)}
 function load(){for(const k of KEYS){try{const r=localStorage.getItem(k);if(r){state=migrate(r,k);return}}catch(e){}}state=fixup(DEF())}
 let svT=0;
@@ -32,7 +32,7 @@ function save(){touch();scheduleSync(1500);clearTimeout(svT);svT=setTimeout(flus
 function flush(){if(noFlush)return;try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
 addEventListener('pagehide',flush);
 /* ---- undo / redo ---- */
-const snap=()=>JSON.stringify({books:state.books,cur:state.cur,resellers:state.resellers,moves:state.moves,pays:state.pays,clients:state.clients,cbl:state.cbl});
+const snap=()=>JSON.stringify({books:state.books,cur:state.cur,resellers:state.resellers,moves:state.moves,pays:state.pays,clients:state.clients,cbl:state.cbl,closures:state.closures});
 let last='',lastT=0,UND=[],RED=[],restoring=false;
 function touch(){if(restoring)return;const s=snap();if(s===last)return;const n=Date.now();if(n-lastT>700){UND.push(last);if(UND.length>100)UND.shift()}lastT=n;last=s;RED=[];updUR()}
 function updUR(){$('#bUndo').disabled=!UND.length;$('#bRedo').disabled=!RED.length}

@@ -7,21 +7,21 @@ const roleLbl=r=>t(r==='owner'?'cRoleO':r==='seller'?'cRoleS':'cRoleM');
 const SELL_OK=['pos','sheet','settings'];
 function loadCL(){try{const r=localStorage.getItem('pq-cloud');if(r)Object.assign(CL,JSON.parse(r))}catch(e){}try{jq=JSON.parse(localStorage.getItem('pq-jq')||'[]')}catch(e){}}
 function saveCL(){try{localStorage.setItem('pq-cloud',JSON.stringify(CL));localStorage.setItem('pq-jq',JSON.stringify(jq.slice(-500)))}catch(e){}}
-function pack(){const set=Object.assign({},state.set);LOCALK.forEach(k=>delete set[k]);return JSON.parse(JSON.stringify({brand:state.brand,set,books:state.books,resellers:state.resellers,moves:state.moves,pays:state.pays,clients:state.clients,cbl:state.cbl}))}
-function flat(d){const c={books:{},rows:{},resellers:{},moves:{},pays:{},clients:{},cbl:{},kv:{}};(d.books||[]).forEach(b=>{const x=Object.assign({},b);delete x.rows;c.books[b.id]=JSON.stringify(x);(b.rows||[]).forEach(r=>c.rows[r.id]=JSON.stringify(Object.assign({},r,{bid:b.id})))});['resellers','moves','pays','clients','cbl'].forEach(k=>(d[k]||[]).forEach(x=>c[k][x.id]=JSON.stringify(x)));['brand','set'].forEach(g=>Object.keys(d[g]||{}).forEach(k=>c.kv[g+'.'+k]=JSON.stringify(d[g][k])));return c}
+function pack(){const set=Object.assign({},state.set);LOCALK.forEach(k=>delete set[k]);return JSON.parse(JSON.stringify({brand:state.brand,set,books:state.books,resellers:state.resellers,moves:state.moves,pays:state.pays,clients:state.clients,cbl:state.cbl,closures:state.closures}))}
+function flat(d){const c={books:{},rows:{},resellers:{},moves:{},pays:{},clients:{},cbl:{},closures:{},kv:{}};(d.books||[]).forEach(b=>{const x=Object.assign({},b);delete x.rows;c.books[b.id]=JSON.stringify(x);(b.rows||[]).forEach(r=>c.rows[r.id]=JSON.stringify(Object.assign({},r,{bid:b.id})))});['resellers','moves','pays','clients','cbl','closures'].forEach(k=>(d[k]||[]).forEach(x=>c[k][x.id]=JSON.stringify(x)));['brand','set'].forEach(g=>Object.keys(d[g]||{}).forEach(k=>c.kv[g+'.'+k]=JSON.stringify(d[g][k])));return c}
 function m3(b,l,r){const o={};new Set([...Object.keys(b),...Object.keys(l),...Object.keys(r)]).forEach(id=>{const v=l[id]===b[id]?r[id]:l[id];if(v!==undefined)o[id]=v});return o}
 function sameMap(a,b){const k=Object.keys(a);return k.length===Object.keys(b).length&&k.every(x=>a[x]===b[x])}
 function sameFlat(a,b){return Object.keys(a).every(c=>sameMap(a[c],b[c]))}
 function mergeDocs(base,loc,rem){const B=flat(base),L=flat(loc),R=flat(rem),M={};Object.keys(B).forEach(c=>M[c]=m3(B[c],L[c],R[c]));
  const ord=(key)=>{const seen=[];[rem,loc].forEach(d=>(d[key]||[]).forEach(x=>{if(!seen.includes(x.id))seen.push(x.id)}));return seen};
- const doc={brand:{},set:{},books:[],resellers:[],moves:[],pays:[],clients:[],cbl:[]};
+ const doc={brand:{},set:{},books:[],resellers:[],moves:[],pays:[],clients:[],cbl:[],closures:[]};
  Object.keys(M.kv).forEach(k=>{const i=k.indexOf('.');doc[k.slice(0,i)][k.slice(i+1)]=JSON.parse(M.kv[k])});
  ord('books').forEach(id=>{if(M.books[id])doc.books.push(Object.assign(JSON.parse(M.books[id]),{rows:[]}))});
  const rowIds=[];[rem,loc].forEach(d=>(d.books||[]).forEach(b=>(b.rows||[]).forEach(r=>{if(!rowIds.includes(r.id))rowIds.push(r.id)})));
  rowIds.forEach(id=>{if(!M.rows[id])return;const r=JSON.parse(M.rows[id]),b=doc.books.find(x=>x.id===r.bid);if(b){delete r.bid;b.rows.push(r)}});
- ['resellers','moves','pays','clients','cbl'].forEach(k=>ord(k).forEach(id=>{if(M[k][id])doc[k].push(JSON.parse(M[k][id]))}));return doc}
+ ['resellers','moves','pays','clients','cbl','closures'].forEach(k=>ord(k).forEach(id=>{if(M[k][id])doc[k].push(JSON.parse(M[k][id]))}));return doc}
 const clone=o=>JSON.parse(JSON.stringify(o));
-function setDoc(d){d=clone(d);restoring=true;const keep={};LOCALK.forEach(k=>keep[k]=state.set[k]);const cur0=state.cur;state.brand=Object.assign({},d.brand);state.set=Object.assign({},d.set,keep);state.books=d.books;state.resellers=d.resellers;state.moves=d.moves;state.pays=d.pays;state.clients=d.clients||[];state.cbl=d.cbl||[];state.cur=cur0;fixup(state);last=snap();flush();restoring=false}
+function setDoc(d){d=clone(d);restoring=true;const keep={};LOCALK.forEach(k=>keep[k]=state.set[k]);const cur0=state.cur;state.brand=Object.assign({},d.brand);state.set=Object.assign({},d.set,keep);state.books=d.books;state.resellers=d.resellers;state.moves=d.moves;state.pays=d.pays;state.clients=d.clients||[];state.cbl=d.cbl||[];state.closures=d.closures||[];state.cur=cur0;fixup(state);last=snap();flush();restoring=false}
 const typing=()=>{const a=document.activeElement;return a&&/^(INPUT|SELECT|TEXTAREA)$/.test(a.tagName)&&!a.closest('#dlg,#lock')&&a.closest('#app')};
 const hasLocalData=()=>state.books.some(b=>b.rows.length)||state.resellers.length||state.moves.length||state.pays.length;
 function scheduleSync(ms){if(!sb||!CL.shop||!cloudUser)return;clearTimeout(syncT);syncT=setTimeout(sync,ms||0)}

@@ -313,5 +313,26 @@ dayNone|Aucune vente aujourd'hui.|No sales today.|Sin ventas hoy.|Sem vendas hoj
 dayMe|Moi (local)|Me (local)|Yo (local)|Eu (local)
 newClientQ|Nom du client :|Customer name:|Nombre del cliente:|Nome do cliente:
 newClientPh|Téléphone (facultatif) :|Phone (optional):|Teléfono (opcional):|Telefone (opcional):
+zTitle|Clôture de caisse (Rapport Z)|Cash-up (Z report)|Cierre de caja (Informe Z)|Fecho de caixa (Relatório Z)
+payMomo|Mobile Money|Mobile Money|Mobile Money|Mobile Money
+rcMomo|Payé par Mobile Money|Paid by Mobile Money|Pagado por Mobile Money|Pago por Mobile Money
+zCash|Espèces|Cash|Efectivo|Dinheiro
+zMomo|Mobile Money|Mobile Money|Mobile Money|Mobile Money
+zCred|Crédits accordés|Credit given|Créditos concedidos|Créditos concedidos
+zSales|Total des ventes|Total sales|Total de ventas|Total de vendas
+zDebt|Créances encaissées|Debts collected|Deudas cobradas|Dívidas cobradas
+zExp|Espèces attendues en caisse|Expected cash in drawer|Efectivo esperado en caja|Dinheiro esperado em caixa
+zCount|Espèces comptées|Cash counted|Efectivo contado|Dinheiro contado
+zGap|Écart|Difference|Diferencia|Diferença
+zDo|Clôturer la journée|Close the day|Cerrar el día|Fechar o dia
+zDone|Journée clôturée par {n}|Day closed by {n}|Día cerrado por {n}|Dia fechado por {n}
+zNeed|Saisissez les espèces comptées|Enter the cash counted|Introduce el efectivo contado|Introduza o dinheiro contado
+zShare|Envoyer (WhatsApp)|Send (WhatsApp)|Enviar (WhatsApp)|Enviar (WhatsApp)
+zPrint|Imprimer|Print|Imprimir|Imprimir
+zReopen|Rouvrir|Reopen|Reabrir|Reabrir
+zMine|Vos ventes|Your sales|Tus ventas|As suas vendas
+zAll|Toute la boutique|Whole shop|Toda la tienda|Toda a loja
+ja_zClose|Caisse clôturée|Cash-up closed|Caja cerrada|Caixa fechada
+ja_zReopen|Clôture rouverte|Cash-up reopened|Cierre reabierto|Fecho reaberto
 waHi|Bonjour {n}, voici votre point chez {b} : remis {g}, vendu {s}, versé {p}, reste à payer {r}. Merci !|Hello {n}, your balance at {b}: given {g}, sold {s}, paid {p}, balance due {r}. Thanks!|Hola {n}, tu situación en {b}: entregado {g}, vendido {s}, pagado {p}, pendiente {r}. ¡Gracias!|Olá {n}, o seu ponto na {b}: entregue {g}, vendido {s}, pago {p}, em falta {r}. Obrigado!
 `.trim().split('\n').forEach(l=>{const a=l.split('|');D[a[0]]=a.slice(1)});

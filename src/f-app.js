@@ -63,7 +63,7 @@ const ACT={
  exportData(){const b=new Blob([JSON.stringify(state,null,1)],{type:'application/json'}),a=h('a',{href:URL.createObjectURL(b),download:'premium-qualite-'+todayS()+'.json'});document.body.append(a);a.click();a.remove();state.set.lastExport=todayS()},
  async shareData(){const f=new File([JSON.stringify(state)],'premium-qualite-'+todayS()+'.json',{type:'application/json'});if(navigator.canShare&&navigator.canShare({files:[f]}))try{await navigator.share({files:[f],title:state.brand.name})}catch(e){}else ACT.exportData()},
  async demo(){if(!await ask(t('cfDemo'),{danger:1}))return;demo();save();renderAll()},
- async wipe(){if(!await ask(t('cfWipe'),{danger:1}))return;const d=DEF();state.books=d.books;state.cur='b1';state.resellers=[];state.moves=[];state.pays=[];state.clients=[];state.cbl=[];save();renderAll()},
+ async wipe(){if(!await ask(t('cfWipe'),{danger:1}))return;const d=DEF();state.books=d.books;state.cur='b1';state.resellers=[];state.moves=[];state.pays=[];state.clients=[];state.cbl=[];state.closures=[];save();renderAll()},
  cLogin(){cAuth('in')},cSignup(){cAuth('up')},cSync(){scheduleSync(0)},
  async cOut(){try{if(sb)await sb.auth.signOut()}catch(e){}cloudUser=null;CL={shop:'',rev:0,base:null,role:'',email:''};jq=[];saveCL();cstat='off';applyRole();updCloudUI()},
  async cCreate(){if(!await needSB())return;try{const r=await sb.rpc('create_shop',{n:state.brand.name,d:pack()});if(r.error)throw r.error;CL={shop:r.data,rev:0,base:clone(pack()),role:'owner',email:cloudUser.email};saveCL();subscribe();cstat='ok';log('login',CL.email);toast(t('cMade'));PLN.plan='free';PLN.until=null;updCloudUI();loadPlan()}catch(e){authErr(e)}},

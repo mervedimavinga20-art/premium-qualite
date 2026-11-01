@@ -85,12 +85,13 @@
   <div class="fg"><div><label data-i="posCodeInput"></label><input id="posCode" list="dlItems" autocomplete="off"></div><div><label data-i="cQty"></label><input id="posQty" type="number" inputmode="decimal" min="0" value="1"></div></div>
   <button class="btn sm" data-act="posAdd" data-i="add"></button>
  </div>
- <div class="card" id="cartCard"><h2 data-i="cart"></h2><div class="fg"><div><label data-i="client"></label><div style="display:flex;gap:6px"><select id="posClient"></select><button class="btn sm g2" data-act="posNewClient" style="flex:none">+</button></div></div><div><label data-i="payBy"></label><div class="seg" id="posPayMode"><button data-act="posPayMode" data-arg="cash" class="on" data-i="payCash"></button><button data-act="posPayMode" data-arg="credit" data-i="payCredit"></button></div></div></div>
+ <div class="card" id="cartCard"><h2 data-i="cart"></h2><div class="fg"><div><label data-i="client"></label><div style="display:flex;gap:6px"><select id="posClient"></select><button class="btn sm g2" data-act="posNewClient" style="flex:none">+</button></div></div><div><label data-i="payBy"></label><div class="seg" id="posPayMode"><button data-act="posPayMode" data-arg="cash" class="on" data-i="payCash"></button><button data-act="posPayMode" data-arg="momo" data-i="payMomo"></button><button data-act="posPayMode" data-arg="credit" data-i="payCredit"></button></div></div></div>
   <label id="cbRow" style="display:none;text-transform:none;letter-spacing:0;font-size:.85rem;color:var(--tx)"><input id="posCb" type="checkbox" style="width:auto;margin-right:8px"><span id="cbTxt"></span></label>
   <div id="cart"></div><div class="big" id="cartTotal" style="font-size:1.5rem;margin:10px 0"></div><div class="btns" style="margin:0"><button class="btn" data-act="posPay" data-i="encaisser"></button><button class="btn g2" data-act="posClear" data-i="clear"></button></div></div>
  <div class="card" id="rcCard" style="display:none"><h2 data-i="receipt"></h2><pre id="rcText" style="white-space:pre-wrap;font-family:inherit;font-size:.85rem;margin-bottom:10px"></pre><div class="btns" style="margin:0"><button class="btn sm" data-act="rcWA" data-i="rcWA"></button><button class="btn sm g2" data-act="rcCopy" data-i="rcCopy"></button></div></div>
  <p class="mu" id="posLast" style="font-size:.85rem"></p>
  <div class="card"><h2 data-i="dayTitle"></h2><div id="dayBox" style="font-size:.88rem"></div></div>
+ <div class="card" id="zCard"><h2 data-i="zTitle"></h2><div class="fg"><div><label data-i="date"></label><input id="zDate" type="date"></div></div><div id="zBody" style="font-size:.9rem"></div></div>
 </section>
 <section class="view" id="v-premium">
  <h1 data-i="premium"></h1>
