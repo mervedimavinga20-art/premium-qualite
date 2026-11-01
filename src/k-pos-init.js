@@ -9,6 +9,8 @@ Object.assign(ACT,{
  async zReopen(){const date=$('#zDate').value||todayS(),sc=zScope();if(!await ask(t('zReopen')+' ?',{danger:1}))return;state.closures=state.closures.filter(x=>!(x.date===date&&x.scope===sc));save();log('zReopen',date);renderZ()},
  zShare(){const date=$('#zDate').value||todayS(),sc=zScope();window.open('https://wa.me/?text='+encodeURIComponent(zText(date,zCalc(date,sc),state.closures.find(x=>x.date===date&&x.scope===sc))),'_blank')},
  zPrint(){const date=$('#zDate').value||todayS(),sc=zScope(),o=zCalc(date,sc),c=state.closures.find(x=>x.date===date&&x.scope===sc),r=[[t('zCash'),money(o.cash)],[t('zMomo'),money(o.momo)],[t('zCred'),money(o.credit)],[t('zSales'),money(o.total)]];if(o.debt)r.push([t('zDebt'),money(o.debt)]);r.push([t('zExp'),money(o.exp)]);if(c)r.push([t('zCount'),money(c.counted)],[t('zGap'),gm(c.gap)],['',t('zDone',{n:c.by||'—'})]);showDoc(t('zTitle')+' — '+fdate(date),dk(r))},
+ fcOrder(){if(gated()){showView('premium');return}const r=fcOrderRows();if(!r.length){toast(t('fcNone'));return}showDoc(t('fcDoc')+' — '+fdate(todayS()),dt([t('cDesc'),t('cLeft2'),t('fcRate'),t('fcQty')],r)+'<div class="btns"><button class="btn sm" data-act="fcShare">'+esc(t('zShare'))+'</button></div>')},
+ fcShare(){const r=fcOrderRows();window.open('https://wa.me/?text='+encodeURIComponent(t('fcDoc')+' — '+state.brand.name+'\n'+fdate(todayS())+'\n\n'+r.map(x=>'• '+x[0]+' : '+x[3]).join('\n')),'_blank')},
  posPayMode(a){POS.pay=a;renderPos()},
  posPay(){if(!POS.cart.length)return;const cl=state.clients.find(x=>x.id===$('#posClient').value),credit=POS.pay==='credit';
   if(credit&&!cl){toast(t('needClient'));return}if((cl||credit)&&lockedPrem()){toast(t('premOnly'));showView('premium');return}

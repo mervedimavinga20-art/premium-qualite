@@ -149,6 +149,7 @@ body.print-doc #docWrap{display:block}
  <div class="card hero"><div class="ghost">PQ</div><h1 id="hName"></h1><p class="slogan" id="hSlogan"></p><span class="sig" id="hSig"></span><p class="sub" id="hCity" style="margin-top:10px"></p></div>
  <div class="tick"><div id="tickIn"></div></div>
  <div class="kpis" id="kpis"></div>
+ <div class="card" id="fcCard"><h2 data-i="fcTitle"></h2><div id="fcBody"></div></div>
  <div class="card"><h2 data-i="market"></h2><div id="mkHome" class="mk"></div></div>
  <div class="card"><h2 data-i="acct"></h2><div id="acct"></div></div>
  <div id="alerts"></div>
@@ -211,7 +212,7 @@ body.print-doc #docWrap{display:block}
   <div><label data-i="rate"></label><input id="sTaux" type="number" inputmode="decimal"></div>
   <div><label data-i="low"></label><input id="sLow" type="number" min="0"></div>
   <div><label data-i="lateD"></label><input id="sLate" type="number" min="1"></div>
-  <div><label data-i="loyalty"></label><input id="sLoy" type="number" min="0" max="50" step="any"></div><div><label data-i="salPct"></label><input id="sSal" type="number" min="0" max="100"></div>
+  <div><label data-i="fcLead"></label><input id="sLead" type="number" min="0" step="1"></div><div><label data-i="fcMarg"></label><input id="sMarg" type="number" min="0" step="1"></div><div><label data-i="loyalty"></label><input id="sLoy" type="number" min="0" max="50" step="any"></div><div><label data-i="salPct"></label><input id="sSal" type="number" min="0" max="100"></div>
   <div><label data-i="basis"></label><select id="sBasis"><option value="prevu" data-i="bPrevu"></option><option value="realise" data-i="bReal"></option></select></div></div></div>
  <div class="card"><h2 data-i="lang"></h2><select id="sLang"></select></div>
  <div class="card"><h2 data-i="security"></h2><div class="fg"><div><label data-i="pin4"></label><input id="sPin" type="password" inputmode="numeric" maxlength="6"></div></div><div class="btns"><button class="btn sm" data-act="pinSave" data-i="pinSave"></button><button class="btn sm g2" data-act="pinOff" data-i="pinOff"></button></div></div>
@@ -599,6 +600,21 @@ zMine|Vos ventes|Your sales|Tus ventas|As suas vendas
 zAll|Toute la boutique|Whole shop|Toda la tienda|Toda a loja
 ja_zClose|Caisse clôturée|Cash-up closed|Caja cerrada|Caixa fechada
 ja_zReopen|Clôture rouverte|Cash-up reopened|Cierre reabierto|Fecho reaberto
+fcTitle|Prévision de stock|Stock forecast|Previsión de stock|Previsão de stock
+fcLock|Prévision des ruptures et liste de réapprovisionnement : fonction Premium.|Stock-out forecast and reorder list: Premium feature.|Previsión de roturas y lista de reposición: función Premium.|Previsão de rupturas e lista de reposição: função Premium.
+fcNone|Pas encore assez de ventes pour prévoir.|Not enough sales yet to forecast.|Aún no hay suficientes ventas para prever.|Ainda não há vendas suficientes para prever.
+fcOk|Aucune rupture prévue dans les {n} prochains jours.|No stock-out expected in the next {n} days.|Sin roturas previstas en los próximos {n} días.|Sem rupturas previstas nos próximos {n} dias.
+fcOut|En rupture|Out of stock|Agotado|Esgotado
+fcDays|~{n} j restants|~{n} d left|~{n} d restantes|~{n} d restantes
+fcPerDay|/j|/d|/d|/d
+fcOrder|Liste à commander|Reorder list|Lista de pedido|Lista de encomenda
+fcNote|Prévision basique : moyenne des 30 derniers jours, sans saisons ni fêtes.|Basic forecast: 30-day average, no seasons or holidays.|Previsión básica: media de 30 días, sin temporadas ni fiestas.|Previsão básica: média de 30 dias, sem épocas nem festas.
+fcDoc|À commander|To reorder|A pedir|A encomendar
+fcQty|À commander|To order|A pedir|A encomendar
+fcRate|Vente moy.|Avg sales|Venta media|Venda média
+cLeft2|En stock|In stock|En stock|Em stock
+fcLead|Délai de livraison (jours)|Delivery lead time (days)|Plazo de entrega (días)|Prazo de entrega (dias)
+fcMarg|Marge de sécurité (jours)|Safety margin (days)|Margen de seguridad (días)|Margem de segurança (dias)
 waHi|Bonjour {n}, voici votre point chez {b} : remis {g}, vendu {s}, versé {p}, reste à payer {r}. Merci !|Hello {n}, your balance at {b}: given {g}, sold {s}, paid {p}, balance due {r}. Thanks!|Hola {n}, tu situación en {b}: entregado {g}, vendido {s}, pagado {p}, pendiente {r}. ¡Gracias!|Olá {n}, o seu ponto na {b}: entregue {g}, vendido {s}, pago {p}, em falta {r}. Obrigado!
 `.trim().split('\n').forEach(l=>{const a=l.split('|');D[a[0]]=a.slice(1)});
 const KEY='premium-qualite-v1',KEYS=[KEY];
@@ -814,13 +830,27 @@ function renderZ(){const B=$('#zBody');if(!B)return;if(document.activeElement&&d
  if(c){s+=row(t('zCount'),money(c.counted))+row(t('zGap'),gm(c.gap),c.gap===0?'up':'dn')+'<div class="mu" style="font-size:.8rem;margin:6px 0">'+esc(t('zDone',{n:c.by||'—'}))+'</div><div class="btns" style="margin:0"><button class="btn sm g2" data-act="zShare" data-i="zShare">'+esc(t('zShare'))+'</button><button class="btn sm g2" data-act="zPrint">'+esc(t('zPrint'))+'</button><button class="btn sm r" data-own data-act="zReopen">'+esc(t('zReopen'))+'</button></div>'}
  else s+='<div class="fg" style="margin-top:8px"><div><label>'+esc(t('zCount'))+'</label><input id="zCount" type="number" inputmode="decimal" min="0" step="any"></div></div><div id="zGapV" style="font-weight:700;margin:4px 0"></div><div class="btns" style="margin:0"><button class="btn" data-act="zClose">'+esc(t('zDo'))+'</button><button class="btn sm g2" data-act="zShare">'+esc(t('zShare'))+'</button><button class="btn sm g2" data-act="zPrint">'+esc(t('zPrint'))+'</button></div>';
  B.innerHTML=s;const zc=$('#zCount');if(zc)zc.addEventListener('input',zGapShow)}
+/* ---- Prévision de stock (vélocité des ventes) ---- */
+const fcLead=()=>Math.max(0,num(state.set.leadDays)||7),fcMarg=()=>Math.max(0,state.set.marginDays==null?3:num(state.set.marginDays));
+function fcList(){const td=todayS(),L=fcLead()+fcMarg(),out=[];
+ allRows().forEach(r=>{if(!r.desc)return;let q=0,first=null;state.moves.forEach(m=>{if(m.aid!==r.id||!m.date)return;const d=dayDiff(m.date,td);if(d<0||d>=30)return;const o=num(m.given)-num(m.ret);if(o<=0)return;q+=o;if(first==null||d>first)first=d});
+  if(q<=0)return;const win=Math.min(30,Math.max(7,first+1)),vel=q/win,st=rowStock(r),days=st<=0?0:st/vel,need=Math.ceil(vel*L-st);
+  out.push({r,vel,st,days,need:need>0?need:0})});
+ return out.sort((a,b)=>a.days-b.days)}
+function renderForecast(){const C=$('#fcBody');if(!C)return;
+ if(gated()){C.innerHTML='<div class="mu" style="font-size:.85rem">'+esc(t('fcLock'))+'</div><div class="btns" style="margin:8px 0 0"><button class="btn sm" data-act="go" data-arg="premium">'+esc(t('premium'))+'</button></div>';return}
+ const L=fcLead()+fcMarg(),all=fcList(),soon=all.filter(x=>x.days<=L);
+ if(!all.length){C.innerHTML='<div class="mu" style="font-size:.85rem">'+esc(t('fcNone'))+'</div>';return}
+ if(!soon.length){C.innerHTML='<div class="mu" style="font-size:.85rem">'+esc(t('fcOk',{n:L}))+'</div>';return}
+ C.innerHTML=soon.slice(0,6).map(x=>{const c=x.days<=3?'dn':x.days<=7?'':'mu',lb=x.st<=0?t('fcOut'):t('fcDays',{n:Math.max(1,Math.round(x.days))});return'<div style="display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid var(--ln)"><span>'+esc(x.r.desc)+' <span class="mu" style="font-size:.78rem">('+esc(nf(Math.round(x.vel*10)/10))+t('fcPerDay')+')</span></span><b class="'+c+'">'+esc(lb)+'</b></div>'}).join('')+'<div class="btns" style="margin:10px 0 0"><button class="btn sm" data-act="fcOrder">'+esc(t('fcOrder'))+'</button></div><div class="mu" style="font-size:.72rem;margin-top:8px">'+esc(t('fcNote'))+'</div>'}
+function fcOrderRows(){return fcList().filter(x=>x.need>0).map(x=>[x.r.desc,nf(x.st),nf(Math.round(x.vel*10)/10)+t('fcPerDay'),nf(x.need)+' '+(x.r.uom||'')])}
 /* ---- renderers ---- */
 const ICON={home:'<path d="M3 11 12 3l9 8v10H3z"/>',pos:'<path d="M3 4h2l2.5 11h10L20 7H6"/><circle cx="9" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/>',sheet:'<path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/>',resellers:'<circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-4 3-6 7-6s7 2 7 6"/><path d="M17 5a3 3 0 0 1 0 6M19 14c2 1 3 3 3 6"/>',suivi:'<path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h5"/>',stats:'<path d="M3 17l5-6 4 3 8-9"/><path d="M15 5h5v5"/>',settings:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>'};
 const VIEWS=['home','pos','sheet','resellers','suivi','stats','settings'];
 function buildTabs(){const n=$('#tabs');n.innerHTML='';VIEWS.forEach(v=>{const b=h('button',{data:{act:'go',arg:v}});b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">'+ICON[v]+'</svg><span data-i="t'+({home:'Home',pos:'Pos',sheet:'Sheet',resellers:'Res',suivi:'Suivi',stats:'Stats',settings:'Set'})[v]+'"></span>';n.append(b)})}
 function renderBrand(){const b=state.brand,row=$('#brandRow');row.innerHTML='';if(b.logo)row.append(h('img',{class:'logo',src:b.logo,alt:''}));const w=b.name.trim().split(/\s+/),lastw=w.pop();const wm=h('div',{class:'wm'});wm.append(w.join(' ')+(w.length?' ':''));wm.append(h('b',{text:lastw}));row.append(h('div',{},[wm,h('div',{class:'sub',text:b.city})]));document.title=b.name+' — Gestion'}
 function dbadge(st){return'<span class="bd '+st+'">'+esc(t(stLabel[st]))+'</span>'}
-function renderHome(){const b=state.brand;$('#pwBy').textContent=(b.signature||'').toUpperCase();$('#hName').innerHTML=esc(b.name);$('#hSlogan').textContent='« '+b.slogan.replace(/\.$/,'.')+' »'.replace(/^ /,'');$('#hSlogan').textContent='« '+b.slogan+' »';$('#hSig').textContent=b.signature;$('#hCity').textContent=state.set.owner+' · '+b.city;
+function renderHome(){const b=state.brand;renderForecast();$('#pwBy').textContent=(b.signature||'').toUpperCase();$('#hName').innerHTML=esc(b.name);$('#hSlogan').textContent='« '+b.slogan.replace(/\.$/,'.')+' »'.replace(/^ /,'');$('#hSlogan').textContent='« '+b.slogan+' »';$('#hSig').textContent=b.signature;$('#hCity').textContent=state.set.owner+' · '+b.city;
  const all=series('','d').map(x=>x.v),dl=delta(all);let sales=0,paid=0,rest=0,left=0;state.moves.forEach(m=>{sales+=m.sold*m.price;if(m.rid==='shop'&&!m.credit)paid+=m.sold*m.price});state.pays.forEach(p=>paid+=num(p.amount));state.resellers.forEach(r=>{const a=agg(r.id);rest+=Math.max(0,a.rest);left+=a.left});state.clients.forEach(c=>rest+=Math.max(0,cDue(c.id)));const bk=cur();const stk=bk.rows.reduce((s,r)=>s+rowStock(r),0),ac=acct();
  const K=[['kSales',money(sales),dl<0?'dn':'up',dChip(dl)],['kStock',nf(stk)+' pc','',''],['kOut',nf(left)+' pc','',''],['kRest',money(rest),rest>0?'dn':'',''],['kPaid',money(paid),'up',''],['kProfit',money(ac.B),ac.B<0?'dn':'up','']];
  $('#kpis').innerHTML=K.map(k=>'<div class="kpi '+k[2]+'"><div class="kl">'+esc(t(k[0]))+'</div><div class="kv">'+esc(k[1])+'</div>'+k[3]+'</div>').join('');
@@ -879,7 +909,7 @@ function renderStats(){const gs=$('#granSeg');gs.innerHTML='';[['d','d1'],['w','
  const rows=state.resellers.map(r=>{const v=series(r.id,GRAN).map(x=>x.v);return{r,v,tot:v.reduce((s,x)=>s+x,0),d:delta(v)}}).sort((a,b)=>b.tot-a.tot);
  $('#watch').innerHTML=rows.length?rows.map(x=>'<div class="wl '+(STRES===x.r.id?'sel':'')+'" data-act="selRes" data-arg="'+esc(x.r.id)+'"><div class="nm">'+esc(x.r.name)+'</div>'+spark(x.v)+'<div class="vv">'+esc(money(x.tot))+'<br>'+dChip(x.d)+'</div></div>').join(''):'<div class="empty">'+esc(t('noRes'))+'</div>'}
 /* ---- settings ---- */
-function renderSettings(){const s=state.set,b=state.brand;const set=(id,v)=>{const e=$(id);if(document.activeElement!==e)e.value=v};set('#sBname',b.name);set('#sUnits',(s.units||[]).join(', '));set('#sCats',(s.cats||[]).join(', '));set('#sEmail',b.email);set('#sBPhone',b.phone);set('#sAddr',b.addr);updCloudUI();set('#sOwner',s.owner);set('#sManager',s.manager);set('#sCity',b.city);set('#sSlogan',b.slogan);set('#sMonnaie',s.monnaie);set('#sTaux',s.taux);set('#sLow',s.lowStock);set('#sLate',s.lateDays);set('#sSal',s.salaryPct);set('#sLoy',s.loyaltyPct);set('#sBasis',s.basis);
+function renderSettings(){const s=state.set,b=state.brand;const set=(id,v)=>{const e=$(id);if(document.activeElement!==e)e.value=v};set('#sBname',b.name);set('#sUnits',(s.units||[]).join(', '));set('#sCats',(s.cats||[]).join(', '));set('#sEmail',b.email);set('#sBPhone',b.phone);set('#sAddr',b.addr);updCloudUI();set('#sOwner',s.owner);set('#sManager',s.manager);set('#sCity',b.city);set('#sSlogan',b.slogan);set('#sMonnaie',s.monnaie);set('#sTaux',s.taux);set('#sLow',s.lowStock);set('#sLate',s.lateDays);set('#sSal',s.salaryPct);set('#sLoy',s.loyaltyPct);set('#sLead',fcLead());set('#sMarg',fcMarg());set('#sBasis',s.basis);
  const sl=$('#sLang');sl.innerHTML='';LANGS.forEach(l=>sl.append(h('option',{value:l[0],text:l[1]})));sl.value=LANG}
 function renderAll(){renderBrand();applyI18n();renderHome();renderSheet();renderResellers();renderSuivi();renderStats();renderSettings();showView(state.view,true)}
 function showView(v,noSave){if(isSeller()&&!SELL_OK.includes(v))v='pos';if(v==='journal'&&gated())v='premium';state.view=v;$$('.view').forEach(e=>e.classList.toggle('on',e.id==='v-'+v));$$('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.arg===(v==='clients'?'resellers':v)));if(v==='clients')renderClients();if(v!=='pos')scanStop();if(v==='pos')renderPos();if(v==='journal')loadJournal();if(v==='premium'){renderPremium();loadPlan()}if(v==='calc'||v==='home'||v==='stats'||v==='sheet'||v==='suivi')refreshView(v);scrollTo(0,0)}
@@ -968,7 +998,7 @@ document.addEventListener('keydown',e=>{if(e.target.closest&&e.target.closest('#
 function bind(id,fn){$(id).addEventListener('input',e=>{fn(e.target.value);save();renderBrand();renderHome()});$(id).addEventListener('change',e=>log('settings',id.slice(2)+': '+e.target.value))}
 bind('#sBname',v=>state.brand.name=v||'PREMIUM QUALITÉ');bind('#sOwner',v=>state.set.owner=v);bind('#sManager',v=>state.set.manager=v);bind('#sCity',v=>state.brand.city=v);bind('#sSlogan',v=>state.brand.slogan=v);
 bind('#sEmail',v=>state.brand.email=v.trim());bind('#sBPhone',v=>state.brand.phone=v);bind('#sAddr',v=>state.brand.addr=v);const lst=v=>v.split(',').map(x=>x.trim()).filter(Boolean);bind('#sUnits',v=>state.set.units=lst(v).length?lst(v):['Pc']);bind('#sCats',v=>state.set.cats=lst(v));
-bind('#sMonnaie',v=>state.set.monnaie=v);bind('#sTaux',v=>state.set.taux=num(v));bind('#sLow',v=>state.set.lowStock=num(v));bind('#sLate',v=>state.set.lateDays=Math.max(1,num(v)));bind('#sLoy',v=>state.set.loyaltyPct=Math.min(50,Math.max(0,num(v))));bind('#sSal',v=>state.set.salaryPct=Math.min(100,Math.max(0,num(v))));bind('#sBasis',v=>state.set.basis=v);
+bind('#sMonnaie',v=>state.set.monnaie=v);bind('#sTaux',v=>state.set.taux=num(v));bind('#sLow',v=>state.set.lowStock=num(v));bind('#sLate',v=>state.set.lateDays=Math.max(1,num(v)));bind('#sLead',v=>state.set.leadDays=Math.max(0,num(v)));bind('#sMarg',v=>state.set.marginDays=Math.max(0,num(v)));bind('#sLoy',v=>state.set.loyaltyPct=Math.min(50,Math.max(0,num(v))));bind('#sSal',v=>state.set.salaryPct=Math.min(100,Math.max(0,num(v))));bind('#sBasis',v=>state.set.basis=v);
 $('#sMonnaie').addEventListener('change',e=>{state.set.monnaie=e.target.value;save();renderHome()});$('#sBasis').addEventListener('change',e=>{state.set.basis=e.target.value;save();renderHome()});
 $('#sLang').addEventListener('change',e=>ACT.setLang(e.target.value));
 $('#bookSel').addEventListener('change',e=>{state.cur=e.target.value;save();renderSheet();renderHome()});
@@ -1010,6 +1040,8 @@ Object.assign(ACT,{
  async zReopen(){const date=$('#zDate').value||todayS(),sc=zScope();if(!await ask(t('zReopen')+' ?',{danger:1}))return;state.closures=state.closures.filter(x=>!(x.date===date&&x.scope===sc));save();log('zReopen',date);renderZ()},
  zShare(){const date=$('#zDate').value||todayS(),sc=zScope();window.open('https://wa.me/?text='+encodeURIComponent(zText(date,zCalc(date,sc),state.closures.find(x=>x.date===date&&x.scope===sc))),'_blank')},
  zPrint(){const date=$('#zDate').value||todayS(),sc=zScope(),o=zCalc(date,sc),c=state.closures.find(x=>x.date===date&&x.scope===sc),r=[[t('zCash'),money(o.cash)],[t('zMomo'),money(o.momo)],[t('zCred'),money(o.credit)],[t('zSales'),money(o.total)]];if(o.debt)r.push([t('zDebt'),money(o.debt)]);r.push([t('zExp'),money(o.exp)]);if(c)r.push([t('zCount'),money(c.counted)],[t('zGap'),gm(c.gap)],['',t('zDone',{n:c.by||'—'})]);showDoc(t('zTitle')+' — '+fdate(date),dk(r))},
+ fcOrder(){if(gated()){showView('premium');return}const r=fcOrderRows();if(!r.length){toast(t('fcNone'));return}showDoc(t('fcDoc')+' — '+fdate(todayS()),dt([t('cDesc'),t('cLeft2'),t('fcRate'),t('fcQty')],r)+'<div class="btns"><button class="btn sm" data-act="fcShare">'+esc(t('zShare'))+'</button></div>')},
+ fcShare(){const r=fcOrderRows();window.open('https://wa.me/?text='+encodeURIComponent(t('fcDoc')+' — '+state.brand.name+'\n'+fdate(todayS())+'\n\n'+r.map(x=>'• '+x[0]+' : '+x[3]).join('\n')),'_blank')},
  posPayMode(a){POS.pay=a;renderPos()},
  posPay(){if(!POS.cart.length)return;const cl=state.clients.find(x=>x.id===$('#posClient').value),credit=POS.pay==='credit';
   if(credit&&!cl){toast(t('needClient'));return}if((cl||credit)&&lockedPrem()){toast(t('premOnly'));showView('premium');return}

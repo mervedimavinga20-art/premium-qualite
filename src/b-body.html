@@ -2,6 +2,7 @@
  <div class="card hero"><div class="ghost">PQ</div><h1 id="hName"></h1><p class="slogan" id="hSlogan"></p><span class="sig" id="hSig"></span><p class="sub" id="hCity" style="margin-top:10px"></p></div>
  <div class="tick"><div id="tickIn"></div></div>
  <div class="kpis" id="kpis"></div>
+ <div class="card" id="fcCard"><h2 data-i="fcTitle"></h2><div id="fcBody"></div></div>
  <div class="card"><h2 data-i="market"></h2><div id="mkHome" class="mk"></div></div>
  <div class="card"><h2 data-i="acct"></h2><div id="acct"></div></div>
  <div id="alerts"></div>
@@ -64,7 +65,7 @@
   <div><label data-i="rate"></label><input id="sTaux" type="number" inputmode="decimal"></div>
   <div><label data-i="low"></label><input id="sLow" type="number" min="0"></div>
   <div><label data-i="lateD"></label><input id="sLate" type="number" min="1"></div>
-  <div><label data-i="loyalty"></label><input id="sLoy" type="number" min="0" max="50" step="any"></div><div><label data-i="salPct"></label><input id="sSal" type="number" min="0" max="100"></div>
+  <div><label data-i="fcLead"></label><input id="sLead" type="number" min="0" step="1"></div><div><label data-i="fcMarg"></label><input id="sMarg" type="number" min="0" step="1"></div><div><label data-i="loyalty"></label><input id="sLoy" type="number" min="0" max="50" step="any"></div><div><label data-i="salPct"></label><input id="sSal" type="number" min="0" max="100"></div>
   <div><label data-i="basis"></label><select id="sBasis"><option value="prevu" data-i="bPrevu"></option><option value="realise" data-i="bReal"></option></select></div></div></div>
  <div class="card"><h2 data-i="lang"></h2><select id="sLang"></select></div>
  <div class="card"><h2 data-i="security"></h2><div class="fg"><div><label data-i="pin4"></label><input id="sPin" type="password" inputmode="numeric" maxlength="6"></div></div><div class="btns"><button class="btn sm" data-act="pinSave" data-i="pinSave"></button><button class="btn sm g2" data-act="pinOff" data-i="pinOff"></button></div></div>

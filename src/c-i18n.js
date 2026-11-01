@@ -334,5 +334,20 @@ zMine|Vos ventes|Your sales|Tus ventas|As suas vendas
 zAll|Toute la boutique|Whole shop|Toda la tienda|Toda a loja
 ja_zClose|Caisse clôturée|Cash-up closed|Caja cerrada|Caixa fechada
 ja_zReopen|Clôture rouverte|Cash-up reopened|Cierre reabierto|Fecho reaberto
+fcTitle|Prévision de stock|Stock forecast|Previsión de stock|Previsão de stock
+fcLock|Prévision des ruptures et liste de réapprovisionnement : fonction Premium.|Stock-out forecast and reorder list: Premium feature.|Previsión de roturas y lista de reposición: función Premium.|Previsão de rupturas e lista de reposição: função Premium.
+fcNone|Pas encore assez de ventes pour prévoir.|Not enough sales yet to forecast.|Aún no hay suficientes ventas para prever.|Ainda não há vendas suficientes para prever.
+fcOk|Aucune rupture prévue dans les {n} prochains jours.|No stock-out expected in the next {n} days.|Sin roturas previstas en los próximos {n} días.|Sem rupturas previstas nos próximos {n} dias.
+fcOut|En rupture|Out of stock|Agotado|Esgotado
+fcDays|~{n} j restants|~{n} d left|~{n} d restantes|~{n} d restantes
+fcPerDay|/j|/d|/d|/d
+fcOrder|Liste à commander|Reorder list|Lista de pedido|Lista de encomenda
+fcNote|Prévision basique : moyenne des 30 derniers jours, sans saisons ni fêtes.|Basic forecast: 30-day average, no seasons or holidays.|Previsión básica: media de 30 días, sin temporadas ni fiestas.|Previsão básica: média de 30 dias, sem épocas nem festas.
+fcDoc|À commander|To reorder|A pedir|A encomendar
+fcQty|À commander|To order|A pedir|A encomendar
+fcRate|Vente moy.|Avg sales|Venta media|Venda média
+cLeft2|En stock|In stock|En stock|Em stock
+fcLead|Délai de livraison (jours)|Delivery lead time (days)|Plazo de entrega (días)|Prazo de entrega (dias)
+fcMarg|Marge de sécurité (jours)|Safety margin (days)|Margen de seguridad (días)|Margem de segurança (dias)
 waHi|Bonjour {n}, voici votre point chez {b} : remis {g}, vendu {s}, versé {p}, reste à payer {r}. Merci !|Hello {n}, your balance at {b}: given {g}, sold {s}, paid {p}, balance due {r}. Thanks!|Hola {n}, tu situación en {b}: entregado {g}, vendido {s}, pagado {p}, pendiente {r}. ¡Gracias!|Olá {n}, o seu ponto na {b}: entregue {g}, vendido {s}, pago {p}, em falta {r}. Obrigado!
 `.trim().split('\n').forEach(l=>{const a=l.split('|');D[a[0]]=a.slice(1)});
