@@ -414,5 +414,10 @@ rstSent|Email envoyé. Ouvrez le lien reçu pour choisir un nouveau mot de passe
 rstNew|Nouveau mot de passe (6 caractères minimum) :|New password (at least 6 characters):|Nueva contraseña (mínimo 6 caracteres):|Nova palavra-passe (mínimo 6 caracteres):
 rstOk|Mot de passe modifié|Password changed|Contraseña cambiada|Palavra-passe alterada
 cCostMix|Achat · Dépenses|Purchase · Expenses|Compra · Gastos|Compra · Despesas
+catPhoto|Photo|Photo|Foto|Foto
+catPhotoWait|Envoi de la photo…|Uploading photo…|Subiendo foto…|A enviar a foto…
+catPhotoOk|Photo ajoutée|Photo added|Foto añadida|Foto adicionada
+catPhotoErr|Photo non envoyée (SQL des images lancé ? Premium actif ?)|Photo not uploaded (image SQL run? Premium active?)|Foto no subida (¿SQL de imágenes ejecutado? ¿Premium activo?)|Foto não enviada (SQL das imagens executado? Premium ativo?)
+ja_catPhoto|Photo du catalogue|Catalogue photo|Foto del catálogo|Foto do catálogo
 waHi|Bonjour {n}, voici votre point chez {b} : remis {g}, vendu {s}, versé {p}, reste à payer {r}. Merci !|Hello {n}, your balance at {b}: given {g}, sold {s}, paid {p}, balance due {r}. Thanks!|Hola {n}, tu situación en {b}: entregado {g}, vendido {s}, pagado {p}, pendiente {r}. ¡Gracias!|Olá {n}, o seu ponto na {b}: entregue {g}, vendido {s}, pago {p}, em falta {r}. Obrigado!
 `.trim().split('\n').forEach(l=>{const a=l.split('|');D[a[0]]=a.slice(1)});

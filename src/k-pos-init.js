@@ -23,6 +23,7 @@ Object.assign(ACT,{
  newShop(){newShop()},
  switchTo(a,el){switchShop(el.dataset.id).then(()=>showView('home'))},
  trfStart(a,el){trfStart(el.dataset.id)},
+ async catPhotoDel(a,el){const r=allRows().find(x=>x.id===el.dataset.id);if(!r)return;const old=catPath(r.img);r.img='';save();if(old&&sb){try{await sb.storage.from('catalog').remove([old])}catch(e){}}renderCatalog()},
  posPayMode(a){POS.pay=a;renderPos()},
  posPay(){if(!POS.cart.length)return;const cl=state.clients.find(x=>x.id===$('#posClient').value),credit=POS.pay==='credit';
   if(credit&&!cl){toast(t('needClient'));return}if(credit&&cl&&num(cl.limit)>0){const tt=POS.cart.reduce((s,l)=>s+l.q*l.p,0);if(cDue(cl.id)+tt>num(cl.limit)){toast(t('creditLimit',{d:money(Math.max(0,cDue(cl.id))),l:money(num(cl.limit))}));return}}if((cl||credit)&&lockedPrem()){toast(t('premOnly'));showView('premium');return}
@@ -43,5 +44,5 @@ Object.assign(ACT,{
  async delClient(a,el){if(!await ask(t('cfDelClient'),{danger:1}))return;const id=el.dataset.id;state.clients=state.clients.filter(x=>x.id!==id);state.moves.forEach(m=>{if(m.cid===id)m.cid=''});save();log('delClient','');renderClients()}
 });
 $('#posCode').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();ACT.posAdd()}});
-$('#posClient').addEventListener('change',renderPos);$('#shopSel').addEventListener('change',e=>switchShop(e.target.value));$('#zDate').addEventListener('change',renderZ);
+$('#posClient').addEventListener('change',renderPos);document.addEventListener('change',e=>{const i=e.target.closest&&e.target.closest('input[data-catimg]');if(i&&i.files&&i.files[0]){catPhotoSet(i.dataset.catimg,i.files[0]);i.value=''}});$('#shopSel').addEventListener('change',e=>switchShop(e.target.value));$('#zDate').addEventListener('change',renderZ);
 document.addEventListener('click',e=>{if(e.target.closest('.btn,#tabs button,.seg button'))buzz(8)});
