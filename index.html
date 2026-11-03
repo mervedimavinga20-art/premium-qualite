@@ -544,6 +544,7 @@ approve|Valider|Approve|Aprobar|Aprovar
 reject|Refuser|Reject|Rechazar|Recusar
 needShop|Connectez-vous et créez la boutique en ligne d’abord.|Log in and create the online shop first.|Inicia sesión y crea primero la tienda en línea.|Inicie sessão e crie primeiro a loja online.
 tNeedTx|Code de transaction requis|Transaction code required|Código de transacción requerido|Código da transação obrigatório
+payMany|Vous avez déjà 3 demandes en attente. Patientez la validation.|You already have 3 pending requests. Please wait for validation.|Ya tienes 3 solicitudes pendientes. Espera la validación.|Já tem 3 pedidos pendentes. Aguarde a validação.
 txUsed|Ce code a déjà été utilisé|This code was already used|Este código ya se usó|Este código já foi usado
 limitMsg|Limite du plan Gratuit atteinte : passez à Premium|Free plan limit reached: go Premium|Límite del plan Gratis alcanzado: pasa a Premium|Limite do plano Grátis atingido: passe a Premium
 premOnly|Réservé à Premium|Premium only|Solo Premium|Só Premium
@@ -893,7 +894,7 @@ function renderPremium(){renderPlanCmp();$('#plStat').textContent=planText();$('
  const st={pending:'reqPending',approved:'reqOk',rejected:'reqNo'};const row=(x,adm)=>'<div class="wl" style="cursor:default;flex-wrap:wrap"><div class="nm" style="min-width:60%">'+esc(x.email||'')+' · '+x.months+' · '+esc(usd(num(x.amount)))+'<br><span class="mu" style="font-weight:400">'+esc(x.tx)+(x.phone?' · '+esc(x.phone):'')+' · '+esc(new Date(x.created_at).toLocaleDateString(LOC()))+'</span></div><span class="bd '+(x.status==='approved'?'ok':x.status==='rejected'?'retard':'cours')+'">'+esc(t(st[x.status]||'reqPending'))+'</span>'+(adm&&x.status==='pending'?'<button class="btn sm" data-act="payApprove" data-id="'+x.id+'">'+esc(t('approve'))+'</button><button class="btn sm g2" data-act="payReject" data-id="'+x.id+'">'+esc(t('reject'))+'</button>':'')+'</div>';
  const mine=PLN.reqs.filter(x=>PLN.admin?x.email===CL.email:true);$('#myReqs').innerHTML=mine.length?mine.map(x=>row(x,false)).join(''):'<div class="empty">'+esc(t('noReq'))+'</div>';
  $('#adminCard').style.display=PLN.admin?'':'none';if(PLN.admin){const all=PLN.reqs.filter(x=>x.status==='pending');$('#adminReqs').innerHTML=all.length?all.map(x=>row(x,true)).join(''):'<div class="empty">'+esc(t('noReq'))+'</div>'}}
-const prRes=r=>r==='ok'?'tOk':r==='tx_utilise'?'txUsed':r==='premium'?'premOnly':'cErr';
+const prRes=r=>r==='ok'?'tOk':r==='tx_utilise'?'txUsed':r==='trop_de_demandes'?'payMany':r==='premium'?'premOnly':'cErr';
 /* ---- Caisse : scan, panier, encaissement, entrée en stock ---- */
 let POS={mode:'sale',pay:'cash',cart:[],stream:null,det:null,raf:0,zx:null,lastCode:'',lastT:0,busy:false};
 const allRows=()=>state.books.flatMap(b=>b.rows);
