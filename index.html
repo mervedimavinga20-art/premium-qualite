@@ -14,6 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
 <style>
+.fab{position:fixed;right:14px;bottom:84px;width:46px;height:46px;border-radius:50%;background:var(--g);color:#001b0c;border:0;display:none;align-items:center;justify-content:center;z-index:40;box-shadow:0 4px 14px rgba(0,0,0,.5)}.fab svg{width:22px;height:22px}.fab i{position:absolute;top:4px;right:4px;width:11px;height:11px;border-radius:50%;background:var(--dn);border:2px solid var(--bg);display:none}
 .sk{background:linear-gradient(90deg,var(--p2) 25%,#262c24 50%,var(--p2) 75%);background-size:200% 100%;animation:skm 1.2s linear infinite;border-radius:10px}@keyframes skm{to{background-position:-200% 0}}#bootSk{display:none;padding:0 0 12px}body.booting #bootSk{display:block}@media(prefers-reduced-motion:reduce){.sk{animation:none}}
 :root{--bg:#090a09;--p:#121411;--p2:#1a1d19;--ln:#272c26;--g:#14b865;--gd:#0c5b34;--up:#2dff8a;--dn:#ff4d52;--tx:#f1f1ec;--mu:#8f968d;--f:'Anton','Impact','Haettenschweiler','Arial Black',sans-serif}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -143,6 +144,7 @@ body.print-doc #docWrap{display:block}
  </div>
 </header>
 <nav class="tabs" id="tabs"></nav>
+<button class="fab" id="chatFab" data-act="go" data-arg="chat" aria-label="Chat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg><i id="chatDot"></i></button>
 <div id="app"><main>
 <div id="bootSk"><div class="sk" style="height:22px;width:55%;margin:10px 0"></div><div class="sk" style="height:84px;margin-bottom:10px"></div><div class="sk" style="height:84px;margin-bottom:10px"></div><div class="sk" style="height:140px"></div></div>
 <section class="view" id="v-home">
@@ -180,6 +182,11 @@ body.print-doc #docWrap{display:block}
 <section class="view" id="v-multi">
  <h1 data-i="mTitle"></h1>
  <div id="multiBox"></div>
+</section>
+<section class="view" id="v-chat">
+ <h1 data-i="chatTitle"></h1>
+ <div id="chatList" style="max-height:58vh;overflow:auto;padding:4px 2px"></div>
+ <div style="display:flex;gap:8px;margin-top:10px"><input id="chatIn" data-ph="chatPh" maxlength="1000" autocomplete="off"><button class="btn" data-act="chatSend" data-i="chatSendB" style="flex:none"></button></div>
 </section>
 <section class="view" id="v-suivi">
  <h1 data-i="tSuivi"></h1>
@@ -689,6 +696,13 @@ catPhotoWait|Envoi de la photo…|Uploading photo…|Subiendo foto…|A enviar a
 catPhotoOk|Photo ajoutée|Photo added|Foto añadida|Foto adicionada
 catPhotoErr|Photo non envoyée (SQL des images lancé ? Premium actif ?)|Photo not uploaded (image SQL run? Premium active?)|Foto no subida (¿SQL de imágenes ejecutado? ¿Premium activo?)|Foto não enviada (SQL das imagens executado? Premium ativo?)
 ja_catPhoto|Photo du catalogue|Catalogue photo|Foto del catálogo|Foto do catálogo
+chatTitle|Chat d’équipe|Team chat|Chat del equipo|Chat da equipa
+chatSendB|Envoyer|Send|Enviar|Enviar
+chatPh|Écrire un message…|Write a message…|Escribe un mensaje…|Escreva uma mensagem…
+chatEmpty|Aucun message. Écrivez le premier.|No messages yet. Write the first one.|Aún no hay mensajes. Escribe el primero.|Ainda sem mensagens. Escreva a primeira.
+chatErr|Message non envoyé (SQL du chat lancé ? Premium actif ?)|Message not sent (chat SQL run? Premium active?)|Mensaje no enviado (¿SQL del chat ejecutado? ¿Premium activo?)|Mensagem não enviada (SQL do chat executado? Premium ativo?)
+chatLock|Le chat d’équipe est une fonction Premium|Team chat is a Premium feature|El chat del equipo es una función Premium|O chat da equipa é uma função Premium
+chatNew|{n} : {m}|{n}: {m}|{n}: {m}|{n}: {m}
 waHi|Bonjour {n}, voici votre point chez {b} : remis {g}, vendu {s}, versé {p}, reste à payer {r}. Merci !|Hello {n}, your balance at {b}: given {g}, sold {s}, paid {p}, balance due {r}. Thanks!|Hola {n}, tu situación en {b}: entregado {g}, vendido {s}, pagado {p}, pendiente {r}. ¡Gracias!|Olá {n}, o seu ponto na {b}: entregue {g}, vendido {s}, pago {p}, em falta {r}. Obrigado!
 `.trim().split('\n').forEach(l=>{const a=l.split('|');D[a[0]]=a.slice(1)});
 const KEY='premium-qualite-v1',KEYS=[KEY];
@@ -779,7 +793,7 @@ const LOCALK=['pin','pinLen','lang','langDone','lastExport'];
 const isMgr=()=>!!CL.shop&&(CL.role==='manager'||CL.role==='seller');
 const isSeller=()=>!!CL.shop&&CL.role==='seller';
 const roleLbl=r=>t(r==='owner'?'cRoleO':r==='seller'?'cRoleS':'cRoleM');
-const SELL_OK=['pos','sheet','settings'];
+const SELL_OK=['pos','sheet','settings','chat'];
 function loadCL(){try{const r=localStorage.getItem('pq-cloud');if(r)Object.assign(CL,JSON.parse(r))}catch(e){}try{jq=JSON.parse(localStorage.getItem('pq-jq')||'[]')}catch(e){}}
 function saveCL(){try{localStorage.setItem('pq-cloud',JSON.stringify(CL));localStorage.setItem('pq-jq',JSON.stringify(jq.slice(-500)))}catch(e){}}
 function pack(){const set=Object.assign({},state.set);LOCALK.forEach(k=>delete set[k]);return JSON.parse(JSON.stringify({brand:state.brand,set,books:state.books,resellers:state.resellers,moves:state.moves,pays:state.pays,clients:state.clients,cbl:state.cbl,closures:state.closures}))}
@@ -820,7 +834,7 @@ async function cloudInit(){try{try{await loadSB()}catch(e){cstat='err';updCloudU
  sb=window.supabase.createClient(SB_URL,SB_KEY);const s=await sb.auth.getSession();cloudUser=s.data&&s.data.session?s.data.session.user:null;
  sb.auth.onAuthStateChange((ev,ss)=>{cloudUser=ss?ss.user:null;if(ev==='PASSWORD_RECOVERY')setTimeout(recoverPw,300)});if(cloudUser)await attach();updCloudUI()}finally{document.body.classList.remove('booting')}}
 async function recoverPw(){const p=await ask(t('rstNew'),{input:1,type:'password'});if(!p)return;if(p.length<6){toast(t('tAuthNeed'));return recoverPw()}try{const r=await sb.auth.updateUser({password:p});if(r.error)throw r.error;toast(t('rstOk'));try{history.replaceState(null,'',location.pathname)}catch(e){}if(cloudUser&&!CL.shop)await attach();updCloudUI()}catch(e){authErr(e)}}
-function subscribe(){try{if(chan)sb.removeChannel(chan);chan=sb.channel('shop-'+CL.shop).on('postgres_changes',{event:'UPDATE',schema:'public',table:'shops',filter:'id=eq.'+CL.shop},()=>scheduleSync(300)).subscribe()}catch(e){}}
+function subscribe(){try{chatSub()}catch(e){}try{if(chan)sb.removeChannel(chan);chan=sb.channel('shop-'+CL.shop).on('postgres_changes',{event:'UPDATE',schema:'public',table:'shops',filter:'id=eq.'+CL.shop},()=>scheduleSync(300)).subscribe()}catch(e){}}
 function applyRole(){document.body.classList.toggle('role-manager',isMgr());document.body.classList.toggle('role-seller',isSeller());if(isSeller()&&!SELL_OK.includes(state.view))showView('pos')}
 async function attach(){const r=await sb.from('members').select('shop_id,role,email').eq('user_id',cloudUser.id);if(r.error){cstat='err';return}
  const m=r.data&&(r.data.find(x=>x.shop_id===CL.shop)||r.data.find(x=>x.role==='owner')||r.data[0]);if(!m){CL.shop='';CL.role='';CL.email=cloudUser.email;saveCL();applyRole();cstat='noshop';return}
@@ -832,7 +846,7 @@ async function loadTeam(){const e=$('#team');if(!CL.shop||!sb){e.textContent='';
 function updCloudUI(){if(!$('#accSt'))return;const on=!!(sb&&cloudUser),sh=!!CL.shop;const st=cstat==='sync'?t('cSyncing'):cstat==='ok'?t('cSyncOk'):cstat==='err'?t('cSyncErr'):'';
  $('#accOut').style.display=on?'none':'';$('#accIn').style.display=on?'':'none';$('#bCreate').style.display=on&&!sh&&cstat!=='err'?'':'none';$('#ownTeam').style.display=on&&sh&&CL.role==='owner'?'':'none';
  $('#planLine').textContent=sh?planText():'';$('#accSt').textContent=!on?(CL.email&&CL.shop?t('cOn',{e:CL.email,r:roleLbl(CL.role),s:t('cSyncErr')}):t('cOff')):sh?t('cOn',{e:CL.email,r:roleLbl(CL.role),s:st}):t('cNoShop');
- const c=$('#bCloud');c.className='ib '+(!on&&!sh?'off':cstat==='err'?'err':'ok');$('#cloudBanner').style.display=sh?'none':'';$('#homeJ').style.display=sh?'':'none';applyRole();if(on&&sh)loadTeam();renderShopBar()}
+ const c=$('#bCloud');c.className='ib '+(!on&&!sh?'off':cstat==='err'?'err':'ok');$('#cloudBanner').style.display=sh?'none':'';$('#homeJ').style.display=sh?'':'none';applyRole();if(on&&sh)loadTeam();renderShopBar();chatFab()}
 const authErr=e=>toast(t('cErr',{e:(e&&e.message)||String(e)}));
 async function needSB(){if(!sb)await cloudInit();if(!sb){toast(t('cOffl'));return false}return true}
 async function cAuth(kind){const em=$('#aMail').value.trim(),pw=$('#aPass').value;if(!em||pw.length<6){toast(t('tAuthNeed'));return}if(!await needSB())return;
@@ -842,7 +856,7 @@ let PLN={plan:'free',until:null,cfg:{},admin:false,reqs:[]};
 const isPrem=()=>PLN.plan==='premium'&&PLN.until&&new Date(PLN.until)>new Date();
 const gated=()=>!!CL.shop&&!isPrem();
 const price=()=>num(PLN.cfg.price_month)||10;
-async function loadPlan(){if(!sb||!cloudUser||!CL.shop)return;try{const pi=await sb.rpc('plan_info',{s:CL.shop});if(pi.data&&pi.data.plan){PLN.plan=pi.data.plan;PLN.until=pi.data.until}else{const r=await sb.from('shops').select('plan,plan_until').eq('id',CL.shop).single();if(r.data){PLN.plan=r.data.plan;PLN.until=r.data.plan_until}}const c=await sb.from('app_config').select('key,value');(c.data||[]).forEach(x=>PLN.cfg[x.key]=x.value);const a=await sb.rpc('is_admin');PLN.admin=a.data===true;const q=await sb.from('payment_requests').select('id,email,months,amount,tx,phone,status,created_at').order('created_at',{ascending:false}).limit(60);PLN.reqs=q.data||[]}catch(e){}updCloudUI();renderCatalog();renderForecast();if(state.view==='premium')renderPremium()}
+async function loadPlan(){if(!sb||!cloudUser||!CL.shop)return;try{const pi=await sb.rpc('plan_info',{s:CL.shop});if(pi.data&&pi.data.plan){PLN.plan=pi.data.plan;PLN.until=pi.data.until}else{const r=await sb.from('shops').select('plan,plan_until').eq('id',CL.shop).single();if(r.data){PLN.plan=r.data.plan;PLN.until=r.data.plan_until}}const c=await sb.from('app_config').select('key,value');(c.data||[]).forEach(x=>PLN.cfg[x.key]=x.value);const a=await sb.rpc('is_admin');PLN.admin=a.data===true;const q=await sb.from('payment_requests').select('id,email,months,amount,tx,phone,status,created_at').order('created_at',{ascending:false}).limit(60);PLN.reqs=q.data||[]}catch(e){}updCloudUI();renderCatalog();renderForecast(); chatFab();if(!CH.chan||!CH.msgs.length)chatLoad();if(state.view==='premium')renderPremium()}
 function planText(){if(!CL.shop)return t('planFree');if(isPrem())return t('planPrem',{d:new Date(PLN.until).toLocaleDateString(LOC())});return PLN.plan==='premium'?t('planExp'):t('planFree')}
 const usd=n=>'$'+(Math.round(n*100)/100).toLocaleString(LOC(),{maximumFractionDigits:2});
 function renderPremium(){$('#plStat').textContent=planText();$('#pqNum').value=PLN.cfg.mpesa_number||'';const m=num($('#pqMonths').value)||1;$('#payHow').textContent=t('payHow',{a:usd(price()*m)});
@@ -1007,6 +1021,20 @@ async function trfStart(id){const r=allRows().find(x=>x.id===id);if(!r||CL.role!
  state.moves.unshift({id:uid(),date:todayS(),rid:'tr:'+dest.id,aid:r.id,item:r.desc,given:q,ret:0,sold:0,price:num(r.price)});save();log('transfer',r.desc+' x'+q+' → '+dest.name);
  try{await sb.from('journal').insert([{shop_id:dest.id,email:cloudUser.email,role:'owner',action:'transferIn',detail:r.desc+' x'+q+' ← '+shopName(CL.shop)}])}catch(e){}
  toast(t('mTrfOk'));renderMulti()}
+/* ---- Chat d'équipe (messages en direct entre membres de la boutique) ---- */
+let CH={msgs:[],chan:null,unread:0};
+const chatSeenKey=()=>'pq-chat-seen-'+CL.shop;
+const chatSeen=()=>{try{localStorage.setItem(chatSeenKey(),String(Date.now()))}catch(e){}CH.unread=0;chatBadge()};
+function chatBadge(){const d=$('#chatDot');if(d)d.style.display=CH.unread>0?'block':'none'}
+function chatFab(){const f=$('#chatFab');if(!f)return;f.style.display=(sb&&cloudUser&&CL.shop&&!gated()&&state.view!=='chat')?'flex':'none'}
+async function chatLoad(){if(!sb||!CL.shop||gated())return;try{const r=await sb.from('messages').select('id,email,role,body,at').eq('shop_id',CL.shop).order('at',{ascending:false}).limit(150);if(r.data){CH.msgs=r.data.slice().reverse();let seen=0;try{seen=num(localStorage.getItem(chatSeenKey()))}catch(e){}CH.unread=state.view==='chat'?0:CH.msgs.filter(m=>m.email!==CL.email&&new Date(m.at).getTime()>seen).length}}catch(e){}renderChat();chatBadge()}
+function chatSub(){try{if(CH.chan)sb.removeChannel(CH.chan)}catch(e){}CH.chan=null;if(!sb||!CL.shop)return;try{CH.chan=sb.channel('chat-'+CL.shop).on('postgres_changes',{event:'INSERT',schema:'public',table:'messages',filter:'shop_id=eq.'+CL.shop},p=>chatIn(p.new)).subscribe()}catch(e){}chatLoad()}
+function chatIn(m){if(!m||CH.msgs.some(x=>x.id===m.id))return;CH.msgs.push(m);if(state.view==='chat'){renderChat();chatSeen()}else if(m.email!==CL.email){CH.unread++;chatBadge();toast(t('chatNew',{n:String(m.email||'').split('@')[0],m:String(m.body).slice(0,40)}));buzz([20,40,20])}}
+async function chatSend(){const i=$('#chatIn'),b=i.value.trim();if(!b||!sb||!CL.shop)return;if(gated()){toast(t('chatLock'));return}i.value='';
+ try{const r=await sb.from('messages').insert([{shop_id:CL.shop,email:CL.email,role:CL.role,body:b.slice(0,1000)}]).select('id,email,role,body,at');if(r.error)throw r.error;if(r.data&&r.data[0])chatIn(r.data[0])}catch(e){toast(t('chatErr'));i.value=b}}
+function renderChat(){const L=$('#chatList');if(!L)return;if(!CH.msgs.length){L.innerHTML='<div class="empty">'+esc(t('chatEmpty'))+'</div>';return}
+ const tm=d=>{const x=new Date(d);return x.toLocaleDateString(LOC(),{day:'2-digit',month:'2-digit'})+' '+x.toLocaleTimeString(LOC(),{hour:'2-digit',minute:'2-digit'})};
+ L.innerHTML=CH.msgs.map(m=>{const me=m.email===CL.email;return'<div style="display:flex;justify-content:'+(me?'flex-end':'flex-start')+';margin:6px 0"><div style="max-width:82%;padding:8px 12px;border-radius:14px;background:'+(me?'var(--gd)':'var(--p2)')+';border:1px solid var(--ln)"><div class="mu" style="font-size:.7rem">'+esc(String(m.email||'').split('@')[0])+' · '+esc(roleLbl(m.role))+' · '+esc(tm(m.at))+'</div><div style="white-space:pre-wrap;word-break:break-word;font-size:.92rem">'+esc(m.body)+'</div></div></div>'}).join('');L.scrollTop=L.scrollHeight}
 /* ---- renderers ---- */
 const ICON={home:'<path d="M3 11 12 3l9 8v10H3z"/>',pos:'<path d="M3 4h2l2.5 11h10L20 7H6"/><circle cx="9" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/>',sheet:'<path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/>',resellers:'<circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-4 3-6 7-6s7 2 7 6"/><path d="M17 5a3 3 0 0 1 0 6M19 14c2 1 3 3 3 6"/>',suivi:'<path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h5"/>',stats:'<path d="M3 17l5-6 4 3 8-9"/><path d="M15 5h5v5"/>',settings:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>'};
 const VIEWS=['home','pos','sheet','resellers','suivi','stats','settings'];
@@ -1076,7 +1104,7 @@ function renderStats(){const gs=$('#granSeg');gs.innerHTML='';[['d','d1'],['w','
 function renderSettings(){renderCatalog();const s=state.set,b=state.brand;const set=(id,v)=>{const e=$(id);if(document.activeElement!==e)e.value=v};set('#sBname',b.name);set('#sUnits',(s.units||[]).join(', '));set('#sCats',(s.cats||[]).join(', '));set('#sEmail',b.email);set('#sBPhone',b.phone);set('#sAddr',b.addr);updCloudUI();set('#sOwner',s.owner);set('#sManager',s.manager);set('#sCity',b.city);set('#sSlogan',b.slogan);set('#sMonnaie',s.monnaie);set('#sTaux',s.taux);set('#sLow',s.lowStock);set('#sLate',s.lateDays);set('#sSal',s.salaryPct);set('#sLoy',s.loyaltyPct);set('#sLead',fcLead());set('#sMarg',fcMarg());set('#sBasis',s.basis);
  const sl=$('#sLang');sl.innerHTML='';LANGS.forEach(l=>sl.append(h('option',{value:l[0],text:l[1]})));sl.value=LANG}
 function renderAll(){renderBrand();applyI18n();renderHome();renderSheet();renderResellers();renderSuivi();renderStats();renderSettings();showView(state.view,true)}
-function showView(v,noSave){if(isSeller()&&!SELL_OK.includes(v))v='pos';if(v==='journal'&&gated())v='premium';state.view=v;$$('.view').forEach(e=>e.classList.toggle('on',e.id==='v-'+v));$$('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.arg===(v==='clients'?'resellers':v)));if(v==='clients')renderClients();if(v==='multi')renderMulti();if(v!=='pos')scanStop();if(v==='pos')renderPos();if(v==='journal')loadJournal();if(v==='premium'){renderPremium();loadPlan()}if(v==='calc'||v==='home'||v==='stats'||v==='sheet'||v==='suivi')refreshView(v);scrollTo(0,0)}
+function showView(v,noSave){if(isSeller()&&!SELL_OK.includes(v))v='pos';if(v==='journal'&&gated())v='premium';if(v==='chat'&&gated())v='premium';state.view=v;$$('.view').forEach(e=>e.classList.toggle('on',e.id==='v-'+v));$$('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.arg===(v==='clients'?'resellers':v)));if(v==='clients')renderClients();if(v==='multi')renderMulti();if(v==='chat'){renderChat();chatLoad();chatSeen()}chatFab();if(v!=='pos')scanStop();if(v==='pos')renderPos();if(v==='journal')loadJournal();if(v==='premium'){renderPremium();loadPlan()}if(v==='calc'||v==='home'||v==='stats'||v==='sheet'||v==='suivi')refreshView(v);scrollTo(0,0)}
 function refreshView(v){if(v==='home')renderHome();if(v==='stats')renderStats();if(v==='sheet')renderSheet();if(v==='suivi')renderSuivi()}
 /* ---- documents ---- */
 function showDoc(title,body){const b=state.brand;$('#doc').innerHTML='<div class="doc-page"><div class="dhd"><div style="display:flex;gap:10px;align-items:center">'+(b.logo?'<img class="dlogo" src="'+esc(b.logo)+'" style="width:48px;height:48px;object-fit:cover" alt="">':'')+'<div><div style="font-family:var(--f);font-weight:900;font-size:1.5rem;text-transform:uppercase">'+esc(b.name)+'</div><div>'+esc(b.city)+'</div><div style="font-size:.75rem">'+esc([b.addr,b.phone,b.email].filter(Boolean).join(' · '))+'</div></div></div><div style="text-align:right"><b>'+esc(title)+'</b><br>'+esc(fdate(todayS()))+'</div></div>'+body+'<p style="margin-top:22px;text-align:center;border-top:1px solid #000;padding-top:8px">« '+esc(b.slogan)+' » — <b>'+esc(b.signature)+'</b></p></div>';document.body.classList.add('print-doc');$('#docWrap').style.display='block';scrollTo(0,0)}
@@ -1218,6 +1246,7 @@ Object.assign(ACT,{
  switchTo(a,el){switchShop(el.dataset.id).then(()=>showView('home'))},
  trfStart(a,el){trfStart(el.dataset.id)},
  async catPhotoDel(a,el){const r=allRows().find(x=>x.id===el.dataset.id);if(!r)return;const old=catPath(r.img);r.img='';save();if(old&&sb){try{await sb.storage.from('catalog').remove([old])}catch(e){}}renderCatalog()},
+ chatSend(){chatSend()},
  posPayMode(a){POS.pay=a;renderPos()},
  posPay(){if(!POS.cart.length)return;const cl=state.clients.find(x=>x.id===$('#posClient').value),credit=POS.pay==='credit';
   if(credit&&!cl){toast(t('needClient'));return}if(credit&&cl&&num(cl.limit)>0){const tt=POS.cart.reduce((s,l)=>s+l.q*l.p,0);if(cDue(cl.id)+tt>num(cl.limit)){toast(t('creditLimit',{d:money(Math.max(0,cDue(cl.id))),l:money(num(cl.limit))}));return}}if((cl||credit)&&lockedPrem()){toast(t('premOnly'));showView('premium');return}
@@ -1238,7 +1267,7 @@ Object.assign(ACT,{
  async delClient(a,el){if(!await ask(t('cfDelClient'),{danger:1}))return;const id=el.dataset.id;state.clients=state.clients.filter(x=>x.id!==id);state.moves.forEach(m=>{if(m.cid===id)m.cid=''});save();log('delClient','');renderClients()}
 });
 $('#posCode').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();ACT.posAdd()}});
-$('#posClient').addEventListener('change',renderPos);document.addEventListener('change',e=>{const i=e.target.closest&&e.target.closest('input[data-catimg]');if(i&&i.files&&i.files[0]){catPhotoSet(i.dataset.catimg,i.files[0]);i.value=''}});$('#shopSel').addEventListener('change',e=>switchShop(e.target.value));$('#zDate').addEventListener('change',renderZ);
+$('#posClient').addEventListener('change',renderPos);document.addEventListener('change',e=>{const i=e.target.closest&&e.target.closest('input[data-catimg]');if(i&&i.files&&i.files[0]){catPhotoSet(i.dataset.catimg,i.files[0]);i.value=''}});$('#chatIn').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();chatSend()}});$('#shopSel').addEventListener('change',e=>switchShop(e.target.value));$('#zDate').addEventListener('change',renderZ);
 document.addEventListener('click',e=>{if(e.target.closest('.btn,#tabs button,.seg button'))buzz(8)});
 })();
 </script></body></html>
