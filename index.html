@@ -666,7 +666,7 @@ mTitle|Toutes mes boutiques|All my shops|Todas mis tiendas|Todas as minhas lojas
 mSales|Ventes du jour|Today’s sales|Ventas de hoy|Vendas de hoje
 mDebt|Créances|Receivables|Por cobrar|A receber
 mLow|Stocks bas|Low stock|Stock bajo|Stock baixo
-mVal|Valeur du stock (achat)|Stock value (cost)|Valor del stock (coste)|Valor do stock (custo)
+mVal|Valeur du stock (vente)|Stock value (sale price)|Valor del stock (venta)|Valor do stock (venda)
 mCross|Stocks croisés|Stock across shops|Stock cruzado|Stock cruzado
 mActive|Active|Active|Activa|Ativa
 mNone|Une seule boutique pour l’instant. Créez-en une autre dans Paramètres.|Only one shop for now. Create another in Settings.|Solo una tienda por ahora. Crea otra en Ajustes.|Só uma loja por agora. Crie outra em Definições.
@@ -707,7 +707,7 @@ const DEF=()=>({v:3,brand:{name:'PREMIUM QUALITÉ',slogan:'Gérez. Vendez. Encai
 let state=DEF(),noFlush=false;
 function fixup(s){const d=DEF();s.brand=Object.assign(d.brand,s.brand||{});s.set=Object.assign(d.set,s.set||{});s.v=3;
  if(!Array.isArray(s.books)||!s.books.length)s.books=d.books;
- s.books.forEach(b=>{b.id=b.id||uid();b.label=b.label||'Fiche';b.rows=(b.rows||[]).map(r=>{r.id=r.id||uid();if(r.cost==null){r.cost=Math.max(0,num(r.price)-num(r.gain||0));delete r.gain}r.exp=num(r.exp);r.cost=num(r.cost);r.qty=num(r.qty);r.price=num(r.price);r.desc=r.desc||'';r.uom=r.uom||'Pc';r.cat=r.cat||'';r.code=r.code||'';r.date=r.date||'';r.rem=r.rem||'';return r})});
+ s.books.forEach(b=>{b.id=b.id||uid();b.label=b.label||'Fiche';b.rows=(b.rows||[]).map(r=>{r.id=r.id||uid();if(r.cost==null){r.cost=Math.max(0,num(r.price)-num(r.gain||0));delete r.gain}r.exp=num(r.exp);r.cost=num(r.cost);r.qty=num(r.qty);if(r.cost>0){r.exp=Math.round((r.exp+r.qty*r.cost)*100)/100;r.cost=0}r.price=num(r.price);r.desc=r.desc||'';r.uom=r.uom||'Pc';r.cat=r.cat||'';r.code=r.code||'';r.date=r.date||'';r.rem=r.rem||'';return r})});
  if(!s.books.some(b=>b.id===s.cur))s.cur=s.books[0].id;
  s.resellers=(s.resellers||[]).map(r=>Object.assign({id:uid(),name:'',phone:'',zone:'',blocked:false},r));
  s.moves=(s.moves||[]).map(m=>{m.id=m.id||uid();m.given=num(m.given);m.ret=num(m.ret);m.sold=num(m.sold);m.price=num(m.price);m.item=m.item||'';if(m.aid==null){const r=s.books.flatMap(b=>b.rows).find(r=>r.desc&&r.desc.toLowerCase()===m.item.toLowerCase());m.aid=r?r.id:''}return m});
@@ -966,7 +966,7 @@ async function newShop(){if(!await needSB())return;if(!CL.shop||CL.role!=='owner
 /* tableau de bord central */
 function docCalc(d){const td=todayS(),mv=d.moves||[],out={};mv.forEach(m=>{if(m.aid)out[m.aid]=(out[m.aid]||0)+num(m.given)-num(m.ret)});
  let sales=0,cd=0;mv.forEach(m=>{if(m.rid==='shop'&&m.date===td)sales+=num(m.sold)*num(m.price);if(m.credit&&m.cid)cd+=num(m.sold)*num(m.price)});(d.pays||[]).forEach(p=>{if(String(p.rid).startsWith('c:'))cd-=num(p.amount)});
- const low=num((d.set||{}).lowStock),items=[];let nl=0,val=0;(d.books||[]).forEach(b=>(b.rows||[]).forEach(r=>{if(!r.desc)return;const st=num(r.qty)-(out[r.id]||0);items.push({key:String(r.code||r.desc).toLowerCase(),name:r.desc,st,id:r.id,uom:r.uom||''});if(st<=low)nl++;val+=Math.max(0,st)*num(r.cost)}));
+ const low=num((d.set||{}).lowStock),items=[];let nl=0,val=0;(d.books||[]).forEach(b=>(b.rows||[]).forEach(r=>{if(!r.desc)return;const st=num(r.qty)-(out[r.id]||0);items.push({key:String(r.code||r.desc).toLowerCase(),name:r.desc,st,id:r.id,uom:r.uom||''});if(st<=low)nl++;val+=Math.max(0,st)*num(r.price)}));
  return{sales,cd:Math.max(0,cd),nl,val,items,cur:(d.set||{}).monnaie||'$'}}
 const fm=(n,c)=>{n=Math.round(n*100)/100;const s=n.toLocaleString(LOC(),{maximumFractionDigits:2});return c==='$'?'$'+s:s+' FC'};
 let MULTI=null;
@@ -1016,11 +1016,11 @@ const ncell=()=>h('td',{class:'n'});
 function selCell(o,f,list){const s=h('select');const L=list.slice();if(o[f]&&!L.includes(o[f]))L.push(o[f]);if(f==='cat')s.append(h('option',{value:'',text:'—'}));L.forEach(v=>s.append(h('option',{value:v,text:v})));s.value=o[f]||(f==='cat'?'':L[0]||'');s.addEventListener('change',()=>{o[f]=s.value;save()});return h('td',{},[s])}
 function costMix(r,onch){const a=cell(r,'cost','n',onch,'64px').firstChild,b=cell(r,'exp','n',onch,'64px').firstChild;a.placeholder=t('aBuy');a.title=t('cCost');b.placeholder=t('cExp');b.title=t('cExp');return h('td',{},[h('div',{style:'display:flex;gap:4px'},[a,b])])}
 function renderSheet(){const bs=$('#bookSel');bs.innerHTML='';state.books.forEach(b=>bs.append(h('option',{value:b.id,text:b.label})));bs.value=state.cur;
- $('#sheetHead').innerHTML=['N°','cDesc','cCode','cCat','cUom','cQty','date','cPrice','cCostMix','cTotal','cCostAll','cProfit','cOut','cStock','cRem',''].map(k=>'<th>'+esc(k==='N°'||k===''?k:t(k))+'</th>').join('');
+ $('#sheetHead').innerHTML=['N°','cDesc','cCode','cCat','cUom','cQty','date','cPrice','cExp','cTotal','cCostAll','cProfit','cOut','cStock','cRem',''].map(k=>'<th>'+esc(k==='N°'||k===''?k:t(k))+'</th>').join('');
  const tb=$('#rows');tb.innerHTML='';const bk=cur(),ups=[];
  const upAll=()=>{ups.forEach(f=>f());updFoot();$('#acct2').innerHTML=acctHtml();updItems()};
  bk.rows.forEach((r,ix)=>{const tr=h('tr'),tT=ncell(),tC=ncell(),tB=ncell(),tO=ncell(),tS=ncell();tS.className='n stk';
-  tr.append(h('td',{class:'n mu',text:ix+1}),cell(r,'desc','t',upAll,'150px'),cell(r,'code','t',null,'120px'),selCell(r,'cat',state.set.cats),selCell(r,'uom',state.set.units),cell(r,'qty','n',upAll,'70px'),cell(r,'date','d',null,'130px'),cell(r,'price','n',upAll,'80px'),costMix(r,upAll),tT,tC,tB,tO,tS,cell(r,'rem','t',null,'120px'),h('td',{},[h('button',{class:'btn sm r',text:'×',data:{act:'delRow',id:r.id},aria:{label:t('del')}})]));
+  tr.append(h('td',{class:'n mu',text:ix+1}),cell(r,'desc','t',upAll,'150px'),cell(r,'code','t',null,'120px'),selCell(r,'cat',state.set.cats),selCell(r,'uom',state.set.units),cell(r,'qty','n',upAll,'70px'),cell(r,'date','d',null,'130px'),cell(r,'price','n',upAll,'80px'),cell(r,'exp','n',upAll,'90px'),tT,tC,tB,tO,tS,cell(r,'rem','t',null,'120px'),h('td',{},[h('button',{class:'btn sm r',text:'×',data:{act:'delRow',id:r.id},aria:{label:t('del')}})]));
   ups.push(()=>{const T=r.qty*r.price,C=r.qty*r.cost+r.exp,B=T-C,o=rowOut(r),s=r.qty-o;tT.textContent=nf(T);tC.textContent=nf(C);tB.textContent=nf(B);tB.className='n '+(B<0?'dn':'up');tO.textContent=nf(o);tS.textContent=nf(s);tr.classList.toggle('low',s<=state.set.lowStock)});tr.dataset.d=(r.desc||'').toLowerCase();tb.append(tr)});
  ups.forEach(f=>f());updFoot();$('#acct2').innerHTML=acctHtml();filterRows();
  function updFoot(){const a=acct(),q=bk.rows.reduce((s,r)=>s+r.qty,0),st=bk.rows.reduce((s,r)=>s+rowStock(r),0),o=bk.rows.reduce((s,r)=>s+rowOut(r),0);$('#foot').innerHTML='<tr><td></td><td>TOTAL</td><td></td><td></td><td></td><td class="n">'+nf(q)+'</td><td></td><td></td><td></td><td class="n">'+nf(a.T)+'</td><td class="n">'+nf(a.C)+'</td><td class="n '+(a.B<0?'dn':'up')+'">'+nf(a.B)+'</td><td class="n">'+nf(o)+'</td><td class="n">'+nf(st)+'</td><td></td><td></td></tr>'}}
@@ -1097,7 +1097,7 @@ function demo(){const rows=[['T-shirt coton',80,12,5,30],['Riz 25 kg',40,30,14,4
   if(k%2===0)add(Math.max(0,d0-2),'p3','r5','Huile 5 L',sj,sj,45);else add(Math.max(0,d0-2),'p3','r1','T-shirt coton',sj+1,sj,12)}
  const due={};mv.forEach(m=>due[m.rid]=(due[m.rid]||0)+m.sold*m.price);
  const pays=[{id:uid(),date:addDays(todayS(),-3),rid:'p1',amount:Math.round(due.p1*.6),note:''},{id:uid(),date:addDays(todayS(),-2),rid:'p2',amount:due.p2,note:''},{id:uid(),date:addDays(todayS(),-22),rid:'p3',amount:Math.round(due.p3*.4),note:''}];
- state.books=[{id:'b1',label:'Fiche 1',rows}];state.cur='b1';state.resellers=rs;state.moves=mv;state.pays=pays;state.clients=[{id:'c1',name:'Marie K.',phone:'0811111111'},{id:'c2',name:'Jean M.',phone:'0822222222'}];state.cbl=[{id:uid(),cid:'c1',amount:1.5,date:addDays(todayS(),-5)}];state.moves.push({id:uid(),date:addDays(todayS(),-3),rid:'shop',aid:'r2',item:'Riz 25 kg',given:1,ret:0,sold:1,price:30,cid:'c2',credit:true})}
+ state.books=[{id:'b1',label:'Fiche 1',rows}];state.cur='b1';state.resellers=rs;state.moves=mv;state.pays=pays;state.clients=[{id:'c1',name:'Marie K.',phone:'0811111111'},{id:'c2',name:'Jean M.',phone:'0822222222'}];state.cbl=[{id:uid(),cid:'c1',amount:1.5,date:addDays(todayS(),-5)}];state.moves.push({id:uid(),date:addDays(todayS(),-3),rid:'shop',aid:'r2',item:'Riz 25 kg',given:1,ret:0,sold:1,price:30,cid:'c2',credit:true});fixup(state)}
 /* ---- actions ---- */
 const ACT={
  go(a){closeDoc();showView(a)},undo,redo,langPick,

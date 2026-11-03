@@ -20,7 +20,7 @@ async function newShop(){if(!await needSB())return;if(!CL.shop||CL.role!=='owner
 /* tableau de bord central */
 function docCalc(d){const td=todayS(),mv=d.moves||[],out={};mv.forEach(m=>{if(m.aid)out[m.aid]=(out[m.aid]||0)+num(m.given)-num(m.ret)});
  let sales=0,cd=0;mv.forEach(m=>{if(m.rid==='shop'&&m.date===td)sales+=num(m.sold)*num(m.price);if(m.credit&&m.cid)cd+=num(m.sold)*num(m.price)});(d.pays||[]).forEach(p=>{if(String(p.rid).startsWith('c:'))cd-=num(p.amount)});
- const low=num((d.set||{}).lowStock),items=[];let nl=0,val=0;(d.books||[]).forEach(b=>(b.rows||[]).forEach(r=>{if(!r.desc)return;const st=num(r.qty)-(out[r.id]||0);items.push({key:String(r.code||r.desc).toLowerCase(),name:r.desc,st,id:r.id,uom:r.uom||''});if(st<=low)nl++;val+=Math.max(0,st)*num(r.cost)}));
+ const low=num((d.set||{}).lowStock),items=[];let nl=0,val=0;(d.books||[]).forEach(b=>(b.rows||[]).forEach(r=>{if(!r.desc)return;const st=num(r.qty)-(out[r.id]||0);items.push({key:String(r.code||r.desc).toLowerCase(),name:r.desc,st,id:r.id,uom:r.uom||''});if(st<=low)nl++;val+=Math.max(0,st)*num(r.price)}));
  return{sales,cd:Math.max(0,cd),nl,val,items,cur:(d.set||{}).monnaie||'$'}}
 const fm=(n,c)=>{n=Math.round(n*100)/100;const s=n.toLocaleString(LOC(),{maximumFractionDigits:2});return c==='$'?'$'+s:s+' FC'};
 let MULTI=null;

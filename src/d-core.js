@@ -19,7 +19,7 @@ const DEF=()=>({v:3,brand:{name:'PREMIUM QUALITÉ',slogan:'Gérez. Vendez. Encai
 let state=DEF(),noFlush=false;
 function fixup(s){const d=DEF();s.brand=Object.assign(d.brand,s.brand||{});s.set=Object.assign(d.set,s.set||{});s.v=3;
  if(!Array.isArray(s.books)||!s.books.length)s.books=d.books;
- s.books.forEach(b=>{b.id=b.id||uid();b.label=b.label||'Fiche';b.rows=(b.rows||[]).map(r=>{r.id=r.id||uid();if(r.cost==null){r.cost=Math.max(0,num(r.price)-num(r.gain||0));delete r.gain}r.exp=num(r.exp);r.cost=num(r.cost);r.qty=num(r.qty);r.price=num(r.price);r.desc=r.desc||'';r.uom=r.uom||'Pc';r.cat=r.cat||'';r.code=r.code||'';r.date=r.date||'';r.rem=r.rem||'';return r})});
+ s.books.forEach(b=>{b.id=b.id||uid();b.label=b.label||'Fiche';b.rows=(b.rows||[]).map(r=>{r.id=r.id||uid();if(r.cost==null){r.cost=Math.max(0,num(r.price)-num(r.gain||0));delete r.gain}r.exp=num(r.exp);r.cost=num(r.cost);r.qty=num(r.qty);if(r.cost>0){r.exp=Math.round((r.exp+r.qty*r.cost)*100)/100;r.cost=0}r.price=num(r.price);r.desc=r.desc||'';r.uom=r.uom||'Pc';r.cat=r.cat||'';r.code=r.code||'';r.date=r.date||'';r.rem=r.rem||'';return r})});
  if(!s.books.some(b=>b.id===s.cur))s.cur=s.books[0].id;
  s.resellers=(s.resellers||[]).map(r=>Object.assign({id:uid(),name:'',phone:'',zone:'',blocked:false},r));
  s.moves=(s.moves||[]).map(m=>{m.id=m.id||uid();m.given=num(m.given);m.ret=num(m.ret);m.sold=num(m.sold);m.price=num(m.price);m.item=m.item||'';if(m.aid==null){const r=s.books.flatMap(b=>b.rows).find(r=>r.desc&&r.desc.toLowerCase()===m.item.toLowerCase());m.aid=r?r.id:''}return m});

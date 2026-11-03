@@ -396,7 +396,7 @@ mTitle|Toutes mes boutiques|All my shops|Todas mis tiendas|Todas as minhas lojas
 mSales|Ventes du jour|Today’s sales|Ventas de hoy|Vendas de hoje
 mDebt|Créances|Receivables|Por cobrar|A receber
 mLow|Stocks bas|Low stock|Stock bajo|Stock baixo
-mVal|Valeur du stock (achat)|Stock value (cost)|Valor del stock (coste)|Valor do stock (custo)
+mVal|Valeur du stock (vente)|Stock value (sale price)|Valor del stock (venta)|Valor do stock (venda)
 mCross|Stocks croisés|Stock across shops|Stock cruzado|Stock cruzado
 mActive|Active|Active|Activa|Ativa
 mNone|Une seule boutique pour l’instant. Créez-en une autre dans Paramètres.|Only one shop for now. Create another in Settings.|Solo una tienda por ahora. Crea otra en Ajustes.|Só uma loja por agora. Crie outra em Definições.

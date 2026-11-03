@@ -33,7 +33,7 @@ function demo(){const rows=[['T-shirt coton',80,12,5,30],['Riz 25 kg',40,30,14,4
   if(k%2===0)add(Math.max(0,d0-2),'p3','r5','Huile 5 L',sj,sj,45);else add(Math.max(0,d0-2),'p3','r1','T-shirt coton',sj+1,sj,12)}
  const due={};mv.forEach(m=>due[m.rid]=(due[m.rid]||0)+m.sold*m.price);
  const pays=[{id:uid(),date:addDays(todayS(),-3),rid:'p1',amount:Math.round(due.p1*.6),note:''},{id:uid(),date:addDays(todayS(),-2),rid:'p2',amount:due.p2,note:''},{id:uid(),date:addDays(todayS(),-22),rid:'p3',amount:Math.round(due.p3*.4),note:''}];
- state.books=[{id:'b1',label:'Fiche 1',rows}];state.cur='b1';state.resellers=rs;state.moves=mv;state.pays=pays;state.clients=[{id:'c1',name:'Marie K.',phone:'0811111111'},{id:'c2',name:'Jean M.',phone:'0822222222'}];state.cbl=[{id:uid(),cid:'c1',amount:1.5,date:addDays(todayS(),-5)}];state.moves.push({id:uid(),date:addDays(todayS(),-3),rid:'shop',aid:'r2',item:'Riz 25 kg',given:1,ret:0,sold:1,price:30,cid:'c2',credit:true})}
+ state.books=[{id:'b1',label:'Fiche 1',rows}];state.cur='b1';state.resellers=rs;state.moves=mv;state.pays=pays;state.clients=[{id:'c1',name:'Marie K.',phone:'0811111111'},{id:'c2',name:'Jean M.',phone:'0822222222'}];state.cbl=[{id:uid(),cid:'c1',amount:1.5,date:addDays(todayS(),-5)}];state.moves.push({id:uid(),date:addDays(todayS(),-3),rid:'shop',aid:'r2',item:'Riz 25 kg',given:1,ret:0,sold:1,price:30,cid:'c2',credit:true});fixup(state)}
 /* ---- actions ---- */
 const ACT={
  go(a){closeDoc();showView(a)},undo,redo,langPick,
