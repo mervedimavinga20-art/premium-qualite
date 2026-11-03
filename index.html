@@ -227,7 +227,7 @@ body.print-doc #docWrap{display:block}
   <div><label data-i="basis"></label><select id="sBasis"><option value="prevu" data-i="bPrevu"></option><option value="realise" data-i="bReal"></option></select></div></div></div>
  <div class="card"><h2 data-i="lang"></h2><select id="sLang"></select></div>
  <div class="card"><h2 data-i="security"></h2><div class="fg"><div><label data-i="pin4"></label><input id="sPin" type="password" inputmode="numeric" maxlength="6"></div></div><div class="btns"><button class="btn sm" data-act="pinSave" data-i="pinSave"></button><button class="btn sm g2" data-act="pinOff" data-i="pinOff"></button></div></div>
- <div class="card" data-own><h2 data-i="backup"></h2><div class="btns"><button class="btn sm" data-act="exportData" data-i="export"></button><button class="btn sm g2" data-act="shareData" data-i="share"></button><label class="btn sm g2" style="margin:0;display:inline-block;cursor:pointer"><span data-i="import"></span><input id="impFile" type="file" accept="application/json,.json" style="display:none"></label></div></div>
+ <div class="card" data-own><h2 data-i="backup"></h2><div class="btns"><button class="btn sm" data-act="exportData" data-i="export"></button><button class="btn sm" data-act="backupAll" data-i="bkAll"></button><button class="btn sm g2" data-act="shareData" data-i="share"></button><label class="btn sm g2" style="margin:0;display:inline-block;cursor:pointer"><span data-i="import"></span><input id="impFile" type="file" accept="application/json,.json" style="display:none"></label></div></div>
  <div class="card" data-own><h2 data-i="app"></h2><div class="btns"><button class="btn sm" id="installBtn" data-act="install" data-i="install" style="display:none"></button><button class="btn sm g2" data-act="demo" data-i="demo"></button><button class="btn sm r" data-act="wipe" data-i="wipe"></button></div><p class="mu" style="font-size:.78rem" data-i="localNote"></p></div>
 </section>
 <section class="view" id="v-journal">
@@ -551,6 +551,9 @@ delAccAsk|Supprimer définitivement le compte {e} ? Vos boutiques en ligne (arti
 delAccWord|SUPPRIMER|DELETE|ELIMINAR|APAGAR
 delAccAdm|Un compte administrateur ne peut pas être supprimé ici|An admin account cannot be deleted here|Una cuenta de administrador no se puede eliminar aquí|Uma conta de administrador não pode ser apagada aqui
 delAccOk|Compte supprimé. Les données de cet appareil restent sur ce téléphone.|Account deleted. Data on this device stays on this phone.|Cuenta eliminada. Los datos de este dispositivo siguen en este teléfono.|Conta apagada. Os dados deste dispositivo ficam neste telemóvel.
+bkAll|Sauvegarder toutes mes boutiques|Back up all my shops|Respaldar todas mis tiendas|Guardar todas as minhas lojas
+bkNone|Aucune boutique en ligne à sauvegarder|No online shop to back up|Ninguna tienda en línea para respaldar|Nenhuma loja online para guardar
+bkDone|{n} boutique(s) sauvegardée(s) dans vos téléchargements|{n} shop(s) saved to your downloads|{n} tienda(s) guardada(s) en tus descargas|{n} loja(s) guardada(s) nas transferências
 payMany|Vous avez déjà 3 demandes en attente. Patientez la validation.|You already have 3 pending requests. Please wait for validation.|Ya tienes 3 solicitudes pendientes. Espera la validación.|Já tem 3 pedidos pendentes. Aguarde a validação.
 txUsed|Ce code a déjà été utilisé|This code was already used|Este código ya se usó|Este código já foi usado
 limitMsg|Limite du plan Gratuit atteinte : passez à Premium|Free plan limit reached: go Premium|Límite del plan Gratis alcanzado: pasa a Premium|Limite do plano Grátis atingido: passe a Premium
@@ -1210,6 +1213,9 @@ const ACT={
  pinSave(){const v=$('#sPin').value;if(!/^\d{6}$/.test(v)){toast(t('tPin4'));return}state.set.pin=hp(v);state.set.pinLen=6;$('#sPin').value='';flush();toast(t('tPin'))},
  pinOff(){state.set.pin='';flush();toast(t('tOk'))},
  async forgot(){if(!await ask(t('cfForgot'),{danger:1}))return;noFlush=true;KEYS.forEach(k=>{try{localStorage.removeItem(k)}catch(e){}});location.reload()},
+ async backupAll(){if(!cloudUser||!await needSB())return;if(!SHOPS.length){toast(t('bkNone'));return}let n=0;const sd=x=>x.replace(/[^a-z0-9]+/gi,'-').replace(/^-|-$/g,'').toLowerCase()||'boutique';
+  for(const s of SHOPS.filter(x=>x.role==='owner')){try{const r=await sb.from('shops').select('data').eq('id',s.id).single();if(r.error||!r.data)continue;const b=new Blob([JSON.stringify(r.data.data,null,1)],{type:'application/json'}),a=h('a',{href:URL.createObjectURL(b),download:'sauvegarde-'+sd(s.name)+'-'+todayS()+'.json'});document.body.append(a);a.click();a.remove();n++;await new Promise(z=>setTimeout(z,500))}catch(e){}}
+  state.set.lastExport=todayS();save();toast(t('bkDone',{n:String(n)}))},
  exportData(){const b=new Blob([JSON.stringify(state,null,1)],{type:'application/json'}),a=h('a',{href:URL.createObjectURL(b),download:'kinshasa-brute-'+todayS()+'.json'});document.body.append(a);a.click();a.remove();state.set.lastExport=todayS()},
  async shareData(){const f=new File([JSON.stringify(state)],'kinshasa-brute-'+todayS()+'.json',{type:'application/json'});if(navigator.canShare&&navigator.canShare({files:[f]}))try{await navigator.share({files:[f],title:state.brand.name})}catch(e){}else ACT.exportData()},
  async demo(){if(!await ask(t('cfDemo'),{danger:1}))return;demo();save();renderAll()},
