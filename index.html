@@ -29,6 +29,7 @@ header{position:sticky;top:0;z-index:30;background:rgba(9,10,9,.92);backdrop-fil
 .wm{font-size:1.2rem;line-height:1;white-space:nowrap}
 .wm b{background:var(--g);padding:0 6px;display:inline-block;transform:rotate(-3deg);margin-left:4px;font-weight:900}
 .sub{font-size:.62rem;color:var(--mu);letter-spacing:.14em;text-transform:uppercase;margin-top:2px}
+.backbar{display:flex;align-items:center;gap:4px;background:none;border:0;color:var(--g);font-weight:800;font-size:.95rem;padding:10px 0 2px;cursor:pointer;text-transform:uppercase;letter-spacing:.04em}
 .ib{background:var(--p);border:1px solid var(--ln);color:var(--tx);width:34px;height:34px;flex:none;display:grid;place-items:center;cursor:pointer;font-size:.8rem;font-weight:700}
 .ib:disabled{opacity:.3}.ib svg{width:18px;height:18px}
 main{max-width:1180px;margin:auto;padding:14px}
@@ -147,6 +148,7 @@ body.print-doc #docWrap{display:block}
 <button class="fab" id="chatFab" data-act="go" data-arg="chat" aria-label="Chat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg><i id="chatDot"></i></button>
 <div id="app"><main>
 <div id="bootSk"><div class="sk" style="height:22px;width:55%;margin:10px 0"></div><div class="sk" style="height:84px;margin-bottom:10px"></div><div class="sk" style="height:84px;margin-bottom:10px"></div><div class="sk" style="height:140px"></div></div>
+<button class="backbar" id="backBar" data-act="back" style="display:none"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg><span data-i="back"></span></button>
 <section class="view" id="v-home">
  <div class="card hero"><div class="ghost">KB</div><h1 id="hName"></h1><p class="slogan" id="hSlogan"></p><span class="sig" id="hSig"></span><p class="sub" id="hCity" style="margin-top:10px"></p></div>
  <div class="tick"><div id="tickIn"></div></div>
@@ -554,6 +556,7 @@ delAccOk|Compte supprimé. Les données de cet appareil restent sur ce télépho
 bkAll|Sauvegarder toutes mes boutiques|Back up all my shops|Respaldar todas mis tiendas|Guardar todas as minhas lojas
 bkNone|Aucune boutique en ligne à sauvegarder|No online shop to back up|Ninguna tienda en línea para respaldar|Nenhuma loja online para guardar
 bkDone|{n} boutique(s) sauvegardée(s) dans vos téléchargements|{n} shop(s) saved to your downloads|{n} tienda(s) guardada(s) en tus descargas|{n} loja(s) guardada(s) nas transferências
+back|Retour|Back|Atrás|Voltar
 payMany|Vous avez déjà 3 demandes en attente. Patientez la validation.|You already have 3 pending requests. Please wait for validation.|Ya tienes 3 solicitudes pendientes. Espera la validación.|Já tem 3 pedidos pendentes. Aguarde a validação.
 txUsed|Ce code a déjà été utilisé|This code was already used|Este código ya se usó|Este código já foi usado
 limitMsg|Limite du plan Gratuit atteinte : passez à Premium|Free plan limit reached: go Premium|Límite del plan Gratis alcanzado: pasa a Premium|Limite do plano Grátis atingido: passe a Premium
@@ -1083,6 +1086,10 @@ function renderChat(){const L=$('#chatList');if(!L)return;if(!CH.msgs.length){L.
  L.innerHTML=CH.msgs.map(m=>{const me=m.email===CL.email;return'<div style="display:flex;justify-content:'+(me?'flex-end':'flex-start')+';margin:6px 0"><div style="max-width:82%;padding:8px 12px;border-radius:14px;background:'+(me?'var(--gd)':'var(--p2)')+';border:1px solid var(--ln)"><div class="mu" style="font-size:.7rem">'+esc(String(m.email||'').split('@')[0])+' · '+esc(roleLbl(m.role))+' · '+esc(tm(m.at))+'</div><div style="white-space:pre-wrap;word-break:break-word;font-size:.92rem">'+esc(m.body)+'</div></div></div>'}).join('');L.scrollTop=L.scrollHeight}
 /* ---- renderers ---- */
 const ICON={home:'<path d="M3 11 12 3l9 8v10H3z"/>',pos:'<path d="M3 4h2l2.5 11h10L20 7H6"/><circle cx="9" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/>',sheet:'<path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/>',resellers:'<circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-4 3-6 7-6s7 2 7 6"/><path d="M17 5a3 3 0 0 1 0 6M19 14c2 1 3 3 3 6"/>',suivi:'<path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h5"/>',stats:'<path d="M3 17l5-6 4 3 8-9"/><path d="M15 5h5v5"/>',settings:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>'};
+const NAV=[];
+function navBar(){const b=$('#backBar');if(b)b.style.display=(NAV.length&&state.view!=='home')?'flex':'none'}
+function navBack(pop){let p=null;while(NAV.length){const x=NAV.pop();if(x!==state.view){p=x;break}}if(!p&&state.view==='home'){navBar();return}showView(p||'home',false,true)}
+window.addEventListener('popstate',()=>{if(NAV.length)navBack(true);else if(state.view!=='home')showView('home',false,true)});
 const VIEWS=['home','pos','sheet','resellers','suivi','stats','settings'];
 function buildTabs(){const n=$('#tabs');n.innerHTML='';VIEWS.forEach(v=>{const b=h('button',{data:{act:'go',arg:v}});b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">'+ICON[v]+'</svg><span data-i="t'+({home:'Home',pos:'Pos',sheet:'Sheet',resellers:'Res',suivi:'Suivi',stats:'Stats',settings:'Set'})[v]+'"></span>';n.append(b)})}
 function renderBrand(){const b=state.brand,row=$('#brandRow');row.innerHTML='';if(b.logo)row.append(h('img',{class:'logo',src:b.logo,alt:''}));const w=b.name.trim().split(/\s+/),lastw=w.pop();const wm=h('div',{class:'wm'});wm.append(w.join(' ')+(w.length?' ':''));wm.append(h('b',{text:lastw}));row.append(h('div',{},[wm,h('div',{class:'sub',text:b.city})]));document.title=b.name+' — Gestion'}
@@ -1150,7 +1157,7 @@ function renderStats(){const gs=$('#granSeg');gs.innerHTML='';[['d','d1'],['w','
 function renderSettings(){renderCatalog();const s=state.set,b=state.brand;const set=(id,v)=>{const e=$(id);if(document.activeElement!==e)e.value=v};set('#sBname',b.name);set('#sUnits',(s.units||[]).join(', '));set('#sCats',(s.cats||[]).join(', '));set('#sEmail',b.email);set('#sBPhone',b.phone);set('#sAddr',b.addr);updCloudUI();set('#sOwner',s.owner);set('#sManager',s.manager);set('#sCity',b.city);set('#sSlogan',b.slogan);set('#sMonnaie',s.monnaie);set('#sTaux',s.taux);set('#sLow',s.lowStock);set('#sLate',s.lateDays);set('#sSal',s.salaryPct);set('#sLoy',s.loyaltyPct);set('#sLead',fcLead());set('#sMarg',fcMarg());set('#sBasis',s.basis);
  const sl=$('#sLang');sl.innerHTML='';LANGS.forEach(l=>sl.append(h('option',{value:l[0],text:l[1]})));sl.value=LANG}
 function renderAll(){renderBrand();applyI18n();renderHome();renderSheet();renderResellers();renderSuivi();renderStats();renderSettings();showView(state.view,true)}
-function showView(v,noSave){if(isSeller()&&!SELL_OK.includes(v))v='pos';if(v==='journal'&&gated())v='premium';if(v==='chat'&&gated())v='premium';state.view=v;$$('.view').forEach(e=>e.classList.toggle('on',e.id==='v-'+v));$$('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.arg===(v==='clients'?'resellers':v)));if(v==='clients')renderClients();if(v==='multi')renderMulti();if(v==='chat'){renderChat();chatLoad();chatSeen()}chatFab();if(v!=='pos')scanStop();if(v==='pos')renderPos();if(v==='journal')loadJournal();if(v==='premium'){renderPremium();loadPlan()}if(v==='calc'||v==='home'||v==='stats'||v==='sheet'||v==='suivi')refreshView(v);scrollTo(0,0)}
+function showView(v,noSave,bk){if(isSeller()&&!SELL_OK.includes(v))v='pos';if(v==='journal'&&gated())v='premium';if(v==='chat'&&gated())v='premium';const pv=state.view;if(!bk&&pv&&pv!==v&&NAV[NAV.length-1]!==pv){NAV.push(pv);if(NAV.length>30)NAV.shift();try{history.pushState({pq:1},'')}catch(e){}}state.view=v;navBar();$$('.view').forEach(e=>e.classList.toggle('on',e.id==='v-'+v));$$('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.arg===(v==='clients'?'resellers':v)));if(v==='clients')renderClients();if(v==='multi')renderMulti();if(v==='chat'){renderChat();chatLoad();chatSeen()}chatFab();if(v!=='pos')scanStop();if(v==='pos')renderPos();if(v==='journal')loadJournal();if(v==='premium'){renderPremium();loadPlan()}if(v==='calc'||v==='home'||v==='stats'||v==='sheet'||v==='suivi')refreshView(v);scrollTo(0,0)}
 function refreshView(v){if(v==='home')renderHome();if(v==='stats')renderStats();if(v==='sheet')renderSheet();if(v==='suivi')renderSuivi()}
 /* ---- documents ---- */
 function showDoc(title,body){const b=state.brand;$('#doc').innerHTML='<div class="doc-page"><div class="dhd"><div style="display:flex;gap:10px;align-items:center">'+(b.logo?'<img class="dlogo" src="'+esc(b.logo)+'" style="width:48px;height:48px;object-fit:cover" alt="">':'')+'<div><div style="font-family:var(--f);font-weight:900;font-size:1.5rem;text-transform:uppercase">'+esc(b.name)+'</div><div>'+esc(b.city)+'</div><div style="font-size:.75rem">'+esc([b.addr,b.phone,b.email].filter(Boolean).join(' · '))+'</div></div></div><div style="text-align:right"><b>'+esc(title)+'</b><br>'+esc(fdate(todayS()))+'</div></div>'+body+'<p style="margin-top:22px;text-align:center;border-top:1px solid #000;padding-top:8px">« '+esc(b.slogan)+' » — <b>'+esc(b.signature)+'</b></p></div>';document.body.classList.add('print-doc');$('#docWrap').style.display='block';scrollTo(0,0)}
@@ -1301,6 +1308,7 @@ Object.assign(ACT,{
  trfStart(a,el){trfStart(el.dataset.id)},
  async catPhotoDel(a,el){const r=allRows().find(x=>x.id===el.dataset.id);if(!r)return;const old=catPath(r.img);r.img='';save();if(old&&sb){try{await sb.storage.from('catalog').remove([old])}catch(e){}}renderCatalog()},
  chatSend(){chatSend()},
+ back(){if(NAV.length&&history.state&&history.state.pq)history.back();else navBack()},
  delShop(){delShop()},
  posPayMode(a){POS.pay=a;renderPos()},
  posPay(){if(!POS.cart.length)return;const cl=state.clients.find(x=>x.id===$('#posClient').value),credit=POS.pay==='credit';
