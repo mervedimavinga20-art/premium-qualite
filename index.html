@@ -30,6 +30,9 @@ header{position:sticky;top:0;z-index:30;background:rgba(9,10,9,.92);backdrop-fil
 .wm b{background:var(--g);padding:0 6px;display:inline-block;transform:rotate(-3deg);margin-left:4px;font-weight:900}
 .sub{font-size:.62rem;color:var(--mu);letter-spacing:.14em;text-transform:uppercase;margin-top:2px}
 .backbar{display:flex;align-items:center;gap:4px;background:none;border:0;color:var(--g);font-weight:800;font-size:.95rem;padding:10px 0 2px;cursor:pointer;text-transform:uppercase;letter-spacing:.04em}
+#instBar{position:fixed;left:10px;right:72px;bottom:76px;z-index:60;align-items:center;gap:8px;background:var(--p);border:2px solid var(--g);padding:8px 10px;font-weight:700;font-size:.82rem;box-shadow:0 4px 14px rgba(0,0,0,.5)}#instBar span{flex:1}
+.ins{width:100%;max-width:260px;display:block;margin-top:8px;background:#121512;border:1px solid var(--ln)}.ist{display:flex;gap:10px;margin-top:14px}.isn{flex:none;width:26px;height:26px;border-radius:50%;background:var(--g);color:#001b0c;font-weight:900;display:grid;place-items:center}.ist-t{font-weight:700;line-height:1.35}
+.pu{animation:pul 1.4s ease-in-out infinite;transform-box:fill-box;transform-origin:center}@keyframes pul{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(1.18)}}@media(prefers-reduced-motion:reduce){.pu{animation:none}}
 .ib{background:var(--p);border:1px solid var(--ln);color:var(--tx);width:34px;height:34px;flex:none;display:grid;place-items:center;cursor:pointer;font-size:.8rem;font-weight:700}
 .ib:disabled{opacity:.3}.ib svg{width:18px;height:18px}
 main{max-width:1180px;margin:auto;padding:14px}
@@ -229,6 +232,7 @@ body.print-doc #docWrap{display:block}
   <div><label data-i="basis"></label><select id="sBasis"><option value="prevu" data-i="bPrevu"></option><option value="realise" data-i="bReal"></option></select></div></div></div>
  <div class="card"><h2 data-i="lang"></h2><select id="sLang"></select></div>
  <div class="card"><h2 data-i="security"></h2><div class="fg"><div><label data-i="pin4"></label><input id="sPin" type="password" inputmode="numeric" maxlength="6"></div></div><div class="btns"><button class="btn sm" data-act="pinSave" data-i="pinSave"></button><button class="btn sm g2" data-act="pinOff" data-i="pinOff"></button></div></div>
+ <div class="card"><h2 data-i="instT"></h2><p class="mu" style="font-size:.85rem;margin-bottom:8px" data-i="instNote"></p><button class="btn sm" data-act="instOpen" data-i="instBtn"></button></div>
  <div class="card" data-own><h2 data-i="backup"></h2><div class="btns"><button class="btn sm" data-act="exportData" data-i="export"></button><button class="btn sm" data-act="backupAll" data-i="bkAll"></button><button class="btn sm g2" data-act="shareData" data-i="share"></button><label class="btn sm g2" style="margin:0;display:inline-block;cursor:pointer"><span data-i="import"></span><input id="impFile" type="file" accept="application/json,.json" style="display:none"></label></div></div>
  <div class="card" data-own><h2 data-i="app"></h2><div class="btns"><button class="btn sm" id="installBtn" data-act="install" data-i="install" style="display:none"></button><button class="btn sm g2" data-act="demo" data-i="demo"></button><button class="btn sm r" data-act="wipe" data-i="wipe"></button></div><p class="mu" style="font-size:.78rem" data-i="localNote"></p></div>
 </section>
@@ -273,6 +277,8 @@ body.print-doc #docWrap{display:block}
 <div id="docWrap"><div class="dbar"><button class="btn sm" data-act="docPrint" data-i="print"></button><button class="btn sm g2" data-act="docClose" data-i="close"></button></div><div id="doc"></div></div>
 <div id="toast"></div>
 <div id="upd" style="display:none"><span data-i="updNew"></span> <span style="display:flex;gap:6px"><button class="btn sm" data-act="reload" data-i="updBtn"></button><button class="btn sm g2" data-act="updClose" aria-label="x">×</button></span></div>
+<div id="instBar" style="display:none"><span data-i="instBar"></span><button class="btn sm" data-act="instOpen" data-i="instBtn2"></button><button class="ib" data-act="instLater" aria-label="x">✕</button></div>
+<div class="ov" id="instOv"><div class="box" style="max-height:88vh;overflow:auto"><h2 data-i="instT"></h2><div id="instBody"></div><div class="btns" style="margin-top:14px"><button class="btn g2" data-act="instClose" data-i="close"></button></div></div></div>
 <div class="ov" id="dlg"><div class="box"><p id="dlgMsg"></p><input id="dlgIn" style="display:none;margin-bottom:12px"><div class="btns"><button class="btn g2" id="dlgNo"></button><button class="btn" id="dlgYes"></button></div></div></div>
 <div class="ov" id="langOv"><div class="box"><h2 data-i="chooseLang"></h2><div class="lg" id="langBtns"></div></div></div>
 <div class="ov" id="lock"><h1 id="lkName" style="text-align:center"></h1><p class="mu" id="lkMsg" style="margin-top:8px;min-height:1.3em"></p><div id="dots"><i></i><i></i><i></i><i></i></div><div id="pad"></div><button class="btn g2 sm" style="margin-top:16px" data-act="forgot" data-i="forgot"></button></div>
@@ -557,6 +563,27 @@ bkAll|Sauvegarder toutes mes boutiques|Back up all my shops|Respaldar todas mis 
 bkNone|Aucune boutique en ligne à sauvegarder|No online shop to back up|Ninguna tienda en línea para respaldar|Nenhuma loja online para guardar
 bkDone|{n} boutique(s) sauvegardée(s) dans vos téléchargements|{n} shop(s) saved to your downloads|{n} tienda(s) guardada(s) en tus descargas|{n} loja(s) guardada(s) nas transferências
 back|Retour|Back|Atrás|Voltar
+instT|Installer l’application|Install the app|Instalar la aplicación|Instalar a aplicação
+instBar|Installez KINSHASA BRUTE sur votre écran d’accueil|Install KINSHASA BRUTE on your home screen|Instala KINSHASA BRUTE en tu pantalla de inicio|Instale o KINSHASA BRUTE no ecrã inicial
+instBtn|Comment installer l’application|How to install the app|Cómo instalar la aplicación|Como instalar a aplicação
+instBtn2|Installer|Install|Instalar|Instalar
+instNote|Elle s’ouvre comme une vraie application, plein écran, avec son icône.|It opens like a real app, full screen, with its own icon.|Se abre como una app real, a pantalla completa, con su icono.|Abre como uma aplicação a sério, em ecrã inteiro, com o seu ícone.
+instNat|Un seul toucher suffit : le navigateur installe l’application pour vous.|One tap is enough: your browser installs the app for you.|Un toque basta: tu navegador instala la aplicación por ti.|Um toque basta: o navegador instala a aplicação por si.
+instI1|Touchez le bouton Partager, en bas de Safari.|Tap the Share button at the bottom of Safari.|Toca el botón Compartir, abajo en Safari.|Toque no botão Partilhar, em baixo no Safari.
+instI2|Faites défiler et touchez « Sur l’écran d’accueil ».|Scroll and tap “Add to Home Screen”.|Desplázate y toca «Añadir a pantalla de inicio».|Deslize e toque em «Adicionar ao ecrã principal».
+instI3|Touchez « Ajouter » en haut à droite.|Tap “Add” at the top right.|Toca «Añadir» arriba a la derecha.|Toque em «Adicionar» em cima à direita.
+instA1|Touchez les trois points en haut à droite de Chrome.|Tap the three dots at the top right of Chrome.|Toca los tres puntos arriba a la derecha en Chrome.|Toque nos três pontos em cima à direita no Chrome.
+instA2|Touchez « Installer l’application » ou « Ajouter à l’écran d’accueil ».|Tap “Install app” or “Add to Home screen”.|Toca «Instalar aplicación» o «Añadir a pantalla de inicio».|Toque em «Instalar aplicação» ou «Adicionar ao ecrã inicial».
+instD1|Cliquez sur l’icône d’installation, à droite de la barre d’adresse.|Click the install icon at the right of the address bar.|Haz clic en el icono de instalación, a la derecha de la barra de direcciones.|Clique no ícone de instalação, à direita da barra de endereços.
+instD2|Cliquez sur « Installer ». Si l’icône n’apparaît pas, utilisez le menu du navigateur puis « Installer KINSHASA BRUTE ».|Click “Install”. If the icon is missing, use the browser menu then “Install KINSHASA BRUTE”.|Haz clic en «Instalar». Si no aparece el icono, usa el menú del navegador y «Instalar KINSHASA BRUTE».|Clique em «Instalar». Se o ícone não aparecer, use o menu do navegador e «Instalar KINSHASA BRUTE».
+instAfter|C’est fait : l’icône KINSHASA BRUTE est sur votre écran. Ouvrez-la et connectez-vous avec votre compte.|Done: the KINSHASA BRUTE icon is on your screen. Open it and sign in with your account.|Listo: el icono de KINSHASA BRUTE está en tu pantalla. Ábrelo e inicia sesión con tu cuenta.|Pronto: o ícone KINSHASA BRUTE está no seu ecrã. Abra-o e inicie sessão com a sua conta.
+instSaf|Sur iPhone, l’installation marche seulement avec Safari. Copiez le lien, ouvrez Safari, collez-le, puis suivez les étapes.|On iPhone, installing only works in Safari. Copy the link, open Safari, paste it, then follow the steps.|En iPhone, la instalación solo funciona con Safari. Copia el enlace, abre Safari, pégalo y sigue los pasos.|No iPhone, a instalação só funciona no Safari. Copie o link, abra o Safari, cole-o e siga os passos.
+instInApp|Vous êtes dans le navigateur d’une autre application. Copiez le lien et ouvrez-le dans Safari (iPhone) ou Chrome (Android).|You are inside another app’s browser. Copy the link and open it in Safari (iPhone) or Chrome (Android).|Estás en el navegador de otra app. Copia el enlace y ábrelo en Safari (iPhone) o Chrome (Android).|Está no navegador de outra aplicação. Copie o link e abra-o no Safari (iPhone) ou Chrome (Android).
+instFF|Firefox n’installe pas l’application. Copiez le lien et ouvrez-le dans Chrome.|Firefox cannot install the app. Copy the link and open it in Chrome.|Firefox no instala la aplicación. Copia el enlace y ábrelo en Chrome.|O Firefox não instala a aplicação. Copie o link e abra-o no Chrome.
+instFFpc|Firefox sur ordinateur n’installe pas l’application. Copiez le lien et ouvrez-le dans Chrome ou Edge.|Firefox on desktop cannot install the app. Copy the link and open it in Chrome or Edge.|Firefox en ordenador no instala la aplicación. Copia el enlace y ábrelo en Chrome o Edge.|O Firefox no computador não instala a aplicação. Copie o link e abra-o no Chrome ou Edge.
+instMac|Dans Safari sur Mac : menu Fichier, puis « Ajouter au Dock ».|In Safari on Mac: File menu, then “Add to Dock”.|En Safari en Mac: menú Archivo y «Añadir al Dock».|No Safari no Mac: menu Ficheiro e «Adicionar ao Dock».
+instCopy|Copier le lien|Copy link|Copiar enlace|Copiar link
+instCopied|Lien copié|Link copied|Enlace copiado|Link copiado
 payMany|Vous avez déjà 3 demandes en attente. Patientez la validation.|You already have 3 pending requests. Please wait for validation.|Ya tienes 3 solicitudes pendientes. Espera la validación.|Já tem 3 pedidos pendentes. Aguarde a validação.
 txUsed|Ce code a déjà été utilisé|This code was already used|Este código ya se usó|Este código já foi usado
 limitMsg|Limite du plan Gratuit atteinte : passez à Premium|Free plan limit reached: go Premium|Límite del plan Gratis alcanzado: pasa a Premium|Limite do plano Grátis atingido: passe a Premium
@@ -1087,6 +1114,57 @@ async function chatSend(){const i=$('#chatIn'),b=i.value.trim();if(!b||!sb||!CL.
 function renderChat(){const L=$('#chatList');if(!L)return;if(!CH.msgs.length){L.innerHTML='<div class="empty">'+esc(t('chatEmpty'))+'</div>';return}
  const tm=d=>{const x=new Date(d);return x.toLocaleDateString(LOC(),{day:'2-digit',month:'2-digit'})+' '+x.toLocaleTimeString(LOC(),{hour:'2-digit',minute:'2-digit'})};
  L.innerHTML=CH.msgs.map(m=>{const me=m.email===CL.email;return'<div style="display:flex;justify-content:'+(me?'flex-end':'flex-start')+';margin:6px 0"><div style="max-width:82%;padding:8px 12px;border-radius:14px;background:'+(me?'var(--gd)':'var(--p2)')+';border:1px solid var(--ln)"><div class="mu" style="font-size:.7rem">'+esc(String(m.email||'').split('@')[0])+' · '+esc(roleLbl(m.role))+' · '+esc(tm(m.at))+'</div><div style="white-space:pre-wrap;word-break:break-word;font-size:.92rem">'+esc(m.body)+'</div></div></div>'}).join('');L.scrollTop=L.scrollHeight}
+/* ---- Guide d'installation (PWA) : bandeau + étapes dessinées ---- */
+let INST={ev:null};
+const instUA=navigator.userAgent||'';
+const instIOS=/iPad|iPhone|iPod/.test(instUA)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+const instAnd=/Android/.test(instUA);
+const instSTD=()=>{try{return matchMedia('(display-mode: standalone)').matches||navigator.standalone===true}catch(e){return false}};
+const instStore=()=>{try{return JSON.parse(localStorage.getItem('pq-inst-v1'))||{n:0,t:0}}catch(e){return{n:0,t:0}}};
+const instSave=o=>{try{localStorage.setItem('pq-inst-v1',JSON.stringify(o))}catch(e){}};
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();INST.ev=e});
+window.addEventListener('appinstalled',()=>{INST.ev=null;instSave({n:9,t:Date.now()});instBarHide();instClose()});
+function instMode(){
+ if(/FBAN|FBAV|Instagram|Line\/|MicroMessenger|Snapchat/.test(instUA))return'inapp';
+ if(instIOS)return/CriOS|FxiOS|EdgiOS|OPiOS|GSA\//.test(instUA)||!/Safari/.test(instUA)?'iosother':'ios';
+ if(INST.ev)return'native';
+ if(instAnd)return/Firefox/.test(instUA)?'androidff':'android';
+ if(/Firefox/.test(instUA))return'firefox';
+ if(/Safari/.test(instUA)&&!/Chrome|Chromium|Edg\//.test(instUA))return'macsafari';
+ return'desktop'}
+/* petits dessins : la zone à toucher est entourée en vert qui pulse */
+const sv=(b,w,h)=>'<svg viewBox="0 0 '+w+' '+h+'" class="ins" aria-hidden="true">'+b+'</svg>';
+const ring=(x,y,r)=>'<circle class="pu" cx="'+x+'" cy="'+y+'" r="'+r+'" fill="none" stroke="#2bd576" stroke-width="3"/>';
+const bar=(x,y,w)=>'<rect x="'+x+'" y="'+y+'" width="'+w+'" height="8" rx="4" fill="#3a3f3a"/>';
+const shareIc=(x,y)=>'<g transform="translate('+x+','+y+')" fill="none" stroke="#e8ece7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M0 4v9h12V4M6 11V-4M2 0l4-4 4 4"/></g>';
+const DR={
+ share:sv('<rect x="4" y="52" width="232" height="34" rx="10" fill="#1d211d" stroke="#3a3f3a"/>'+bar(14,66,40)+shareIc(120,60)+'<rect x="170" y="62" width="14" height="14" rx="3" fill="none" stroke="#8f968d" stroke-width="2"/><rect x="200" y="62" width="14" height="14" rx="3" fill="none" stroke="#8f968d" stroke-width="2"/>'+ring(126,69,19),240,96),
+ sheet:sv('<rect x="20" y="4" width="200" height="88" rx="12" fill="#1d211d" stroke="#3a3f3a"/>'+bar(34,16,90)+'<rect x="30" y="34" width="180" height="26" rx="8" fill="#26302a"/><rect x="38" y="40" width="14" height="14" rx="3" fill="none" stroke="#e8ece7" stroke-width="2"/><path d="M45 43v8M41 47h8" stroke="#e8ece7" stroke-width="2" stroke-linecap="round"/>'+bar(62,44,100)+bar(34,70,70)+ring(120,47,26),240,96),
+ add:sv('<rect x="20" y="4" width="200" height="88" rx="12" fill="#1d211d" stroke="#3a3f3a"/><text x="34" y="30" fill="#8f968d" font-size="12" font-family="sans-serif">✕</text><rect x="150" y="14" width="56" height="26" rx="13" fill="#2bd576"/><rect x="160" y="24" width="36" height="6" rx="3" fill="#06210f"/>'+bar(34,54,120)+bar(34,70,90)+ring(178,27,24),240,96),
+ menu:sv('<rect x="4" y="4" width="232" height="30" rx="8" fill="#1d211d" stroke="#3a3f3a"/>'+bar(14,15,120)+'<g fill="#e8ece7"><circle cx="214" cy="12" r="2.4"/><circle cx="214" cy="19" r="2.4"/><circle cx="214" cy="26" r="2.4"/></g>'+ring(214,19,17)+'<rect x="110" y="44" width="122" height="44" rx="8" fill="#1d211d" stroke="#3a3f3a"/>'+bar(120,54,90)+bar(120,70,70),240,96),
+ inst:sv('<rect x="110" y="6" width="122" height="84" rx="8" fill="#1d211d" stroke="#3a3f3a"/>'+bar(120,16,80)+'<rect x="116" y="32" width="110" height="22" rx="6" fill="#26302a"/>'+bar(124,39,90)+bar(120,66,60)+ring(171,43,30),240,96),
+ addr:sv('<rect x="4" y="30" width="232" height="34" rx="17" fill="#1d211d" stroke="#3a3f3a"/>'+bar(24,43,110)+'<rect x="196" y="40" width="22" height="14" rx="3" fill="none" stroke="#e8ece7" stroke-width="2"/><path d="M207 43v7M204 47l3 3 3-3" stroke="#e8ece7" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'+ring(207,47,18),240,96),
+ home:sv('<rect x="70" y="6" width="100" height="84" rx="14" fill="#1d211d" stroke="#3a3f3a"/><rect x="92" y="20" width="56" height="56" rx="12" fill="#2bd576"/><text x="120" y="56" text-anchor="middle" fill="#06210f" font-size="22" font-weight="900" font-family="sans-serif">KB</text>',240,96)};
+function instStep(n,key,d){return'<div class="ist"><div class="isn">'+n+'</div><div class="ist-b"><div class="ist-t">'+esc(t(key))+'</div>'+d+'</div></div>'}
+function instBody(){const m=instMode();let s='';
+ if(m==='native')s='<p class="mu" style="margin-bottom:12px">'+esc(t('instNat'))+'</p><button class="btn" data-act="instDo" data-i="instBtn2"></button>'+instStep(1,'instAfter',DR.home);
+ else if(m==='ios')s=instStep(1,'instI1',DR.share)+instStep(2,'instI2',DR.sheet)+instStep(3,'instI3',DR.add)+instStep(4,'instAfter',DR.home);
+ else if(m==='iosother'||m==='inapp')s='<p>'+esc(t(m==='inapp'?'instInApp':'instSaf'))+'</p><div class="btns"><button class="btn" data-act="instCopy" data-i="instCopy"></button></div>';
+ else if(m==='android')s=instStep(1,'instA1',DR.menu)+instStep(2,'instA2',DR.inst)+instStep(3,'instAfter',DR.home);
+ else if(m==='androidff')s='<p>'+esc(t('instFF'))+'</p><div class="btns"><button class="btn" data-act="instCopy" data-i="instCopy"></button></div>';
+ else if(m==='firefox')s='<p>'+esc(t('instFFpc'))+'</p><div class="btns"><button class="btn" data-act="instCopy" data-i="instCopy"></button></div>';
+ else if(m==='macsafari')s='<p>'+esc(t('instMac'))+'</p>';
+ else s=instStep(1,'instD1',DR.addr)+instStep(2,'instD2',DR.add)+instStep(3,'instAfter',DR.home);
+ return s}
+function instOpen(){const o=$('#instOv');if(!o)return;$('#instBody').innerHTML=instBody();applyI18n();o.classList.add('on');instBarHide()}
+function instClose(){const o=$('#instOv');if(o)o.classList.remove('on')}
+function instBarHide(){const b=$('#instBar');if(b)b.style.display='none'}
+function instLater(){const o=instStore();instSave({n:(o.n||0)+1,t:Date.now()});instBarHide()}
+async function instDo(){if(INST.ev){try{INST.ev.prompt();const c=await INST.ev.userChoice;INST.ev=null;if(c&&c.outcome==='accepted')instSave({n:9,t:Date.now()});instClose()}catch(e){instOpen()}}else instOpen()}
+function instCopy(){const u=location.origin+location.pathname;try{navigator.clipboard.writeText(u).then(()=>toast(t('instCopied')),()=>toast(u))}catch(e){toast(u)}}
+function instInit(){let tries=0;const go=()=>{if(instSTD())return;const o=instStore();if(o.n>=2||(o.n===1&&Date.now()-o.t<6048e5))return;if(instMode()==='firefox')return;
+  if(!state.set.langDone||$('#langOv').classList.contains('on')||$('#lock').classList.contains('on')||$('#dlg').classList.contains('on')){if(++tries<8)setTimeout(go,4000);return}
+  const b=$('#instBar');if(b){b.style.display='flex';applyI18n()}};setTimeout(go,6000)}
 /* ---- renderers ---- */
 const ICON={home:'<path d="M3 11 12 3l9 8v10H3z"/>',pos:'<path d="M3 4h2l2.5 11h10L20 7H6"/><circle cx="9" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/>',sheet:'<path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/>',resellers:'<circle cx="9" cy="8" r="3.5"/><path d="M2 20c0-4 3-6 7-6s7 2 7 6"/><path d="M17 5a3 3 0 0 1 0 6M19 14c2 1 3 3 3 6"/>',suivi:'<path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h5"/>',stats:'<path d="M3 17l5-6 4 3 8-9"/><path d="M15 5h5v5"/>',settings:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>'};
 const NAV=[];
@@ -1313,6 +1391,7 @@ Object.assign(ACT,{
  trfStart(a,el){trfStart(el.dataset.id)},
  async catPhotoDel(a,el){const r=allRows().find(x=>x.id===el.dataset.id);if(!r)return;const old=catPath(r.img);r.img='';save();if(old&&sb){try{await sb.storage.from('catalog').remove([old])}catch(e){}}renderCatalog()},
  chatSend(){chatSend()},
+ instOpen,instClose,instLater,instDo,instCopy,
  back(){if(NAV.length&&history.state&&history.state.pq)history.back();else navBack()},
  delShop(){delShop()},
  posPayMode(a){POS.pay=a;renderPos()},
@@ -1335,7 +1414,7 @@ Object.assign(ACT,{
  async delClient(a,el){if(!await ask(t('cfDelClient'),{danger:1}))return;const id=el.dataset.id;state.clients=state.clients.filter(x=>x.id!==id);state.moves.forEach(m=>{if(m.cid===id)m.cid=''});save();log('delClient','');renderClients()}
 });
 $('#posCode').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();ACT.posAdd()}});
-$('#posClient').addEventListener('change',renderPos);document.addEventListener('change',e=>{const i=e.target.closest&&e.target.closest('input[data-catimg]');if(i&&i.files&&i.files[0]){catPhotoSet(i.dataset.catimg,i.files[0]);i.value=''}});$('#chatIn').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();chatSend()}});$('#shopSel').addEventListener('change',e=>switchShop(e.target.value));$('#zDate').addEventListener('change',renderZ);
+$('#posClient').addEventListener('change',renderPos);document.addEventListener('change',e=>{const i=e.target.closest&&e.target.closest('input[data-catimg]');if(i&&i.files&&i.files[0]){catPhotoSet(i.dataset.catimg,i.files[0]);i.value=''}});instInit();$('#chatIn').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();chatSend()}});$('#shopSel').addEventListener('change',e=>switchShop(e.target.value));$('#zDate').addEventListener('change',renderZ);
 document.addEventListener('click',e=>{if(e.target.closest('.btn,#tabs button,.seg button'))buzz(8)});
 })();
 </script></body></html>
